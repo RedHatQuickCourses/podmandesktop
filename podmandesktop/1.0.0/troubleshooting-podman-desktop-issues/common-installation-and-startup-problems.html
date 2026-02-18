@@ -1,0 +1,1479 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Common installation and startup problems :: Red Hat Build of Podman Desktop: Installation, Configuration, and Troubleshooting</title>
+    <link rel="prev" href="troubleshooting-podman-desktop-issues.html">
+    <link rel="next" href="diagnosing-podman-machine-failures.html">
+    <meta name="generator" content="Antora 3.1.3">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+    <script>var uiRootPath = '../../../_'</script>
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://www.redhat.com" target="_blank"><img src="../../../_/img/redhat-logo.png" height="40px" alt="Red Hat"></a>
+      <a class="navbar-item" style="font-size: 24px; color: white" href="../../..">Red Hat Build of Podman Desktop: Installation, Configuration, and Troubleshooting</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="https://github.com/RedHatQuickCourses/REPLACEREPONAME/issues" target="_blank">Report Issues</a>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="podmandesktop" data-version="1.0.0">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html">Red Hat Build of Podman Desktop: Installation, Configuration, and Troubleshooting</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../index.html">Home</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../LABENV/index.html">Lab Environment</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../introduction-to-podman-desktop/introduction-to-podman-desktop.html">Introduction to Podman Desktop</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-podman-desktop/overview-of-podman-desktops-purpose-and-capabilities.html">Overview of Podman Desktop&#8217;s purpose and capabilities</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-podman-desktop/key-features-for-container-management.html">Key features for container management</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-podman-desktop/benefits-of-using-red-hat-build-of-podman-desktop.html">Benefits of using Red Hat Build of Podman Desktop</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../introduction-to-podman-desktop/introduction-to-podman-desktop.html">Introduction to Podman Desktop</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-podman-desktop/overview-of-podman-desktops-purpose-and-capabilities.html">Overview of Podman Desktop&#8217;s purpose and capabilities</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-podman-desktop/key-features-for-container-management.html">Key features for container management</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-podman-desktop/benefits-of-using-red-hat-build-of-podman-desktop.html">Benefits of using Red Hat Build of Podman Desktop</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../preparing-for-installation/preparing-for-installation.html">Preparing for Installation</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-for-installation/system-requirements-for-various-operating-systems.html">System requirements for various operating systems</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-for-installation/prerequisites-and-dependencies-eg-wsl-on-windows-podman-engine.html">Prerequisites and dependencies (e.g., WSL on Windows, Podman engine)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-for-installation/understanding-podman-machine-concept.html">Understanding Podman machine concept</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../preparing-for-installation/preparing-for-installation.html">Preparing for Installation</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-for-installation/system-requirements-for-various-operating-systems.html">System requirements for various operating systems</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-for-installation/prerequisites-and-dependencies-eg-wsl-on-windows-podman-engine.html">Prerequisites and dependencies (e.g., WSL on Windows, Podman engine)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-for-installation/understanding-podman-machine-concept.html">Understanding Podman machine concept</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/installing-podman-desktop-on-macos.html">Installing Podman Desktop on macOS</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/download-and-installation-process-via-installer.html">Download and installation process via installer</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/initial-setup-and-podman-machine-creation.html">Initial setup and Podman machine creation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/verifying-installation-and-basic-functionality.html">Verifying installation and basic functionality</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/installing-podman-desktop-on-macos.html">Installing Podman Desktop on macOS</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/download-and-installation-process-via-installer.html">Download and installation process via installer</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/initial-setup-and-podman-machine-creation.html">Initial setup and Podman machine creation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/verifying-installation-and-basic-functionality.html">Verifying installation and basic functionality</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/installing-podman-desktop-on-windows.html">Installing Podman Desktop on Windows</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/download-and-installation-process-via-installer.html">Download and installation process via installer</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/wsl-2-integration-and-configuration.html">WSL 2 integration and configuration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/initial-setup-and-podman-machine-creation.html">Initial setup and Podman machine creation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/verifying-installation-and-basic-functionality.html">Verifying installation and basic functionality</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/installing-podman-desktop-on-windows.html">Installing Podman Desktop on Windows</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/download-and-installation-process-via-installer.html">Download and installation process via installer</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/wsl-2-integration-and-configuration.html">WSL 2 integration and configuration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/initial-setup-and-podman-machine-creation.html">Initial setup and Podman machine creation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/verifying-installation-and-basic-functionality.html">Verifying installation and basic functionality</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/installing-podman-desktop-on-red-hat-enterprise-linux.html">Installing Podman Desktop on Red Hat Enterprise Linux</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/installation-steps-using-package-managers-eg-dnf.html">Installation steps using package managers (e.g., <code>dnf</code>)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/initial-setup-and-podman-machine-creation.html">Initial setup and Podman machine creation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/verifying-installation-and-basic-functionality.html">Verifying installation and basic functionality</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/installing-podman-desktop-on-red-hat-enterprise-linux.html">Installing Podman Desktop on Red Hat Enterprise Linux</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/installation-steps-using-package-managers-eg-dnf.html">Installation steps using package managers (e.g., <code>dnf</code>)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/initial-setup-and-podman-machine-creation.html">Initial setup and Podman machine creation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/verifying-installation-and-basic-functionality.html">Verifying installation and basic functionality</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/deploying-podman-desktop-in-air-gapped-environments.html">Deploying Podman Desktop in Air-Gapped Environments</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/challenges-and-considerations-for-air-gapped-deployments.html">Challenges and considerations for air-gapped deployments</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/gathering-necessary-installation-artifacts.html">Gathering necessary installation artifacts</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/step-by-step-offline-installation-procedure.html">Step-by-step offline installation procedure</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/post-installation-configuration-for-restricted-environments.html">Post-installation configuration for restricted environments</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/deploying-podman-desktop-in-air-gapped-environments.html">Deploying Podman Desktop in Air-Gapped Environments</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/challenges-and-considerations-for-air-gapped-deployments.html">Challenges and considerations for air-gapped deployments</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/gathering-necessary-installation-artifacts.html">Gathering necessary installation artifacts</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/step-by-step-offline-installation-procedure.html">Step-by-step offline installation procedure</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/post-installation-configuration-for-restricted-environments.html">Post-installation configuration for restricted environments</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/configuring-and-customizing-podman-desktop.html">Configuring and Customizing Podman Desktop</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/managing-container-engine-settings-memory-cpu-disk.html">Managing container engine settings (memory, CPU, disk)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/configuring-registries-and-image-pull-secrets.html">Configuring registries and image pull secrets</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/setting-up-network-proxies.html">Setting up network proxies</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/integrating-with-kubernetes-and-openshift-clusters.html">Integrating with Kubernetes and OpenShift clusters</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/exploring-and-managing-extensions.html">Exploring and managing extensions</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/configuring-and-customizing-podman-desktop.html">Configuring and Customizing Podman Desktop</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/managing-container-engine-settings-memory-cpu-disk.html">Managing container engine settings (memory, CPU, disk)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/configuring-registries-and-image-pull-secrets.html">Configuring registries and image pull secrets</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/setting-up-network-proxies.html">Setting up network proxies</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/integrating-with-kubernetes-and-openshift-clusters.html">Integrating with Kubernetes and OpenShift clusters</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/exploring-and-managing-extensions.html">Exploring and managing extensions</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="troubleshooting-podman-desktop-issues.html">Troubleshooting Podman Desktop Issues</a>
+<ul class="nav-list">
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="common-installation-and-startup-problems.html">Common installation and startup problems</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="diagnosing-podman-machine-failures.html">Diagnosing Podman machine failures</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="resolving-image-pull-and-container-run-errors.html">Resolving image pull and container run errors</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="utilizing-logs-for-problem-identification.html">Utilizing logs for problem identification</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="best-practices-for-issue-prevention.html">Best practices for issue prevention</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="troubleshooting-podman-desktop-issues.html">Troubleshooting Podman Desktop Issues</a>
+<ul class="nav-list">
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="common-installation-and-startup-problems.html">Common installation and startup problems</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="diagnosing-podman-machine-failures.html">Diagnosing Podman machine failures</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="resolving-image-pull-and-container-run-errors.html">Resolving image pull and container run errors</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="utilizing-logs-for-problem-identification.html">Utilizing logs for problem identification</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="best-practices-for-issue-prevention.html">Best practices for issue prevention</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../hands-on-exercises/hands-on-exercises.html">Hands-On Exercises</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-installing-podman-desktop-on-your-preferred-os.html">Lab: Installing Podman Desktop on your preferred OS</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-managing-podman-machines-and-container-engines.html">Lab: Managing Podman machines and container engines</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-deploying-and-interacting-with-a-container.html">Lab: Deploying and interacting with a container</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-configuring-a-private-registry-connection.html">Lab: Configuring a private registry connection</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-troubleshooting-a-simulated-podman-desktop-issue.html">Lab: Troubleshooting a simulated Podman Desktop issue</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../hands-on-exercises/hands-on-exercises.html">Hands-On Exercises</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-installing-podman-desktop-on-your-preferred-os.html">Lab: Installing Podman Desktop on your preferred OS</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-managing-podman-machines-and-container-engines.html">Lab: Managing Podman machines and container engines</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-deploying-and-interacting-with-a-container.html">Lab: Deploying and interacting with a container</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-configuring-a-private-registry-connection.html">Lab: Configuring a private registry connection</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-troubleshooting-a-simulated-podman-desktop-issue.html">Lab: Troubleshooting a simulated Podman Desktop issue</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../appendix/appendix.html">Appendix</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">Red Hat Build of Podman Desktop: Installation, Configuration, and Troubleshooting</span>
+    <span class="version">1.0.0</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <a class="title" href="../index.html">Red Hat Build of Podman Desktop: Installation, Configuration, and Troubleshooting</a>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">1.0.0</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">Red Hat Build of Podman Desktop: Installation, Configuration, and Troubleshooting</a></li>
+    <li><a href="troubleshooting-podman-desktop-issues.html">Troubleshooting Podman Desktop Issues</a></li>
+    <li><a href="common-installation-and-startup-problems.html">Common installation and startup problems</a></li>
+  </ul>
+</nav>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Common installation and startup problems</h1>
+<h1 id="_troubleshooting_red_hat_build_of_podman_desktop_common_installation_and_startup_problems" class="sect0"><a class="anchor" href="#_troubleshooting_red_hat_build_of_podman_desktop_common_installation_and_startup_problems"></a>Troubleshooting Red Hat Build of Podman Desktop: Common Installation and Startup Problems</h1>
+<div class="paragraph">
+<p>This module covers common issues encountered during the installation and initial startup of Red Hat Build of Podman Desktop. We will explore typical error scenarios, understand their root causes, and provide step-by-step guidance to diagnose and resolve them, ensuring a smooth operational environment.</p>
+</div>
+<div class="sect1">
+<h2 id="_common_installation_problems"><a class="anchor" href="#_common_installation_problems"></a>Common Installation Problems</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Installation issues often stem from unmet prerequisites, network connectivity, or system-specific configurations. Understanding these common pitfalls can significantly speed up the troubleshooting process.</p>
+</div>
+<div class="sect2">
+<h3 id="_prerequisites_not_met"><a class="anchor" href="#_prerequisites_not_met"></a>Prerequisites Not Met</h3>
+<div class="paragraph">
+<p>Red Hat Build of Podman Desktop relies on underlying virtualization technology (like Windows Subsystem for Linux 2 on Windows or a Podman machine virtual machine on macOS/Linux) and the Podman engine itself. If these prerequisites are not met, installation or initial setup will likely fail.</p>
+</div>
+<div class="sect3">
+<h4 id="_problem_wsl_2_not_installed_or_configured_correctly_windows"><a class="anchor" href="#_problem_wsl_2_not_installed_or_configured_correctly_windows"></a>Problem: WSL 2 Not Installed or Configured Correctly (Windows)</h4>
+<div class="paragraph">
+<p>On Windows, Red Hat Build of Podman Desktop absolutely requires Windows Subsystem for Linux (WSL) version 2. If WSL 2 is not enabled, updated, or set as the default version, Podman Desktop will likely fail during installation or initial startup when attempting to create its default Podman machine.</p>
+</div>
+<div class="sect4">
+<h5 id="_symptoms"><a class="anchor" href="#_symptoms"></a>Symptoms</h5>
+<div class="ulist">
+<ul>
+<li>
+<p>Installation error messages explicitly mentioning WSL issues.</p>
+</li>
+<li>
+<p>Red Hat Build of Podman Desktop failing to start or create a Podman machine with errors such as "WSL 2 is not installed or configured correctly" or "The WSL 2 backend is not available."</p>
+</li>
+<li>
+<p>Running <code>wsl --status</code> in PowerShell shows <code>Default Version: 1</code> or indicates that WSL is not installed at all.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_technical_explanation"><a class="anchor" href="#_technical_explanation"></a>Technical Explanation</h5>
+<div class="paragraph">
+<p>WSL 2 provides a lightweight virtualized Linux kernel environment that Red Hat Build of Podman Desktop utilizes to run its underlying Podman machine. This Linux VM hosts the Podman engine that manages your containers. Without a properly functioning WSL 2 installation, the essential virtualized Linux environment is unavailable, preventing Podman Desktop from operating.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_hands_on_activity_verifying_and_enabling_wsl_2_on_windows"><a class="anchor" href="#_hands_on_activity_verifying_and_enabling_wsl_2_on_windows"></a>Hands-On Activity: Verifying and Enabling WSL 2 on Windows</h5>
+<div class="paragraph">
+<div class="title">Objective</div>
+<p>Ensure WSL 2 is installed, updated, and set as the default version on your Windows system to meet Red Hat Build of Podman Desktop&#8217;s requirements.</p>
+</div>
+<div class="olist arabic">
+<div class="title">Steps</div>
+<ol class="arabic">
+<li>
+<p><strong>Check WSL status:</strong></p>
+</li>
+<li>
+<p>Open PowerShell <strong>as an administrator</strong>.</p>
+</li>
+<li>
+<p>Run the following command:
++
+[,bash]
+----
+wsl --status
+----
++
+<strong>Expected Output:</strong> You should see <code>Default Version: 2</code>. If WSL is not installed, or if the default version is <code>1</code>, proceed with the next steps.</p>
+</li>
+<li>
+<p><strong>Enable required WSL features:</strong></p>
+</li>
+<li>
+<p>If not already enabled, run the following commands in your <strong>administrator</strong> PowerShell session:
++
+[,bash]
+----
+dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
+dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
+----</p>
+</li>
+<li>
+<p><strong>After running these commands, you *must</strong> restart your computer.*</p>
+</li>
+<li>
+<p><strong>Update WSL kernel:</strong></p>
+</li>
+<li>
+<p>After restarting, open PowerShell <strong>as an administrator</strong> again.</p>
+</li>
+<li>
+<p>Run the command to ensure your WSL kernel is up to date:
++
+[,bash]
+----
+wsl --update
+----</p>
+</li>
+<li>
+<p><strong>Set WSL 2 as the default version:</strong></p>
+</li>
+<li>
+<p>Execute the following in <strong>administrator</strong> PowerShell:
++
+[,bash]
+----
+wsl --set-default-version 2
+----
++
+If you have existing WSL 1 distributions, you might also need to convert them individually. First, list them:
++
+[,bash]
+----
+wsl --list --verbose
+----
++
+Then, convert any listed as Version 1:
++
+[,bash]
+----
+wsl --set-version &lt;distro-name&gt; 2
+----
++
+Replace <code>&lt;distro-name&gt;</code> with the actual name of your distribution (e.g., <code>Ubuntu-20.04</code>).</p>
+</li>
+<li>
+<p><strong>Verify WSL 2 configuration:</strong></p>
+</li>
+<li>
+<p>Run <code>wsl --status</code> one last time to confirm <code>Default Version: 2</code>.</p>
+</li>
+<li>
+<p><strong>Retry Podman Desktop installation or startup:</strong> With WSL 2 correctly configured, you should now be able to proceed with Red Hat Build of Podman Desktop.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_problem_podman_engine_not_detected_or_machine_creation_fails_macoslinux"><a class="anchor" href="#_problem_podman_engine_not_detected_or_machine_creation_fails_macoslinux"></a>Problem: Podman Engine Not Detected or Machine Creation Fails (macOS/Linux)</h4>
+<div class="paragraph">
+<p>On macOS and Linux, Red Hat Build of Podman Desktop provisions a lightweight virtual machine (the Podman machine) to host the Podman engine. If the underlying <code>podman</code> CLI tools or virtualization software are not correctly set up, the machine creation process can fail.</p>
+</div>
+<div class="sect4">
+<h5 id="_symptoms_2"><a class="anchor" href="#_symptoms_2"></a>Symptoms</h5>
+<div class="ulist">
+<ul>
+<li>
+<p>"Podman engine not found" or similar errors during the initial setup within Podman Desktop.</p>
+</li>
+<li>
+<p>Failure to create the default Podman machine, often with error messages related to virtualization or hypervisor issues.</p>
+</li>
+<li>
+<p>Red Hat Build of Podman Desktop showing "No Podman engine available" after installation.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_technical_explanation_2"><a class="anchor" href="#_technical_explanation_2"></a>Technical Explanation</h5>
+<div class="paragraph">
+<p>Red Hat Build of Podman Desktop acts as a graphical user interface (GUI) for the Podman engine. On macOS and Linux, it uses the <code>podman</code> CLI to manage a virtual machine that runs the actual Podman daemon. If the <code>podman</code> CLI is not installed or accessible in your system&#8217;s PATH, or if the virtualization software (like Apple&#8217;s Hypervisor.framework on macOS, or QEMU/KVM on Linux) is misconfigured, the Podman machine cannot be initialized or started.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_hands_on_activity_manually_verifying_podman_engine_and_machine_status"><a class="anchor" href="#_hands_on_activity_manually_verifying_podman_engine_and_machine_status"></a>Hands-On Activity: Manually Verifying Podman Engine and Machine Status</h5>
+<div class="paragraph">
+<div class="title">Objective</div>
+<p>Check if the <code>podman</code> CLI is installed and try to manually manage a Podman machine to identify the specific failure point for machine creation or startup.</p>
+</div>
+<div class="olist arabic">
+<div class="title">Steps</div>
+<ol class="arabic">
+<li>
+<p><strong>Check for Podman CLI installation:</strong></p>
+</li>
+<li>
+<p>Open your terminal and run:
++
+[,bash]
+----
+podman --version
+----
++
+If you receive a "command not found" error, you may need to install the Podman CLI tools manually for your operating system. For Red Hat Enterprise Linux, this would typically be <code>sudo dnf install podman</code>.</p>
+</li>
+<li>
+<p><strong>Check existing Podman machines:</strong></p>
+</li>
+<li>
+<p>List any existing Podman machines:
++
+[,bash]
+----
+podman machine list
+----
++
+<strong>Analysis:</strong> Look for any machines in an <code>Error</code> or <code>Stopped</code> state, or if no machines are listed at all.</p>
+</li>
+<li>
+<p><strong>Attempt to create a new Podman machine (if default failed or none exist):</strong></p>
+</li>
+<li>
+<p>If the default machine failed, or you want to test the underlying machine creation, try initializing a new one with basic resources:
++
+[,bash]
+----
+podman machine init --cpus 2 --memory 2048 --disk-size 20 --name my-test-machine
+----
++
+<strong>Note:</strong> This command will attempt to download a base image if not found locally. Pay close attention to any error messages returned by this command, as they are often very specific to the underlying issue (e.g., hypervisor problems, resource conflicts).</p>
+</li>
+<li>
+<p><strong>Start the machine:</strong></p>
+</li>
+<li>
+<p>If <code>podman machine init</code> was successful or you have an existing machine, try to start it manually:
++
+[,bash]
+----
+podman machine start my-test-machine
+----
++
+<strong>Analyze the output:</strong> Errors during startup are critical for diagnosis. Common issues include virtualization not enabled in BIOS/UEFI, insufficient system resources, or problems with the chosen hypervisor (e.g., <code>qemu</code> configuration).</p>
+</li>
+<li>
+<p><strong>Delete the test machine (optional):</strong></p>
+</li>
+<li>
+<p>Once your diagnostic is complete, you can remove the test machine:
++
+[,bash]
+----
+podman machine stop my-test-machine
+podman machine rm my-test-machine
+----</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_network_connectivity_issues"><a class="anchor" href="#_network_connectivity_issues"></a>Network Connectivity Issues</h3>
+<div class="paragraph">
+<p>The installation of Red Hat Build of Podman Desktop, subsequent updates, and pulling container images all rely heavily on stable network access.</p>
+</div>
+<div class="sect3">
+<h4 id="_problem_unable_to_download_installer_or_dependencies"><a class="anchor" href="#_problem_unable_to_download_installer_or_dependencies"></a>Problem: Unable to Download Installer or Dependencies</h4>
+<div class="sect4">
+<h5 id="_symptoms_3"><a class="anchor" href="#_symptoms_3"></a>Symptoms</h5>
+<div class="ulist">
+<ul>
+<li>
+<p>The Red Hat Build of Podman Desktop installer download fails, is interrupted, or is exceptionally slow.</p>
+</li>
+<li>
+<p>During the installation process, specific components fail to download, often with network-related error messages.</p>
+</li>
+<li>
+<p>Error messages indicating network timeouts, connection refused, or inaccessible URLs.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_technical_explanation_3"><a class="anchor" href="#_technical_explanation_3"></a>Technical Explanation</h5>
+<div class="paragraph">
+<p>If your system is behind a restrictive firewall, requires a proxy for internet access, or experiences general internet connectivity problems, the installer might not be able to fetch all necessary components from Red Hat or other external repositories.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_hands_on_activity_basic_network_troubleshooting"><a class="anchor" href="#_hands_on_activity_basic_network_troubleshooting"></a>Hands-On Activity: Basic Network Troubleshooting</h5>
+<div class="paragraph">
+<div class="title">Objective</div>
+<p>Verify your system&#8217;s network connectivity and identify common network impediments that could prevent successful installation.</p>
+</div>
+<div class="olist arabic">
+<div class="title">Steps</div>
+<ol class="arabic">
+<li>
+<p><strong>Check general internet connection:</strong></p>
+</li>
+<li>
+<p>Open a web browser and try to access a known reliable website (e.g., <code><a href="https://www.redhat.com" class="bare">https://www.redhat.com</a></code>, <code><a href="https://www.google.com" class="bare">https://www.google.com</a></code>).</p>
+</li>
+<li>
+<p>If you cannot access websites, your primary internet connection is likely the issue.</p>
+</li>
+<li>
+<p><strong>Ping a reliable public server:</strong></p>
+</li>
+<li>
+<p>Open your terminal or command prompt and run:
++
+[,bash]
+----
+ping 8.8.8.8
+----
++
+<strong>Analysis:</strong> Look for successful replies. If you see "Request timed out" or "Destination Host Unreachable," your network connectivity might be limited or blocked.</p>
+</li>
+<li>
+<p><strong>Check proxy settings:</strong></p>
+</li>
+<li>
+<p>If you are in a corporate or controlled network environment, ensure your <strong>system-wide</strong> proxy settings are correctly configured. These are usually found in your operating system&#8217;s network settings.</p>
+</li>
+<li>
+<p>While Red Hat Build of Podman Desktop has its own proxy configuration (under <strong>Settings</strong> &#8594; <strong>Proxy</strong>), your system&#8217;s proxy settings are critical for the initial installer download and any external dependencies it fetches.</p>
+</li>
+<li>
+<p><strong>Temporarily disable firewall/antivirus (with caution):</strong></p>
+</li>
+<li>
+<p>Some overly aggressive security software (firewalls, antivirus, endpoint protection) can interfere with downloads or block necessary network connections.</p>
+</li>
+<li>
+<p><strong>Use extreme caution:</strong> Temporarily disable your firewall or antivirus software <strong>briefly</strong> to see if the download or installation proceeds. If it resolves the issue, you will need to configure exceptions for Podman Desktop and its components in your security software. <strong>Remember to re-enable your security software immediately after testing.</strong></p>
+</li>
+<li>
+<p><strong>Consult IT support:</strong></p>
+</li>
+<li>
+<p>If you are in a corporate network and suspect network restrictions, proxies, or specific firewall rules are in place, consult your IT department for guidance. They can provide necessary configurations or whitelisting.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_common_startup_problems"><a class="anchor" href="#_common_startup_problems"></a>Common Startup Problems</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>After successful installation, the most frequent startup problems revolve around the Red Hat Build of Podman machine itself or the desktop application&#8217;s ability to communicate with it.</p>
+</div>
+<div class="sect2">
+<h3 id="_red_hat_build_of_podman_machine_startup_failures"><a class="anchor" href="#_red_hat_build_of_podman_machine_startup_failures"></a>Red Hat Build of Podman Machine Startup Failures</h3>
+<div class="paragraph">
+<p>The Podman machine is a virtual machine (VM) that hosts the Podman engine. Its failure to start is the most common post-installation issue.</p>
+</div>
+<div class="sect3">
+<h4 id="_problem_podman_machine_fails_to_start"><a class="anchor" href="#_problem_podman_machine_fails_to_start"></a>Problem: Podman Machine Fails to Start</h4>
+<div class="sect4">
+<h5 id="_symptoms_4"><a class="anchor" href="#_symptoms_4"></a>Symptoms</h5>
+<div class="ulist">
+<ul>
+<li>
+<p>Red Hat Build of Podman Desktop displays "Podman machine failed to start" or "Error starting Podman machine."</p>
+</li>
+<li>
+<p>The status of the Podman machine in Podman Desktop shows as <code>Error</code>, <code>Stopped</code>, or <code>Starting&#8230;&#8203;</code> indefinitely.</p>
+</li>
+<li>
+<p>Error messages might reference virtualization issues, resource constraints, or specific hypervisor errors (e.g., WSL errors, HyperKit errors, QEMU errors).</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_technical_explanation_4"><a class="anchor" href="#_technical_explanation_4"></a>Technical Explanation</h5>
+<div class="paragraph">
+<p>The Podman machine is a full-fledged VM. Like any VM, it requires sufficient system resources (CPU, RAM, disk space), a functional hypervisor (WSL 2 on Windows, Hypervisor.framework/QEMU on macOS, QEMU/KVM on Linux), and proper network configuration to operate. Failures often indicate a conflict with another application using virtualization, insufficient system resources, a corrupted VM image, or virtualization features not being enabled in the host system&#8217;s BIOS/UEFI.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_hands_on_activity_diagnosing_and_restarting_the_podman_machine"><a class="anchor" href="#_hands_on_activity_diagnosing_and_restarting_the_podman_machine"></a>Hands-On Activity: Diagnosing and Restarting the Podman Machine</h5>
+<div class="paragraph">
+<div class="title">Objective</div>
+<p>Identify the specific error preventing the Podman machine from starting and attempt to resolve it by inspecting logs and using the <code>podman machine</code> CLI commands.</p>
+</div>
+<div class="olist arabic">
+<div class="title">Steps</div>
+<ol class="arabic">
+<li>
+<p><strong>Check Red Hat Build of Podman Desktop logs:</strong></p>
+</li>
+<li>
+<p>Podman Desktop provides built-in logs that offer valuable diagnostic insights.</p>
+</li>
+<li>
+<p>Navigate to <strong>Settings</strong> (gear icon) &#8594; <strong>Troubleshooting</strong> &#8594; <strong>View Logs</strong>.</p>
+</li>
+<li>
+<p>Look for recent error messages, warnings, or critical events related to machine startup. These logs are often the first place to find specific error codes or descriptions.</p>
+</li>
+<li>
+<p><strong>Note:</strong> Copy any relevant error messages for further investigation if needed.</p>
+</li>
+<li>
+<p><strong>Attempt to restart the machine from Podman Desktop:</strong></p>
+</li>
+<li>
+<p>Go to <strong>Settings</strong> &#8594; <strong>Podman machine</strong>.</p>
+</li>
+<li>
+<p>Try clicking the "Restart" button for the problematic machine. Observe the status and any new errors that appear in the Podman Desktop UI or logs.</p>
+</li>
+<li>
+<p><strong>Use Podman CLI for detailed error messages:</strong></p>
+</li>
+<li>
+<p>Open your terminal or command prompt, as the CLI often provides more verbose and actionable error messages.</p>
+</li>
+<li>
+<p><strong>List machines:</strong>
++
+[,bash]
+----
+podman machine list
+----
++
+Identify the name of your default or problematic machine (usually <code>podman-machine-default</code>).</p>
+</li>
+<li>
+<p><strong>Stop the machine (if it&#8217;s stuck or in an error state):</strong>
++
+[,bash]
+----
+podman machine stop &lt;machine-name&gt;
+----
++
+Replace <code>&lt;machine-name&gt;</code> with the name you identified (e.g., <code>podman-machine-default</code>).</p>
+</li>
+<li>
+<p><strong>Start the machine with verbose output:</strong>
++
+[,bash]
+----
+podman machine start &lt;machine-name&gt; --verbose
+----
++
+<strong>Crucially, analyze the output carefully.</strong> This command often provides far more detailed error messages than the desktop application. Look for keywords like <code>error</code>, <code>failed</code>, <code>permission denied</code>, <code>virtualization</code>, <code>WSL</code>, <code>HyperKit</code>, <code>QEMU</code>, <code>memory</code>, or <code>CPU</code>.</p>
+</li>
+<li>
+<p><strong>Common CLI error resolution:</strong></p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Virtualization not enabled:</strong> If the error explicitly mentions virtualization or a hypervisor issue, ensure CPU virtualization (Intel VT-x or AMD-V) is enabled in your computer&#8217;s BIOS/UEFI settings. This is a fundamental requirement for any hypervisor or VM.</p>
+</li>
+<li>
+<p><strong>Insufficient resources:</strong> If errors mention memory, CPU, or disk space, consider increasing the allocated resources for the Podman machine. You can do this via Podman Desktop settings (<strong>Settings</strong> &#8594; <strong>Podman machine</strong> &#8594; <strong>Edit</strong>) or, in advanced scenarios, by deleting and recreating the machine with specific resource flags (e.g., <code>podman machine init --memory 4096</code>). Ensure your host system has enough free resources.</p>
+</li>
+<li>
+<p><strong>Corrupted machine:</strong> If all other troubleshooting fails and you suspect the VM image is corrupted, you might need to delete and recreate the machine.
++
+[,bash]
+----
+podman machine rm &lt;machine-name&gt;
+podman machine init
+----
++
+<strong>Caution:</strong> Deleting a Podman machine will permanently remove all containers, images, and data stored <strong>within that specific machine</strong>. Back up any critical data or configurations (e.g., mounted volumes) before proceeding.</p>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_red_hat_build_of_podman_desktop_application_fails_to_launch_or_connect"><a class="anchor" href="#_red_hat_build_of_podman_desktop_application_fails_to_launch_or_connect"></a>Red Hat Build of Podman Desktop Application Fails to Launch or Connect</h3>
+<div class="paragraph">
+<p>Sometimes the desktop application itself might not launch correctly or fails to establish a connection to the running Podman engine. This is distinct from the Podman machine failing to start.</p>
+</div>
+<div class="sect3">
+<h4 id="_problem_application_not_responding_or_connection_errors"><a class="anchor" href="#_problem_application_not_responding_or_connection_errors"></a>Problem: Application Not Responding or Connection Errors</h4>
+<div class="sect4">
+<h5 id="_symptoms_5"><a class="anchor" href="#_symptoms_5"></a>Symptoms</h5>
+<div class="ulist">
+<ul>
+<li>
+<p>Red Hat Build of Podman Desktop window doesn&#8217;t appear, or the application crashes immediately upon launch.</p>
+</li>
+<li>
+<p>The application launches but displays "Connecting to Podman&#8230;&#8203;" indefinitely.</p>
+</li>
+<li>
+<p>Error messages like "Unable to connect to Podman engine" even when <code>podman machine list</code> shows the machine as <code>Running</code>.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_technical_explanation_5"><a class="anchor" href="#_technical_explanation_5"></a>Technical Explanation</h5>
+<div class="paragraph">
+<p>These issues can stem from a corrupted application installation, conflicts with other software (e.g., VPNs, other container platforms), or a failure in the communication layer between the desktop application and the Podman engine (e.g., issues with the Unix socket on Linux/macOS, or WSL networking on Windows).</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_hands_on_activity_application_and_connectivity_check"><a class="anchor" href="#_hands_on_activity_application_and_connectivity_check"></a>Hands-On Activity: Application and Connectivity Check</h5>
+<div class="paragraph">
+<div class="title">Objective</div>
+<p>Verify the integrity of the Red Hat Build of Podman Desktop application and its ability to communicate with the Podman machine.</p>
+</div>
+<div class="olist arabic">
+<div class="title">Steps</div>
+<ol class="arabic">
+<li>
+<p><strong>Restart Red Hat Build of Podman Desktop:</strong></p>
+</li>
+<li>
+<p>The simplest solution often works. Ensure the application is completely closed (check your system tray/menubar for background processes) and then restart it.</p>
+</li>
+<li>
+<p><strong>Check Podman Machine status (from CLI):</strong></p>
+</li>
+<li>
+<p>Even if Podman Desktop isn&#8217;t responding, you can independently check the machine&#8217;s status using the CLI:
++
+[,bash]
+----
+podman machine list
+----
++
+<strong>Analysis:</strong> Confirm that your Podman machine is listed as <code>Running</code>. If not, refer to the "Podman Machine Startup Failures" section above.</p>
+</li>
+<li>
+<p><strong>Verify Podman service/socket (advanced):</strong></p>
+</li>
+<li>
+<p>The Podman Desktop application communicates with the Podman machine via a socket.</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>For Linux/macOS:</strong> The socket is typically located at <code>/run/user/$UID/podman/podman.sock</code> or within your user&#8217;s home directory. You can check if the socket file exists and has correct permissions.</p>
+</li>
+<li>
+<p><strong>For Windows (WSL):</strong> The communication uses WSL&#8217;s internal networking. If you suspect WSL networking issues, you can try <code>wsl --shutdown</code> in PowerShell (as administrator), then <code>wsl --update</code>, followed by restarting your entire system to refresh WSL networking components.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Reinstall Red Hat Build of Podman Desktop:</strong></p>
+</li>
+<li>
+<p>If the application itself appears to be the problem (e.g., it crashes, or can&#8217;t connect to a clearly running Podman machine), a clean reinstall can often resolve corrupted files or configuration issues specific to the application.</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Windows:</strong> Use "Add or remove programs" in your system settings.</p>
+</li>
+<li>
+<p><strong>macOS:</strong> Drag the application from your Applications folder to the Trash.</p>
+</li>
+<li>
+<p><strong>Red Hat Enterprise Linux:</strong> Use your package manager (e.g., <code>sudo dnf remove podman-desktop</code>).</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>After uninstalling, download and install the latest version of Red Hat Build of Podman Desktop from the official source.</p>
+</li>
+<li>
+<p><strong>Check for conflicting applications:</strong></p>
+</li>
+<li>
+<p>Occasionally, other virtualization software (e.g., Docker Desktop, VirtualBox), VPN clients, or aggressive network monitoring tools can interfere with Red Hat Build of Podman Desktop&#8217;s ability to communicate or utilize network resources. Try temporarily disabling such software to rule out conflicts.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_best_practices_for_issue_prevention"><a class="anchor" href="#_best_practices_for_issue_prevention"></a>Best Practices for Issue Prevention</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Adopting these best practices can help prevent many common installation and startup problems with Red Hat Build of Podman Desktop:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Regularly update:</strong> Keep Red Hat Build of Podman Desktop, your operating system, and WSL (on Windows) updated. Updates often include critical bug fixes, performance improvements, and security patches.</p>
+</li>
+<li>
+<p><strong>Monitor resources:</strong> Ensure your host system has sufficient available RAM, CPU, and disk space for the Podman machine and any containers you plan to run. Over-committing resources is a common cause of VM instability.</p>
+</li>
+<li>
+<p><strong>Understand logs:</strong> Familiarize yourself with how to access and interpret Red Hat Build of Podman Desktop and Podman machine logs. These logs are your primary source of diagnostic information.</p>
+</li>
+<li>
+<p><strong>Backup critical data:</strong> If you are actively developing or storing important data within containers or mounted volumes, ensure you have a backup strategy, especially before performing actions like machine deletion.</p>
+</li>
+<li>
+<p><strong>Consult official documentation:</strong> The official Red Hat Build of Podman Desktop documentation is an invaluable resource for specific error codes, advanced troubleshooting, and best practices.#  Common installation and startup problems</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<h1 id="_troubleshooting_podman_desktop_common_installation_and_startup_problems" class="sect0"><a class="anchor" href="#_troubleshooting_podman_desktop_common_installation_and_startup_problems"></a>Troubleshooting Podman Desktop: Common Installation and Startup Problems</h1>
+<div class="paragraph">
+<p>This section provides comprehensive guidance on diagnosing and resolving common issues encountered during the installation and initial startup of Red Hat Build of Podman Desktop. We&#8217;ll cover typical problems, their underlying causes, and step-by-step solutions to help you get your container development environment up and running smoothly.</p>
+</div>
+<div class="sect1">
+<h2 id="_common_installation_problems_2"><a class="anchor" href="#_common_installation_problems_2"></a>Common Installation Problems</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Installation issues can prevent Podman Desktop from being set up correctly on your system. These often stem from unmet prerequisites, insufficient system resources, or environmental factors.</p>
+</div>
+<div class="sect2">
+<h3 id="_problem_system_requirements_not_met"><a class="anchor" href="#_problem_system_requirements_not_met"></a>Problem: System Requirements Not Met</h3>
+<div class="paragraph">
+<p><strong>Description</strong>: Podman Desktop and its underlying container engine (like the Podman machine on Windows/macOS or the native Podman engine on Linux) require specific system resources to function optimally. If your system lacks sufficient CPU, RAM, or available disk space, the installation might fail, or the application might exhibit erratic behavior and poor performance.</p>
+</div>
+<div class="paragraph">
+<p><strong>Technical Explanation</strong>: While Podman Desktop&#8217;s graphical user interface (GUI) is a relatively lightweight Electron application, the container runtime it manages is resource-intensive. For Windows and macOS, Podman Desktop provisions a virtual machine (the Podman machine via WSL 2 or Apple&#8217;s Hypervisor.framework) that needs dedicated CPU cores, gigabytes of RAM, and sufficient disk space for images and containers. On Linux, while it uses the native Podman engine, other system resources are still crucial for smooth operation. Failure to meet these requirements can lead to installation failures, inability to start the Podman machine, or degraded performance when running containers.</p>
+</div>
+<div class="paragraph">
+<p><strong>Common Symptoms</strong>:
+*   Installer failure with generic error messages or specific resource warnings.
+*   The Podman machine creation process hangs or fails with resource-related errors.
+*   Podman Desktop launches but is unresponsive or crashes immediately.
+*   Extremely slow performance during or after installation, especially when trying to pull images or run containers.</p>
+</div>
+<div class="paragraph">
+<p><strong>Troubleshooting Steps</strong>:
+.  <strong>Verify System Specifications</strong>:
+    <strong> Check your system&#8217;s total installed RAM, available CPU cores, and free disk space.
+    </strong> Compare these values against the <a href="#preparing-for-installation.adoc#_system_requirements" class="xref unresolved">official system requirements for Podman Desktop</a>.
+.  <strong>Free Up Resources</strong>:
+    <strong> Close any unnecessary applications or browser tabs that are consuming significant RAM or CPU cycles.
+    </strong> Clear temporary files and uninstall unneeded software to free up disk space, particularly on the drive where Podman Desktop and its data (e.g., Podman machine images) will be stored.
+.  <strong>Adjust Podman Machine Settings (Post-installation)</strong>: If the installation completes but startup fails due to perceived resource constraints, you may need to adjust the Podman machine&#8217;s allocated resources after installation, either through Podman Desktop&#8217;s settings or via the Podman CLI. We&#8217;ll cover this in the Hands-on Activity.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_problem_missing_prerequisites_windows_wsl_2"><a class="anchor" href="#_problem_missing_prerequisites_windows_wsl_2"></a>Problem: Missing Prerequisites (Windows: WSL 2)</h3>
+<div class="paragraph">
+<p><strong>Description</strong>: On Windows, Red Hat Build of Podman Desktop leverages Windows Subsystem for Linux (WSL 2) to host the Podman machine, which is where the actual container engine runs. If WSL 2 is not properly installed, enabled, or updated to the latest Linux kernel version, Podman Desktop will be unable to create or start its virtualized environment, rendering it non-functional.</p>
+</div>
+<div class="paragraph">
+<p><strong>Technical Explanation</strong>: WSL 2 provides a full Linux kernel and an optimized virtual machine experience directly within Windows. Podman Desktop relies on this robust environment to run the <code>podman</code> daemon and manage containers natively on Windows. Without a correctly configured and functional WSL 2 setup, Podman Desktop cannot provision or connect to its core container engine component. This often manifests as errors during machine creation or startup, as the underlying virtualization platform is unavailable or misconfigured.</p>
+</div>
+<div class="paragraph">
+<p><strong>Common Symptoms</strong>:
+*   Error messages during Podman Desktop installation specifically mentioning WSL 2.
+*   Podman Desktop launches but fails to create or start a Podman machine, often displaying errors such as "WSL is not installed," "Linux kernel update required," or "WSL 2 distribution not found."
+*   The Podman machine creation process hangs indefinitely, never reaching a ready state.</p>
+</div>
+<div class="paragraph">
+<p><strong>Troubleshooting Steps</strong>:
+.  <strong>Enable WSL and Virtual Machine Platform</strong>:
+    <strong> Open PowerShell or Command Prompt <strong>as Administrator</strong>.
+    </strong> Run the following commands to enable the necessary Windows features:
+   <br>
+    [source,bash]
+    ----
+    dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
+    dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
+    ----
+    <strong> Restart your computer to apply the changes.
+.  <strong>Update WSL Linux Kernel</strong>:
+    </strong> Download and install the <a href="#https://wslstore.blob.core.windows.net/wslupdate/wsl_update_x64.msi" class="xref unresolved">latest WSL 2 Linux kernel update package</a> from Microsoft&#8217;s official site.
+.  <strong>Set WSL 2 as Default</strong>:
+    <strong> Open PowerShell and run the following command to ensure WSL 2 is the default version for new distributions:
+   <br>
+    [source,bash]
+    ----
+    wsl --set-default-version 2
+    ----
+.  <strong>Check for WSL Distribution Issues</strong>: While Podman Desktop handles distribution creation, sometimes a fundamental WSL issue can prevent it.
+    </strong> Verify existing WSL distributions: <code>wsl -l -v</code>
+    <strong> If no distributions are listed or they are stuck, try installing a basic distribution (e.g., Ubuntu) as a test: <code>wsl --install -d Ubuntu</code>. (You can uninstall it later if not needed).
+.  <strong>Diagnose WSL Health</strong>: If issues persist, try these WSL commands:
+    </strong> <code>wsl --update</code>: Ensures your WSL client is up to date.
+    ** <code>wsl --shutdown</code>: Shuts down all running WSL distributions and VMs. After running this, try starting Podman Desktop again.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_problem_podman_engine_not_installed_or_accessible_linux"><a class="anchor" href="#_problem_podman_engine_not_installed_or_accessible_linux"></a>Problem: Podman Engine Not Installed or Accessible (Linux)</h3>
+<div class="paragraph">
+<p><strong>Description</strong>: On native Linux installations, Podman Desktop functions as a graphical front-end that interacts directly with a locally installed Podman engine. If the <code>podman</code> package is not installed on your system, or if its executable is not correctly configured in your system&#8217;s PATH environment variable, Podman Desktop will be unable to connect to a container engine and manage containers.</p>
+</div>
+<div class="paragraph">
+<p><strong>Technical Explanation</strong>: Unlike Windows and macOS where Podman Desktop provisions and manages a virtualized Podman machine, on Linux, it expects the <code>podman</code> CLI and its associated daemon to be present and accessible in the host operating system. Podman Desktop relies on the existing <code>podman</code> socket or CLI commands to perform all container-related operations. Without this underlying engine, the GUI has no backend to communicate with.</p>
+</div>
+<div class="paragraph">
+<p><strong>Common Symptoms</strong>:
+*   Podman Desktop launches but immediately displays an error message such as "No Podman engine found," "Podman not installed," or "Failed to connect to Podman socket."
+*   Attempts to interact with containers (e.g., pulling images, starting containers) from within Podman Desktop fail with errors indicating the <code>podman</code> command is not found or the connection is refused.</p>
+</div>
+<div class="paragraph">
+<p><strong>Troubleshooting Steps</strong>:
+.  <strong>Install Podman Engine</strong>:
+    <strong> For Red Hat Enterprise Linux, Fedora, and CentOS Stream:
+   <br>
+    [source,bash]
+    ----
+    sudo dnf install podman
+    ----
+    </strong> For Debian/Ubuntu-based distributions:
+   <br>
+    [source,bash]
+    ----
+    sudo apt update
+    sudo apt install podman
+    ----
+.  <strong>Verify Podman Installation</strong>:
+    <strong> Open a terminal and run <code>podman --version</code>. If Podman is installed correctly and accessible via your PATH, this command should return its version number.
+.  <strong>Ensure User Namespace Configuration (for Rootless Podman)</strong>: For rootless Podman to function correctly, your user needs entries in <code>/etc/subuid</code> and <code>/etc/subgid</code>. These are usually configured automatically by the <code>podman</code> package, but it&#8217;s worth verifying.
+    </strong> Check if your user is listed in these files: <code>cat /etc/subuid</code> and <code>cat /etc/subgid</code>.
+    ** If entries are missing or incorrect, consult the <a href="#https://www.redhat.com/sysadmin/podman-rootless-containers">official Podman rootless documentation</a> or your distribution&#8217;s guide for setting up rootless containers.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_common_startup_problems_2"><a class="anchor" href="#_common_startup_problems_2"></a>Common Startup Problems</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Startup issues occur after Podman Desktop has been successfully installed, typically when you try to launch the application or when it attempts to start its container engine (the Podman machine or connect to the native Podman engine).</p>
+</div>
+<div class="sect2">
+<h3 id="_problem_podman_machine_fails_to_start_2"><a class="anchor" href="#_problem_podman_machine_fails_to_start_2"></a>Problem: Podman Machine Fails to Start</h3>
+<div class="paragraph">
+<p><strong>Description</strong>: The Podman machine, a lightweight virtual machine that hosts the Podman engine on Windows and macOS, is critical for Podman Desktop&#8217;s functionality. If this machine fails to start, Podman Desktop cannot perform any container operations, effectively rendering it useless.</p>
+</div>
+<div class="paragraph">
+<p><strong>Technical Explanation</strong>: The Podman machine relies heavily on your system&#8217;s underlying virtualization capabilities (WSL 2/Hyper-V on Windows, Apple Virtualization Framework/Hypervisor.framework on macOS). Failures can stem from various sources: conflicting virtualization software running concurrently, insufficient system resources allocated to the virtual machine, a corrupted Podman machine image, or issues with the host operating system&#8217;s hypervisor service. Network misconfigurations within the VM or host can also prevent proper startup or connectivity.</p>
+</div>
+<div class="paragraph">
+<p><strong>Common Symptoms</strong>:
+*   Podman Desktop displays prominent error messages like "Podman machine not running," "Failed to start Podman machine," or "Error connecting to Podman machine."
+*   The Podman machine status indicator (usually in the bottom-left corner of the Podman Desktop window or in the Podman Machine settings) remains red or shows an error state.
+*   Long startup times for the Podman machine followed by an eventual failure message.</p>
+</div>
+<div class="paragraph">
+<p><strong>Troubleshooting Steps</strong>:
+.  <strong>Check Virtualization Status</strong>:
+    <strong> <strong>Windows</strong>: Ensure WSL 2 and the "Virtual Machine Platform" feature are enabled. Verify "Virtualization" is enabled in your Task Manager (Performance tab &#8594; CPU section). If Hyper-V is used for specific setups, ensure it&#8217;s enabled.
+    </strong> <strong>macOS</strong>: Ensure <code>Hypervisor.framework</code> is available (usually enabled by default). Check if any other virtualization software (e.g., VirtualBox, VMWare Fusion, Docker Desktop) is running and potentially causing conflicts by monopolizing virtualization resources.
+.  <strong>Restart Podman Machine</strong>:
+    <strong> Within Podman Desktop: Navigate to <strong>Settings</strong> &#8594; <strong>Podman Machine</strong> and click "Stop" if it&#8217;s running or stuck, then click "Start."
+    </strong> Via CLI: Open a terminal and run:
+   <br>
+    [source,bash]
+    ----
+    podman machine stop
+    podman machine start
+    ----
+.  <strong>Increase Podman Machine Resources</strong>: If the machine fails to start due to resource constraints:
+    <strong> Within Podman Desktop: Go to <strong>Settings</strong> &#8594; <strong>Podman Machine</strong>. Click the "Edit" button for your <code>podman-machine-default</code>. Increase the "CPUs" and "Memory (GB)" values to higher, but still reasonable, amounts (e.g., 4 CPUs, 4 GB RAM) if your system has spare resources.
+    </strong> Via CLI (example for recreating a machine with more resources):
+   <br>
+    [source,bash]
+    ----
+    podman machine stop
+    podman machine rm -f # WARNING: This removes the existing machine and its data!
+    podman machine init --cpus 4 --memory 4096 --disk-size 50 # Example: 4 CPUs, 4GB RAM, 50GB disk
+    podman machine start
+    ----
+.  <strong>Check Podman Machine Logs</strong>: Detailed error messages are often found in the machine logs.
+    <strong> Within Podman Desktop: Navigate to <strong>Settings</strong> &#8594; <strong>Podman Machine</strong> and look for a "Logs" or "View Logs" button/link.
+    </strong> Via CLI: The logs are typically stored in your user&#8217;s home directory.
+    <strong>* <strong>Linux</strong>: <code>~/.local/share/containers/podman/machine/podman-machine-default/podman-machine-default.log</code>
+    </strong>* <strong>macOS</strong>: <code>~/Library/Containers/com.redhat.PodmanDesktop/Data/podman-machine-default.log</code>
+    <strong>*</strong> <strong>Windows</strong>: <code>C:\Users\&lt;username&gt;\.local\share\containers\podman\machine\podman-machine-default\podman-machine-default.log</code>
+   <br>
+    Use <code>tail -f</code> to watch logs in real-time or <code>grep</code> to search for specific error keywords.
+.  <strong>Recreate Podman Machine</strong>: As a last resort, if the machine image becomes corrupted, removing and recreating it can resolve the issue.
+   <br>
+    [source,bash]
+    ----
+    podman machine stop
+    podman machine rm -f
+    podman machine init
+    podman machine start
+    ----
+   <br>
+    WARNING: Recreating the Podman machine will irrevocably delete all containers, images, and volumes stored within that specific machine. Ensure you back up any critical data before proceeding with this step.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_problem_podman_desktop_ui_fails_to_load_or_crashes"><a class="anchor" href="#_problem_podman_desktop_ui_fails_to_load_or_crashes"></a>Problem: Podman Desktop UI Fails to Load or Crashes</h3>
+<div class="paragraph">
+<p><strong>Description</strong>: The Podman Desktop graphical interface itself might encounter issues, leading to it not loading correctly (e.g., a blank screen), freezing unexpectedly, or crashing immediately upon launch. This indicates a problem with the application&#8217;s client-side components rather than necessarily the Podman engine itself.</p>
+</div>
+<div class="paragraph">
+<p><strong>Technical Explanation</strong>: As an Electron-based application, Podman Desktop&#8217;s GUI can be affected by corrupted user configuration files, conflicts with other system-level software (such as security applications or VPN clients), or issues with underlying system libraries and rendering engines. These problems prevent the application from initializing its graphical components or maintaining stability.</p>
+</div>
+<div class="paragraph">
+<p><strong>Common Symptoms</strong>:
+*   A blank white or black screen appears after launching Podman Desktop, which then disappears or remains unresponsive.
+*   The application freezes, becomes unresponsive to clicks or keyboard input, and may display a "Not Responding" message.
+*   Podman Desktop crashes immediately after opening or after a short period of use, often without a clear error message.</p>
+</div>
+<div class="paragraph">
+<p><strong>Troubleshooting Steps</strong>:
+.  <strong>Restart Podman Desktop</strong>: Fully close the application (ensure it&#8217;s not running in the background processes/system tray) and relaunch it.
+.  <strong>Clear Application Cache/Configuration</strong>: Corrupted user data or cached files can often cause GUI issues.
+    <strong> <strong>Windows</strong>: Close Podman Desktop. Open File Explorer and navigate to <code>C:\Users\&lt;username&gt;\AppData\Roaming\</code>. Delete the <code>Podman Desktop</code> folder. You can also run <code>rmdir /s /q %APPDATA%\Podman Desktop</code> from PowerShell.
+    </strong> <strong>macOS</strong>: Close Podman Desktop. Open Finder, go to <code>~/Library/Application Support/</code> (use Shift+Command+G and type <code>~/Library/Application Support/</code>). Delete the <code>Podman Desktop</code> folder. You can also run <code>rm -rf ~/Library/Application Support/Podman Desktop</code> from a terminal.
+    <strong>* *Linux</strong>: Close Podman Desktop. Open a terminal and run <code>rm -rf ~/.config/Podman Desktop</code>.
+   <br>
+    NOTE: Clearing this folder will reset your Podman Desktop settings and preferences to their default values.
+.  <strong>Check for Conflicts</strong>: Temporarily disable any aggressive antivirus, firewall, or security software to see if it&#8217;s interfering with Podman Desktop&#8217;s launch or operation. Also, check for conflicts with other Electron-based applications or system tray utilities.
+.  <strong>Reinstall Podman Desktop</strong>: If the issue persists, perform a clean reinstallation. First, uninstall Podman Desktop completely using your operating system&#8217;s standard procedure, then download the latest stable version from the official Red Hat website and reinstall.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_problem_unable_to_connect_to_container_registries"><a class="anchor" href="#_problem_unable_to_connect_to_container_registries"></a>Problem: Unable to Connect to Container Registries</h3>
+<div class="paragraph">
+<p><strong>Description</strong>: Even if Podman Desktop and the Podman machine are running correctly, you might encounter issues when trying to pull container images from public registries (like Docker Hub, Quay.io) or private registries configured within your environment.</p>
+</div>
+<div class="paragraph">
+<p><strong>Technical Explanation</strong>: Connectivity problems to container registries typically stem from network configurations, restrictive firewall rules on either the host or the Podman machine, incorrect proxy settings that prevent outbound connections, or misconfigured registry credentials (username, password, or authentication tokens) that lead to authorization failures. DNS resolution issues can also prevent the Podman machine from finding the registry&#8217;s address.</p>
+</div>
+<div class="paragraph">
+<p><strong>Common Symptoms</strong>:
+*   <code>podman pull &lt;image-name&gt;</code> commands executed from the Podman Desktop terminal or CLI fail with network-related errors (e.g., "connection refused," "timeout," "no route to host") or authorization errors ("unauthorized," "access denied").
+*   Image downloads initiated from within the Podman Desktop UI fail or hang indefinitely.
+*   The application reports "Error pulling image" or similar messages when trying to interact with remote images.</p>
+</div>
+<div class="paragraph">
+<p><strong>Troubleshooting Steps</strong>:
+.  <strong>Verify Network Connectivity</strong>:
+    <strong> Ping a public domain (e.g., <code>ping google.com</code>) from your host system&#8217;s terminal to ensure general internet connectivity.
+    </strong> If using a Podman machine, ensure it has network access. You can often <code>ssh</code> into the machine (<code>podman machine ssh</code>) and then try pinging from within the VM to verify its internet access.
+.  <strong>Check Proxy Settings</strong>:
+    <strong> If your network requires a proxy to access the internet, ensure that proxy settings are correctly configured within Podman Desktop: Navigate to <strong>Settings</strong> &#8594; <strong>Proxy</strong>.
+    </strong> If using the Podman CLI directly or if your Podman machine needs specific proxy settings, ensure the <code>HTTP_PROXY</code>, <code>HTTPS_PROXY</code>, and <code>NO_PROXY</code> environment variables are correctly set for the Podman machine. You can configure these when creating the machine or inject them later.
+.  <strong>Configure Registries and Credentials</strong>:
+    <strong> For private or authenticated registries, ensure the registry is added and authenticated correctly in Podman Desktop: Navigate to <strong>Settings</strong> &#8594; <strong>Registries</strong>.
+    </strong> Verify that <code>auth.json</code> (typically located at <code>~/.config/containers/auth.json</code>) contains valid credentials if you configured registry access via the CLI using <code>podman login</code>.
+    <strong>* Test registry access directly from the CLI: <code>podman login &lt;registry-url&gt;</code> to confirm you can authenticate.
+.  *Firewall Rules</strong>: Ensure your system&#8217;s host firewall (e.g., <code>firewalld</code>, <code>ufw</code>, Windows Defender Firewall) is not blocking outbound connections required for container image pulls. You might need to add specific rules to allow traffic on common HTTP/HTTPS ports or for the Podman machine&#8217;s network.
+.  <strong>DNS Resolution</strong>: If you&#8217;re using custom DNS servers or experiencing DNS issues, verify that the Podman machine can resolve external hostnames. You can test this by running <code>nslookup quay.io</code> or <code>dig docker.io</code> from within the <code>podman machine ssh</code> session.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_hands_on_activity_diagnosing_and_resolving_a_podman_machine_startup_failure"><a class="anchor" href="#_hands_on_activity_diagnosing_and_resolving_a_podman_machine_startup_failure"></a>Hands-on Activity: Diagnosing and Resolving a Podman Machine Startup Failure</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This lab will guide you through simulating a common Podman machine startup failure (often due to perceived resource exhaustion) and demonstrate how to diagnose the problem and resolve it by adjusting the machine&#8217;s allocated resources.</p>
+</div>
+<div class="sect2">
+<h3 id="_objective"><a class="anchor" href="#_objective"></a>Objective</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Understand how to identify a Podman machine startup failure.</p>
+</li>
+<li>
+<p>Learn to diagnose the problem using Podman Desktop and CLI tools.</p>
+</li>
+<li>
+<p>Practice resolving the issue by reconfiguring the Podman machine&#8217;s allocated resources.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_prerequisites"><a class="anchor" href="#_prerequisites"></a>Prerequisites</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Red Hat Build of Podman Desktop installed on your system (Windows or macOS).</p>
+</li>
+<li>
+<p>A functional default Podman machine (<code>podman-machine-default</code>) created during installation.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_steps"><a class="anchor" href="#_steps"></a>Steps</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Identify Current Podman Machine Resources</strong>:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Open Podman Desktop.</p>
+</li>
+<li>
+<p>Navigate to <strong>Settings</strong> &#8594; <strong>Podman Machine</strong>.</p>
+</li>
+<li>
+<p>Locate your <code>podman-machine-default</code> and note down its currently allocated CPU and Memory. For example, it might be 2 CPUs and 2 GB RAM.
++
+[TIP]
+You can also retrieve this information from the CLI:
+[source,bash]
+----
+podman machine inspect podman-machine-default --format "{{.Host.CPUs}} CPUs, {{.Host.Memory}} MB RAM"
+----</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Simulate a Resource-Related Startup Failure (Conceptual)</strong>:
+For the purpose of this lab, imagine that Podman Desktop is displaying an error message indicating that your "Podman machine failed to start" or that the machine status remains perpetually in a "Starting&#8230;&#8203;" or red "Error" state after you attempt to launch it. While you could try to manually under-allocate resources to force a failure, it&#8217;s safer and quicker to conceptualize this initial failure state.</p>
+</li>
+<li>
+<p><strong>Observe a Failed Startup State</strong>:
+If you were to encounter a real failure, in Podman Desktop, the machine&#8217;s status indicator (typically in the bottom-left corner of the window) would be red or yellow, and in <strong>Settings</strong> &#8594; <strong>Podman Machine</strong>, the machine status would clearly show an error.</p>
+</li>
+<li>
+<p><strong>Diagnose the Problem using Logs</strong>:
+This is where real troubleshooting begins. Logs are your best friend.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Within Podman Desktop, go to <strong>Settings</strong> &#8594; <strong>Podman Machine</strong>.</p>
+</li>
+<li>
+<p>Look for a "Logs" or "View Logs" button/link next to your <code>podman-machine-default</code>. Click it.</p>
+</li>
+<li>
+<p>Carefully scroll through the log output. Look for keywords and phrases that suggest resource limitations, such as "resource," "memory," "cpu," "insufficient," "failed to allocate," "out of memory," or specific error codes from your hypervisor (e.g., Hyper-V, Virtualization Framework). These clues help pinpoint the root cause.
++
+[TIP]
+You can also access Podman machine logs directly from your terminal, which allows for more powerful searching and real-time monitoring. The exact path varies slightly by OS:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Linux</strong>: <code>~/.local/share/containers/podman/machine/podman-machine-default/podman-machine-default.log</code></p>
+</li>
+<li>
+<p><strong>macOS</strong>: <code>~/Library/Containers/com.redhat.PodmanDesktop/Data/podman-machine-default/podman-machine-default.log</code></p>
+</li>
+<li>
+<p><strong>Windows</strong>: <code>C:\Users\&lt;your_username&gt;\.local\share\containers\podman\machine\podman-machine-default\podman-machine-default.log</code>
++
+Use commands like <code>tail -f &lt;log_path&gt;</code> to watch logs live or <code>grep -i "error|memory|cpu" &lt;log_path&gt;</code> to search for specific terms.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Resolve by Adjusting Podman Machine Resources</strong>:
+Based on the log analysis (which indicated a resource issue), you now know how to fix it.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>In Podman Desktop, navigate back to <strong>Settings</strong> &#8594; <strong>Podman Machine</strong>.</p>
+</li>
+<li>
+<p>If the machine is stuck in a "Starting" state or showing an error, click the "Stop" button for <code>podman-machine-default</code>. This might require force-stopping if it&#8217;s unresponsive.</p>
+</li>
+<li>
+<p>Click the "Edit" button next to <code>podman-machine-default</code>.</p>
+</li>
+<li>
+<p>Increase the "CPUs" and "Memory (GB)" values to more generous amounts, ensuring your host system still has enough resources for its own operation. For example, if it was 2 CPUs and 2 GB, try increasing to 4 CPUs and 4 GB RAM.</p>
+</li>
+<li>
+<p>Click "Save" or "Apply Changes" to confirm the new resource allocation.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Start the Podman Machine</strong>:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Back in the <strong>Settings</strong> &#8594; <strong>Podman Machine</strong> screen, click the "Start" button for <code>podman-machine-default</code>.</p>
+</li>
+<li>
+<p>Closely observe the status indicator. With sufficient resources, the machine should now proceed through its startup sequence and eventually turn green, indicating it has started successfully. This process may take a minute or two.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Verify Functionality</strong>:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Once the machine is running (status is green), open the Podman Desktop terminal extension (from the bottom left status bar) or your system&#8217;s terminal.</p>
+</li>
+<li>
+<p>Run a simple Podman command to verify connectivity to the Podman engine within the machine:
++
+[source,bash]
+----
+podman ps -a
+----
++
+This command should execute successfully and display an empty list of containers or any existing ones, confirming that Podman Desktop is now successfully connected to its container engine.</p>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Congratulations! You have successfully simulated a common Podman machine startup issue, learned how to diagnose it using logs, and resolved it by reconfiguring its resource allocation. This hands-on experience is a fundamental skill for effective troubleshooting with Podman Desktop.</p>
+</div>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="troubleshooting-podman-desktop-issues.html">Troubleshooting Podman Desktop Issues</a></span>
+  <span class="next"><a href="diagnosing-podman-machine-failures.html">Diagnosing Podman machine failures</a></span>
+</nav>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <img src="../../../_/img/rhl-logo-red.png" height="40px" alt="Red Hat"  href="https://redhat.com" >
+</footer><script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

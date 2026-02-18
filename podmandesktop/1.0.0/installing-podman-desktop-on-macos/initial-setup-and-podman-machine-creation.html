@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Initial setup and Podman machine creation :: Red Hat Build of Podman Desktop: Installation, Configuration, and Troubleshooting</title>
+    <link rel="prev" href="download-and-installation-process-via-installer.html">
+    <link rel="next" href="verifying-installation-and-basic-functionality.html">
+    <meta name="generator" content="Antora 3.1.3">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+    <script>var uiRootPath = '../../../_'</script>
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://www.redhat.com" target="_blank"><img src="../../../_/img/redhat-logo.png" height="40px" alt="Red Hat"></a>
+      <a class="navbar-item" style="font-size: 24px; color: white" href="../../..">Red Hat Build of Podman Desktop: Installation, Configuration, and Troubleshooting</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="https://github.com/RedHatQuickCourses/REPLACEREPONAME/issues" target="_blank">Report Issues</a>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="podmandesktop" data-version="1.0.0">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html">Red Hat Build of Podman Desktop: Installation, Configuration, and Troubleshooting</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../index.html">Home</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../LABENV/index.html">Lab Environment</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../introduction-to-podman-desktop/introduction-to-podman-desktop.html">Introduction to Podman Desktop</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-podman-desktop/overview-of-podman-desktops-purpose-and-capabilities.html">Overview of Podman Desktop&#8217;s purpose and capabilities</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-podman-desktop/key-features-for-container-management.html">Key features for container management</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-podman-desktop/benefits-of-using-red-hat-build-of-podman-desktop.html">Benefits of using Red Hat Build of Podman Desktop</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../introduction-to-podman-desktop/introduction-to-podman-desktop.html">Introduction to Podman Desktop</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-podman-desktop/overview-of-podman-desktops-purpose-and-capabilities.html">Overview of Podman Desktop&#8217;s purpose and capabilities</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-podman-desktop/key-features-for-container-management.html">Key features for container management</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-podman-desktop/benefits-of-using-red-hat-build-of-podman-desktop.html">Benefits of using Red Hat Build of Podman Desktop</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../preparing-for-installation/preparing-for-installation.html">Preparing for Installation</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-for-installation/system-requirements-for-various-operating-systems.html">System requirements for various operating systems</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-for-installation/prerequisites-and-dependencies-eg-wsl-on-windows-podman-engine.html">Prerequisites and dependencies (e.g., WSL on Windows, Podman engine)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-for-installation/understanding-podman-machine-concept.html">Understanding Podman machine concept</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../preparing-for-installation/preparing-for-installation.html">Preparing for Installation</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-for-installation/system-requirements-for-various-operating-systems.html">System requirements for various operating systems</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-for-installation/prerequisites-and-dependencies-eg-wsl-on-windows-podman-engine.html">Prerequisites and dependencies (e.g., WSL on Windows, Podman engine)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-for-installation/understanding-podman-machine-concept.html">Understanding Podman machine concept</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="installing-podman-desktop-on-macos.html">Installing Podman Desktop on macOS</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="download-and-installation-process-via-installer.html">Download and installation process via installer</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="initial-setup-and-podman-machine-creation.html">Initial setup and Podman machine creation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="verifying-installation-and-basic-functionality.html">Verifying installation and basic functionality</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="installing-podman-desktop-on-macos.html">Installing Podman Desktop on macOS</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="download-and-installation-process-via-installer.html">Download and installation process via installer</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="initial-setup-and-podman-machine-creation.html">Initial setup and Podman machine creation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="verifying-installation-and-basic-functionality.html">Verifying installation and basic functionality</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/installing-podman-desktop-on-windows.html">Installing Podman Desktop on Windows</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/download-and-installation-process-via-installer.html">Download and installation process via installer</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/wsl-2-integration-and-configuration.html">WSL 2 integration and configuration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/initial-setup-and-podman-machine-creation.html">Initial setup and Podman machine creation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/verifying-installation-and-basic-functionality.html">Verifying installation and basic functionality</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/installing-podman-desktop-on-windows.html">Installing Podman Desktop on Windows</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/download-and-installation-process-via-installer.html">Download and installation process via installer</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/wsl-2-integration-and-configuration.html">WSL 2 integration and configuration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/initial-setup-and-podman-machine-creation.html">Initial setup and Podman machine creation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/verifying-installation-and-basic-functionality.html">Verifying installation and basic functionality</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/installing-podman-desktop-on-red-hat-enterprise-linux.html">Installing Podman Desktop on Red Hat Enterprise Linux</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/installation-steps-using-package-managers-eg-dnf.html">Installation steps using package managers (e.g., <code>dnf</code>)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/initial-setup-and-podman-machine-creation.html">Initial setup and Podman machine creation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/verifying-installation-and-basic-functionality.html">Verifying installation and basic functionality</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/installing-podman-desktop-on-red-hat-enterprise-linux.html">Installing Podman Desktop on Red Hat Enterprise Linux</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/installation-steps-using-package-managers-eg-dnf.html">Installation steps using package managers (e.g., <code>dnf</code>)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/initial-setup-and-podman-machine-creation.html">Initial setup and Podman machine creation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/verifying-installation-and-basic-functionality.html">Verifying installation and basic functionality</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/deploying-podman-desktop-in-air-gapped-environments.html">Deploying Podman Desktop in Air-Gapped Environments</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/challenges-and-considerations-for-air-gapped-deployments.html">Challenges and considerations for air-gapped deployments</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/gathering-necessary-installation-artifacts.html">Gathering necessary installation artifacts</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/step-by-step-offline-installation-procedure.html">Step-by-step offline installation procedure</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/post-installation-configuration-for-restricted-environments.html">Post-installation configuration for restricted environments</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/deploying-podman-desktop-in-air-gapped-environments.html">Deploying Podman Desktop in Air-Gapped Environments</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/challenges-and-considerations-for-air-gapped-deployments.html">Challenges and considerations for air-gapped deployments</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/gathering-necessary-installation-artifacts.html">Gathering necessary installation artifacts</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/step-by-step-offline-installation-procedure.html">Step-by-step offline installation procedure</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/post-installation-configuration-for-restricted-environments.html">Post-installation configuration for restricted environments</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/configuring-and-customizing-podman-desktop.html">Configuring and Customizing Podman Desktop</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/managing-container-engine-settings-memory-cpu-disk.html">Managing container engine settings (memory, CPU, disk)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/configuring-registries-and-image-pull-secrets.html">Configuring registries and image pull secrets</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/setting-up-network-proxies.html">Setting up network proxies</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/integrating-with-kubernetes-and-openshift-clusters.html">Integrating with Kubernetes and OpenShift clusters</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/exploring-and-managing-extensions.html">Exploring and managing extensions</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/configuring-and-customizing-podman-desktop.html">Configuring and Customizing Podman Desktop</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/managing-container-engine-settings-memory-cpu-disk.html">Managing container engine settings (memory, CPU, disk)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/configuring-registries-and-image-pull-secrets.html">Configuring registries and image pull secrets</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/setting-up-network-proxies.html">Setting up network proxies</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/integrating-with-kubernetes-and-openshift-clusters.html">Integrating with Kubernetes and OpenShift clusters</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/exploring-and-managing-extensions.html">Exploring and managing extensions</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/troubleshooting-podman-desktop-issues.html">Troubleshooting Podman Desktop Issues</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/common-installation-and-startup-problems.html">Common installation and startup problems</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/diagnosing-podman-machine-failures.html">Diagnosing Podman machine failures</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/resolving-image-pull-and-container-run-errors.html">Resolving image pull and container run errors</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/utilizing-logs-for-problem-identification.html">Utilizing logs for problem identification</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/best-practices-for-issue-prevention.html">Best practices for issue prevention</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/troubleshooting-podman-desktop-issues.html">Troubleshooting Podman Desktop Issues</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/common-installation-and-startup-problems.html">Common installation and startup problems</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/diagnosing-podman-machine-failures.html">Diagnosing Podman machine failures</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/resolving-image-pull-and-container-run-errors.html">Resolving image pull and container run errors</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/utilizing-logs-for-problem-identification.html">Utilizing logs for problem identification</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/best-practices-for-issue-prevention.html">Best practices for issue prevention</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../hands-on-exercises/hands-on-exercises.html">Hands-On Exercises</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-installing-podman-desktop-on-your-preferred-os.html">Lab: Installing Podman Desktop on your preferred OS</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-managing-podman-machines-and-container-engines.html">Lab: Managing Podman machines and container engines</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-deploying-and-interacting-with-a-container.html">Lab: Deploying and interacting with a container</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-configuring-a-private-registry-connection.html">Lab: Configuring a private registry connection</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-troubleshooting-a-simulated-podman-desktop-issue.html">Lab: Troubleshooting a simulated Podman Desktop issue</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../hands-on-exercises/hands-on-exercises.html">Hands-On Exercises</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-installing-podman-desktop-on-your-preferred-os.html">Lab: Installing Podman Desktop on your preferred OS</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-managing-podman-machines-and-container-engines.html">Lab: Managing Podman machines and container engines</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-deploying-and-interacting-with-a-container.html">Lab: Deploying and interacting with a container</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-configuring-a-private-registry-connection.html">Lab: Configuring a private registry connection</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-troubleshooting-a-simulated-podman-desktop-issue.html">Lab: Troubleshooting a simulated Podman Desktop issue</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../appendix/appendix.html">Appendix</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">Red Hat Build of Podman Desktop: Installation, Configuration, and Troubleshooting</span>
+    <span class="version">1.0.0</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <a class="title" href="../index.html">Red Hat Build of Podman Desktop: Installation, Configuration, and Troubleshooting</a>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">1.0.0</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">Red Hat Build of Podman Desktop: Installation, Configuration, and Troubleshooting</a></li>
+    <li><a href="installing-podman-desktop-on-macos.html">Installing Podman Desktop on macOS</a></li>
+    <li><a href="initial-setup-and-podman-machine-creation.html">Initial setup and Podman machine creation</a></li>
+  </ul>
+</nav>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Initial setup and Podman machine creation</h1>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-asciidoc hljs" data-lang="asciidoc">= Initial Setup and Podman Machine Creation
+
+This section guides you through the crucial initial setup steps for Red Hat Build of Podman Desktop, focusing on understanding and creating a Podman machine. This process ensures you have a functioning container engine to manage your images and containers.
+
+== Understanding the Podman Machine Concept
+
+On non-Linux operating systems like macOS and Windows, containers are traditionally run within a lightweight Linux virtual machine (VM). This is where the **Podman machine** comes into play. A Podman machine is essentially a minimal Linux VM that hosts the Podman engine, enabling Podman Desktop to run Linux containers natively on your system.
+
+[NOTE]
+On Red Hat Enterprise Linux and other Linux distributions, Podman runs natively on the host operating system. Therefore, while Podman Desktop can still manage a "machine" (which in this context might just refer to the local Podman engine), the necessity for a dedicated VM is typically removed, simplifying the setup. However, it can still create a machine if you wish to isolate your container engine further or experiment with different Linux distributions within a VM.
+
+=== Why a Podman Machine is Essential
+
+*   **Container Engine Hosting:** Linux containers are designed to run on a Linux kernel. The Podman machine provides this necessary Linux environment.
+*   **Isolation:** It offers an isolated environment for your container engine and its resources, preventing conflicts with your host system.
+*   **Cross-OS Compatibility:** It bridges the gap, allowing developers on macOS and Windows to leverage the full power of Podman and containerization.
+*   **Resource Management:** Resources like CPU, memory, and disk space for your container workloads are allocated to this VM, which you can configure to suit your needs.
+
+For Windows users, the Podman machine leverages Windows Subsystem for Linux (WSL) 2, providing a highly integrated and performant Linux environment. On macOS, it uses a lightweight virtualization technology to run the VM.
+
+== Initial Setup and Podman Machine Creation
+
+After installing Red Hat Build of Podman Desktop, the first launch typically initiates a guided setup process. This process primarily involves setting up your container engine, which often means creating a Podman machine.
+
+=== Podman Desktop's First Launch Experience
+
+Upon its initial launch, Podman Desktop will detect if a Podman engine is available and running. If no engine is found (which is common after a fresh installation on macOS or Windows), it will prompt you to create one.
+
+The process usually involves:
+
+.  **Welcome Screen:** A brief introduction to Podman Desktop.
+.  **Engine Availability Check:** Podman Desktop checks for existing Podman installations or running machines.
+.  **Podman Machine Creation Prompt:** If no engine is found, you'll be prompted to create a new Podman machine. This is where you configure the resources for your engine.
+.  **Initialization:** Podman Desktop will then provision the VM, install the Podman engine within it, and start the engine.
+.  **Dashboard Access:** Once the machine is up and running, you'll gain access to the main Podman Desktop dashboard.
+
+=== Configuring Podman Machine Resources
+
+When creating a Podman machine, you'll typically be presented with options to configure its resources. While default settings are often sufficient for basic use, understanding these options is crucial for optimizing performance.
+
+*   **CPU Cores:** The number of virtual CPU cores allocated to the Podman machine. More cores can improve performance for CPU-intensive container workloads.
+*   **Memory (RAM):** The amount of RAM allocated. Insufficient memory is a common cause of performance bottlenecks for memory-hungry applications or when running many containers simultaneously.
+*   **Disk Size:** The total disk space available within the Podman machine for storing container images, volumes, and other data. Consider your anticipated image and data storage needs.
+
+[TIP]
+It's generally recommended to start with the default resource settings and monitor your system's performance. You can always adjust these settings later through Podman Desktop's settings or by recreating the machine if necessary.
+
+=== Hands-On Activity: Creating Your First Podman Machine
+
+This lab guides you through creating a Podman machine using Red Hat Build of Podman Desktop.
+
+[IMPORTANT]
+Ensure you have successfully completed the installation of Red Hat Build of Podman Desktop on your operating system before proceeding with this lab.
+
+==== Objective
+
+*   Create a new Podman machine to host your container engine.
+*   Understand the default and customizable settings for a Podman machine.
+*   Verify the successful creation and running status of your Podman machine.
+
+==== Steps
+
+.  **Launch Podman Desktop:**
+    *   Find the Podman Desktop application in your applications folder (macOS), Start menu (Windows), or through your desktop environment's launcher (Linux).
+    *   Launch the application.
+
+.  **Initiate Machine Creation (if prompted):**
+    *   If this is your first time launching Podman Desktop, or if no Podman machine is detected, you will likely see a screen prompting you to "Initialize &amp; Start" or "Create a Podman Machine".
+    *   Click the button to proceed.
+
+.  **Review and Configure Machine Settings:**
+    *   Podman Desktop will present a dialog for creating a new machine, often with default settings.
+    *   Review the default settings for CPU, Memory, and Disk Size.
+    *   (Optional) If you have specific requirements, you can adjust these settings:
+        ** For example, if you plan to run many memory-intensive applications, you might increase the 'Memory' allocation.
+    *   Ensure the chosen container engine is `Podman`.
+    *   Click the `Create` or `Create &amp; Start` button.
+
+    [NOTE]
+    On Windows, this process might involve specific interactions with WSL2, such as installing a required WSL distribution if it's not already present. Follow any on-screen prompts related to WSL2 integration.
+
+.  **Monitor Machine Creation Progress:**
+    *   Podman Desktop will now provision the VM and install the Podman engine. This process can take a few minutes, depending on your system's performance and internet connection (for downloading necessary VM images).
+    *   You will see status messages indicating the progress, such as "Installing Podman in machine...", "Starting machine...", etc.
+
+.  **Verify Machine Status:**
+    *   Once the machine creation is complete, Podman Desktop will transition to its main dashboard.
+    *   On the left-hand navigation pane, click on the `Containers` icon.
+    *   At the top of the `Containers` view (or in the `Dashboard` view), you should see a section indicating your active `Podman` connection.
+    *   Look for the `Pods` or `Containers` section, and ensure the status shows `Running` for your Podman machine.
+
+    image::podman-desktop-dashboard-running.png[Podman Desktop Dashboard showing a running Podman machine]
+    _Example: Podman Desktop dashboard indicating a running Podman machine._
+
+.  **Optional: Confirm via Terminal:**
+    *   Open your system's terminal or command prompt.
+    *   Run the command to list Podman machines:
+        ```bash
+        podman machine list
+        ```
+    *   You should see your newly created machine listed with a status of `Running`.
+
+    [source,console]
+    ----
+    $ podman machine list
+    NAME           VM TYPE    CREATED       LAST STARTED     CPUS        MEMORY      DISK SIZE    STATUS
+    podman-machine-default  WSL/QEMU   2 weeks ago   2 hours ago      2           2GB         10GB         Running
+    ----
+
+Congratulations! You have successfully created and verified your Podman machine. You are now ready to start pulling images and running containers.</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs"></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-#  Initial setup and Podman machine creation hljs" data-lang="#  Initial setup and Podman machine creation">Here's the detailed educational content for "Initial setup and Podman machine creation" in Antora AsciiDoc format:
+
+```asciidoc
+= Initial Setup and Podman Machine Creation
+
+This section guides you through the essential initial setup steps after installing Red Hat Build of Podman Desktop, focusing on the critical concept of the Podman machine and its creation.
+
+== Understanding the Podman Machine
+
+Upon the first launch of Red Hat Build of Podman Desktop on non-Linux operating systems (macOS and Windows), you'll encounter a crucial component known as a *Podman machine*.
+
+=== What is a Podman Machine?
+
+A Podman machine is a lightweight Linux virtual machine (VM) designed to run the Podman engine and manage containers natively on operating systems that do not inherently support Linux containers directly (such as macOS and Windows). While Podman Desktop provides a user-friendly graphical interface, the underlying container engine—Podman—needs a Linux environment to operate. The Podman machine provides this environment.
+
+.Key characteristics and reasons for a Podman machine:
+*   *Isolation and Compatibility*: It creates a dedicated, isolated Linux environment where container images can be pulled, built, and run using the Podman engine, ensuring compatibility across different host operating systems.
+*   *Resource Management*: The VM is configured with dedicated CPU, memory, and disk resources, which can be adjusted to suit your workload requirements.
+*   *Platform-Specific Virtualization*:
+    *   On *Windows*, Podman machines typically leverage *Windows Subsystem for Linux 2 (WSL 2)*. WSL 2 provides a full Linux kernel and enables excellent performance and integration with the Windows host.
+    *   On *macOS*, Podman machines utilize a lightweight hypervisor, commonly *QEMU* (Quick EMUlator), to run a minimalistic Linux distribution.
+    *   On *Linux*, a Podman machine is generally *not* required as Podman runs natively on the host operating system. Podman Desktop will detect the native Podman engine if it's installed.
+*   *Seamless Integration*: Podman Desktop transparently manages the lifecycle of this VM, making it appear as if you are interacting directly with Podman on your host.
+
+=== Initial Setup Flow
+
+After a successful installation of Red Hat Build of Podman Desktop, the first launch typically involves:
+
+1.  *Detecting Existing Engines*: Podman Desktop will first check if any existing container engines (like a native Podman installation on Linux, or an existing Podman machine) are present.
+2.  *Prompt for Machine Creation*: If no suitable Podman engine is found, particularly on macOS and Windows, Podman Desktop will prompt you to create a new Podman machine. This is a critical step to enable container functionality.
+3.  *Resource Configuration (Optional)*: You might be given options to configure the CPU, memory, and disk space allocated to the new Podman machine. For initial setup, accepting the default values is usually sufficient.
+4.  *Machine Creation Process*: Podman Desktop will download the necessary VM image and configure the virtual machine. This process involves setting up the Linux operating system, the Podman engine, and network connectivity between the host and the VM.
+5.  *Verification*: Once the machine is created and started, Podman Desktop will automatically connect to it, indicating that you are ready to manage containers.
+
+This initial setup ensures that Podman Desktop has a fully functional environment to run and manage your containers effectively.
+
+== Hands-on Activity: Creating Your First Podman Machine
+
+This lab guides you through the process of creating a Podman machine using Red Hat Build of Podman Desktop. This activity is primarily relevant for users on Windows and macOS. Linux users will typically connect to a native Podman installation.
+
+=== Objective
+
+*   Successfully create and start a Podman machine using Podman Desktop.
+*   Verify the Podman machine's status and connectivity.
+
+=== Prerequisites
+
+*   Red Hat Build of Podman Desktop is installed on your Windows or macOS system.
+
+=== Steps
+
+. *Launch Podman Desktop*
+.. Open Red Hat Build of Podman Desktop from your applications menu or desktop shortcut.
+.. Upon its first launch, if no Podman engine is detected, Podman Desktop will typically present a welcome screen or a prompt indicating that a Podman machine needs to be created. You might see a screen similar to "Podman is not running" or "Podman machine not found."
+
+. *Initiate Podman Machine Creation*
+.. Look for a button or link labeled `Create new machine` or `Install Podman`. Click on it to begin the process.
++
+image::create-new-machine-button.png[Create new machine button, width=600]
++
+*Note:* Podman Desktop usually defaults to optimal settings for your system. For the initial setup, accepting the defaults is recommended. Advanced users can later adjust settings like CPU, memory, and disk size via the `Settings` menu.
+
+. *Monitor the Creation Process*
+.. Podman Desktop will display progress messages as it downloads the necessary components, sets up the virtual machine, and starts the Podman engine within it.
+.. This process can take a few minutes, depending on your internet connection (for downloading VM images) and system performance.
++
+image::podman-machine-creation-progress.png[Podman machine creation progress, width=600]
+
+. *Verify Podman Machine Status*
+.. Once the creation process is complete, Podman Desktop should automatically connect to the new machine. The main dashboard will now display information about the connected Podman engine.
+.. Navigate to the `Settings` icon (gear icon) in the bottom-left corner of the Podman Desktop interface.
+.. In the settings, select `Engine` from the sidebar. You should see your newly created Podman machine listed and marked as `Running`.
++
+image::podman-desktop-engine-settings.png[Podman Desktop Engine Settings, width=600]
++
+*Optional Command-Line Verification:*
+You can also verify the status of your Podman machine from your host's terminal or command prompt:
+
+[source,bash]
+----
+podman machine ls
+----
++
+*Expected Output Example:*
+[source,text]
+----
+NAME        VM TYPE   CPUS   MEMORY   DISK      URI                                        LAST STARTED        STATUS
+podman-machine-default  qemu      2      2GiB     10GiB     ssh://core@localhost:...           4 minutes ago       Running
+----
++
+This command lists all Podman machines, their configuration, and their current status. Ensure your newly created machine is listed and its `STATUS` is `Running`.
+
+[source,bash]
+----
+podman info
+----
++
+This command provides detailed information about the connected Podman engine, including its version, runtime, and configured registries. A successful output indicates that Podman Desktop is correctly connected to your Podman machine.
+
+=== Troubleshooting Tips
+
+*   *Stuck at "Starting Podman Machine"* If the machine fails to start, check for virtualization issues:
+    *   On Windows, ensure WSL 2 is properly installed and updated (`wsl --update`, `wsl --install`). Also, confirm that virtualization is enabled in your BIOS/UEFI settings.
+    *   On macOS, ensure your system has sufficient resources and that no other virtualization software is conflicting.
+    *   Check the Podman Desktop logs for more detailed error messages (accessible via `Help` &gt; `Troubleshoot` &gt; `Show Logs`).
+*   *Machine Not Appearing*: If `podman machine ls` doesn't show your machine, try restarting Podman Desktop. If the issue persists, you may need to try deleting any partially created machines (`podman machine rm &lt;machine-name&gt;`) and recreating it.
+*   *Resource Allocation*: If containers run slowly, consider increasing the allocated CPU and memory for your Podman machine through Podman Desktop's `Settings` &gt; `Engine` menu.
+
+By successfully completing these steps, you now have a fully operational Podman machine, ready to host your containers and interact with the Podman engine through Red Hat Build of Podman Desktop.</code></pre>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="download-and-installation-process-via-installer.html">Download and installation process via installer</a></span>
+  <span class="next"><a href="verifying-installation-and-basic-functionality.html">Verifying installation and basic functionality</a></span>
+</nav>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <img src="../../../_/img/rhl-logo-red.png" height="40px" alt="Red Hat"  href="https://redhat.com" >
+</footer><script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

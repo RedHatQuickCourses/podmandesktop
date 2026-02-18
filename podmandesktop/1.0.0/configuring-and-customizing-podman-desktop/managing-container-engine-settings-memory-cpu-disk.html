@@ -1,0 +1,1183 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Managing container engine settings (memory, CPU, disk) :: Red Hat Build of Podman Desktop: Installation, Configuration, and Troubleshooting</title>
+    <link rel="prev" href="configuring-and-customizing-podman-desktop.html">
+    <link rel="next" href="configuring-registries-and-image-pull-secrets.html">
+    <meta name="generator" content="Antora 3.1.3">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+    <script>var uiRootPath = '../../../_'</script>
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://www.redhat.com" target="_blank"><img src="../../../_/img/redhat-logo.png" height="40px" alt="Red Hat"></a>
+      <a class="navbar-item" style="font-size: 24px; color: white" href="../../..">Red Hat Build of Podman Desktop: Installation, Configuration, and Troubleshooting</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="https://github.com/RedHatQuickCourses/REPLACEREPONAME/issues" target="_blank">Report Issues</a>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="podmandesktop" data-version="1.0.0">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html">Red Hat Build of Podman Desktop: Installation, Configuration, and Troubleshooting</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../index.html">Home</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../LABENV/index.html">Lab Environment</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../introduction-to-podman-desktop/introduction-to-podman-desktop.html">Introduction to Podman Desktop</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-podman-desktop/overview-of-podman-desktops-purpose-and-capabilities.html">Overview of Podman Desktop&#8217;s purpose and capabilities</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-podman-desktop/key-features-for-container-management.html">Key features for container management</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-podman-desktop/benefits-of-using-red-hat-build-of-podman-desktop.html">Benefits of using Red Hat Build of Podman Desktop</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../introduction-to-podman-desktop/introduction-to-podman-desktop.html">Introduction to Podman Desktop</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-podman-desktop/overview-of-podman-desktops-purpose-and-capabilities.html">Overview of Podman Desktop&#8217;s purpose and capabilities</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-podman-desktop/key-features-for-container-management.html">Key features for container management</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-podman-desktop/benefits-of-using-red-hat-build-of-podman-desktop.html">Benefits of using Red Hat Build of Podman Desktop</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../preparing-for-installation/preparing-for-installation.html">Preparing for Installation</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-for-installation/system-requirements-for-various-operating-systems.html">System requirements for various operating systems</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-for-installation/prerequisites-and-dependencies-eg-wsl-on-windows-podman-engine.html">Prerequisites and dependencies (e.g., WSL on Windows, Podman engine)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-for-installation/understanding-podman-machine-concept.html">Understanding Podman machine concept</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../preparing-for-installation/preparing-for-installation.html">Preparing for Installation</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-for-installation/system-requirements-for-various-operating-systems.html">System requirements for various operating systems</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-for-installation/prerequisites-and-dependencies-eg-wsl-on-windows-podman-engine.html">Prerequisites and dependencies (e.g., WSL on Windows, Podman engine)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-for-installation/understanding-podman-machine-concept.html">Understanding Podman machine concept</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/installing-podman-desktop-on-macos.html">Installing Podman Desktop on macOS</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/download-and-installation-process-via-installer.html">Download and installation process via installer</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/initial-setup-and-podman-machine-creation.html">Initial setup and Podman machine creation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/verifying-installation-and-basic-functionality.html">Verifying installation and basic functionality</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/installing-podman-desktop-on-macos.html">Installing Podman Desktop on macOS</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/download-and-installation-process-via-installer.html">Download and installation process via installer</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/initial-setup-and-podman-machine-creation.html">Initial setup and Podman machine creation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/verifying-installation-and-basic-functionality.html">Verifying installation and basic functionality</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/installing-podman-desktop-on-windows.html">Installing Podman Desktop on Windows</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/download-and-installation-process-via-installer.html">Download and installation process via installer</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/wsl-2-integration-and-configuration.html">WSL 2 integration and configuration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/initial-setup-and-podman-machine-creation.html">Initial setup and Podman machine creation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/verifying-installation-and-basic-functionality.html">Verifying installation and basic functionality</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/installing-podman-desktop-on-windows.html">Installing Podman Desktop on Windows</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/download-and-installation-process-via-installer.html">Download and installation process via installer</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/wsl-2-integration-and-configuration.html">WSL 2 integration and configuration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/initial-setup-and-podman-machine-creation.html">Initial setup and Podman machine creation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/verifying-installation-and-basic-functionality.html">Verifying installation and basic functionality</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/installing-podman-desktop-on-red-hat-enterprise-linux.html">Installing Podman Desktop on Red Hat Enterprise Linux</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/installation-steps-using-package-managers-eg-dnf.html">Installation steps using package managers (e.g., <code>dnf</code>)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/initial-setup-and-podman-machine-creation.html">Initial setup and Podman machine creation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/verifying-installation-and-basic-functionality.html">Verifying installation and basic functionality</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/installing-podman-desktop-on-red-hat-enterprise-linux.html">Installing Podman Desktop on Red Hat Enterprise Linux</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/installation-steps-using-package-managers-eg-dnf.html">Installation steps using package managers (e.g., <code>dnf</code>)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/initial-setup-and-podman-machine-creation.html">Initial setup and Podman machine creation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/verifying-installation-and-basic-functionality.html">Verifying installation and basic functionality</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/deploying-podman-desktop-in-air-gapped-environments.html">Deploying Podman Desktop in Air-Gapped Environments</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/challenges-and-considerations-for-air-gapped-deployments.html">Challenges and considerations for air-gapped deployments</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/gathering-necessary-installation-artifacts.html">Gathering necessary installation artifacts</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/step-by-step-offline-installation-procedure.html">Step-by-step offline installation procedure</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/post-installation-configuration-for-restricted-environments.html">Post-installation configuration for restricted environments</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/deploying-podman-desktop-in-air-gapped-environments.html">Deploying Podman Desktop in Air-Gapped Environments</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/challenges-and-considerations-for-air-gapped-deployments.html">Challenges and considerations for air-gapped deployments</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/gathering-necessary-installation-artifacts.html">Gathering necessary installation artifacts</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/step-by-step-offline-installation-procedure.html">Step-by-step offline installation procedure</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/post-installation-configuration-for-restricted-environments.html">Post-installation configuration for restricted environments</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="configuring-and-customizing-podman-desktop.html">Configuring and Customizing Podman Desktop</a>
+<ul class="nav-list">
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="managing-container-engine-settings-memory-cpu-disk.html">Managing container engine settings (memory, CPU, disk)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="configuring-registries-and-image-pull-secrets.html">Configuring registries and image pull secrets</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="setting-up-network-proxies.html">Setting up network proxies</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="integrating-with-kubernetes-and-openshift-clusters.html">Integrating with Kubernetes and OpenShift clusters</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="exploring-and-managing-extensions.html">Exploring and managing extensions</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="configuring-and-customizing-podman-desktop.html">Configuring and Customizing Podman Desktop</a>
+<ul class="nav-list">
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="managing-container-engine-settings-memory-cpu-disk.html">Managing container engine settings (memory, CPU, disk)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="configuring-registries-and-image-pull-secrets.html">Configuring registries and image pull secrets</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="setting-up-network-proxies.html">Setting up network proxies</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="integrating-with-kubernetes-and-openshift-clusters.html">Integrating with Kubernetes and OpenShift clusters</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="exploring-and-managing-extensions.html">Exploring and managing extensions</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/troubleshooting-podman-desktop-issues.html">Troubleshooting Podman Desktop Issues</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/common-installation-and-startup-problems.html">Common installation and startup problems</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/diagnosing-podman-machine-failures.html">Diagnosing Podman machine failures</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/resolving-image-pull-and-container-run-errors.html">Resolving image pull and container run errors</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/utilizing-logs-for-problem-identification.html">Utilizing logs for problem identification</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/best-practices-for-issue-prevention.html">Best practices for issue prevention</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/troubleshooting-podman-desktop-issues.html">Troubleshooting Podman Desktop Issues</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/common-installation-and-startup-problems.html">Common installation and startup problems</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/diagnosing-podman-machine-failures.html">Diagnosing Podman machine failures</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/resolving-image-pull-and-container-run-errors.html">Resolving image pull and container run errors</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/utilizing-logs-for-problem-identification.html">Utilizing logs for problem identification</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/best-practices-for-issue-prevention.html">Best practices for issue prevention</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../hands-on-exercises/hands-on-exercises.html">Hands-On Exercises</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-installing-podman-desktop-on-your-preferred-os.html">Lab: Installing Podman Desktop on your preferred OS</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-managing-podman-machines-and-container-engines.html">Lab: Managing Podman machines and container engines</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-deploying-and-interacting-with-a-container.html">Lab: Deploying and interacting with a container</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-configuring-a-private-registry-connection.html">Lab: Configuring a private registry connection</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-troubleshooting-a-simulated-podman-desktop-issue.html">Lab: Troubleshooting a simulated Podman Desktop issue</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../hands-on-exercises/hands-on-exercises.html">Hands-On Exercises</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-installing-podman-desktop-on-your-preferred-os.html">Lab: Installing Podman Desktop on your preferred OS</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-managing-podman-machines-and-container-engines.html">Lab: Managing Podman machines and container engines</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-deploying-and-interacting-with-a-container.html">Lab: Deploying and interacting with a container</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-configuring-a-private-registry-connection.html">Lab: Configuring a private registry connection</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-troubleshooting-a-simulated-podman-desktop-issue.html">Lab: Troubleshooting a simulated Podman Desktop issue</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../appendix/appendix.html">Appendix</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">Red Hat Build of Podman Desktop: Installation, Configuration, and Troubleshooting</span>
+    <span class="version">1.0.0</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <a class="title" href="../index.html">Red Hat Build of Podman Desktop: Installation, Configuration, and Troubleshooting</a>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">1.0.0</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">Red Hat Build of Podman Desktop: Installation, Configuration, and Troubleshooting</a></li>
+    <li><a href="configuring-and-customizing-podman-desktop.html">Configuring and Customizing Podman Desktop</a></li>
+    <li><a href="managing-container-engine-settings-memory-cpu-disk.html">Managing container engine settings (memory, CPU, disk)</a></li>
+  </ul>
+</nav>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Managing container engine settings (memory, CPU, disk)</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>:managing-container-engine-settings.adoc
+= Managing Container Engine Settings (Memory, CPU, Disk)</p>
+</div>
+<!-- toc disabled -->
+</div>
+</div>
+<div class="sect1">
+<h2 id="introduction"><a class="anchor" href="#introduction"></a>Introduction to Container Engine Resource Management</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Optimizing the performance of your containerized applications starts with efficiently managing the resources allocated to your container engine. Red Hat Build of Podman Desktop utilizes a lightweight virtual machine (VM), known as a Podman machine, to run the Podman engine and host your containers, especially on macOS and Windows. This VM consumes a portion of your host system&#8217;s resources, including memory, CPU, and disk space.</p>
+</div>
+<div class="paragraph">
+<p>Properly configuring these settings is crucial for:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Application Performance:</strong> Ensuring your containers have sufficient resources to run smoothly without bottlenecks.</p>
+</li>
+<li>
+<p><strong>Host System Stability:</strong> Preventing the Podman machine from consuming too many resources and impacting your host system&#8217;s responsiveness.</p>
+</li>
+<li>
+<p><strong>Resource Efficiency:</strong> Allocating just enough resources to meet your needs, avoiding unnecessary waste.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>This section will guide you through understanding and configuring these vital resource settings within Podman Desktop.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="memory-settings"><a class="anchor" href="#memory-settings"></a>Configuring Memory Settings</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The memory setting determines the amount of RAM allocated to the Podman machine. This RAM is then shared among all containers running within that machine.</p>
+</div>
+<div class="sect2">
+<h3 id="_technical_explanation"><a class="anchor" href="#_technical_explanation"></a>Technical Explanation</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Purpose:</strong> Provides working memory for the Podman engine, container images, running containers, and their processes.</p>
+</li>
+<li>
+<p><strong>Impact:</strong></p>
+</li>
+<li>
+<p><strong>Too little memory:</strong> Can lead to <code>Out of Memory</code> (OOM) errors in containers, slow application performance, container crashes, or even Podman machine instability.</p>
+</li>
+<li>
+<p><strong>Too much memory:</strong> Can starve your host operating system of RAM, making your entire system slow and unresponsive.</p>
+</li>
+<li>
+<p><strong>Best Practices:</strong></p>
+</li>
+<li>
+<p>Start with a reasonable default (often 2-4 GB for development).</p>
+</li>
+<li>
+<p>Monitor memory usage of your containers and the Podman machine.</p>
+</li>
+<li>
+<p>Increase memory if you frequently run many containers or memory-intensive applications (e.g., databases, Java applications).</p>
+</li>
+<li>
+<p>Decrease memory if your host system is struggling and your containers don&#8217;t require significant RAM.</p>
+</li>
+<li>
+<p><strong>How it works:</strong> When you change the memory setting, you are essentially resizing the RAM available to the Linux VM that the Podman machine uses. Any containers running inside this VM will draw from this allocated pool.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="cpu-settings"><a class="anchor" href="#cpu-settings"></a>Configuring CPU Settings</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The CPU setting specifies the number of virtual CPU cores allocated to the Podman machine. These cores are then available for the Podman engine and your containers to execute tasks.</p>
+</div>
+<div class="sect2">
+<h3 id="_technical_explanation_2"><a class="anchor" href="#_technical_explanation_2"></a>Technical Explanation</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Purpose:</strong> Dictates the processing power available for your containerized workloads.</p>
+</li>
+<li>
+<p><strong>Impact:</strong></p>
+</li>
+<li>
+<p><strong>Too few CPUs:</strong> Can cause CPU-bound applications to run slowly, leading to poor performance and responsiveness.</p>
+</li>
+<li>
+<p><strong>Too many CPUs:</strong> While generally less harmful than over-allocating memory, it can still lead to unnecessary resource contention with your host system&#8217;s processes, especially if your host has limited physical cores.</p>
+</li>
+<li>
+<p><strong>Best Practices:</strong></p>
+</li>
+<li>
+<p>Allocate enough cores to handle parallel tasks within your containers. For typical development, 2-4 cores are often sufficient.</p>
+</li>
+<li>
+<p>If you&#8217;re running highly parallelized applications or many containers concurrently, you might need more.</p>
+</li>
+<li>
+<p>Keep in mind that these are <strong>virtual</strong> cores. Over-allocating more virtual cores than your physical host has can sometimes lead to performance degradation due to scheduling overhead.</p>
+</li>
+<li>
+<p><strong>How it works:</strong> The Podman machine schedules its processes to run on the allocated virtual CPU cores. The host OS&#8217;s hypervisor manages how these virtual cores are mapped and scheduled onto your physical CPU cores.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="disk-settings"><a class="anchor" href="#disk-settings"></a>Configuring Disk Settings</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The disk setting determines the maximum amount of storage space allocated to the Podman machine for storing container images, container layers, writable container data, and volumes.</p>
+</div>
+<div class="sect2">
+<h3 id="_technical_explanation_3"><a class="anchor" href="#_technical_explanation_3"></a>Technical Explanation</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Purpose:</strong> Provides persistent storage for the Podman machine&#8217;s operating system, container images (layers), writable layers of running containers, and any persistent volumes mounted within the VM.</p>
+</li>
+<li>
+<p><strong>Impact:</strong></p>
+</li>
+<li>
+<p><strong>Too little disk space:</strong> Can prevent new images from being pulled, containers from starting, or data from being written, leading to <code>No space left on device</code> errors.</p>
+</li>
+<li>
+<p><strong>Too much disk space:</strong> While less critical for performance, allocating an excessively large disk can consume unnecessary physical disk space on your host, especially if you have limited storage.</p>
+</li>
+<li>
+<p><strong>Best Practices:</strong></p>
+</li>
+<li>
+<p>Start with a reasonable default (e.g., 10-50 GB).</p>
+</li>
+<li>
+<p>If you frequently pull many large images, build complex images, or have applications that generate significant data, you may need to increase this.</p>
+</li>
+<li>
+<p>Regularly prune unused images and containers to free up space (<code>podman system prune</code>).</p>
+</li>
+<li>
+<p><strong>How it works:</strong> The Podman machine typically uses a virtual disk image file on your host system. This setting controls the <strong>maximum</strong> size this virtual disk file can grow to. It often uses sparse allocation, meaning it only consumes physical space as data is actually written, up to the maximum limit.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="hands-on-lab-engine-settings"><a class="anchor" href="#hands-on-lab-engine-settings"></a>Lab: Managing Podman Machine Engine Settings</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In this hands-on lab, you will learn how to adjust the memory, CPU, and disk settings for your Podman machine using Red Hat Build of Podman Desktop.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Goal:</strong> To modify the resource allocation of your Podman machine.</p>
+</li>
+<li>
+<p><strong>Prerequisites:</strong></p>
+</li>
+<li>
+<p>Red Hat Build of Podman Desktop installed and running.</p>
+</li>
+<li>
+<p>A Podman machine created and running (if not, Podman Desktop will prompt you to create one).</p>
+</li>
+</ul>
+</div>
+<div class="sect2">
+<h3 id="_activity_1_accessing_engine_settings"><a class="anchor" href="#_activity_1_accessing_engine_settings"></a>Activity 1: Accessing Engine Settings</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Open Red Hat Build of Podman Desktop.</p>
+</li>
+<li>
+<p>In the left-hand navigation pane, click on the <strong>gear icon</strong> (Settings).</p>
+</li>
+<li>
+<p>In the Settings view, select <strong>Resources</strong>. This section displays the current settings for your Podman machine.</p>
+</li>
+</ol>
+</div>
+<div id="img-settings-resources" class="imageblock unresolved">
+<div class="content">
+<a class="image" href="https://example.com/images/podman-desktop-settings-resources.png"><img src="images/podman-desktop-settings-resources.png" alt="Podman Desktop Settings - Resources" width="800"></a>
+</div>
+<div class="title">Figure 1. Podman Desktop Settings - Resources</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_activity_2_adjusting_memory_cpu_and_disk"><a class="anchor" href="#_activity_2_adjusting_memory_cpu_and_disk"></a>Activity 2: Adjusting Memory, CPU, and Disk</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>In the <strong>Resources</strong> section, locate the settings for <strong>Memory</strong>, <strong>CPUs</strong>, and <strong>Disk Size</strong>.</p>
+</li>
+<li>
+<p><strong>Adjust Memory:</strong></p>
+<div class="ulist">
+<ul>
+<li>
+<p>Click on the numerical value next to <strong>Memory</strong> (e.g., <code>4 GB</code>).</p>
+</li>
+<li>
+<p>Use the slider or type a new value into the input field to change the allocated RAM. For this exercise, increase it slightly, for example, from <code>4 GB</code> to <code>6 GB</code>.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Adjust CPUs:</strong></p>
+<div class="ulist">
+<ul>
+<li>
+<p>Click on the numerical value next to <strong>CPUs</strong> (e.g., <code>2</code>).</p>
+</li>
+<li>
+<p>Use the slider or type a new value to change the number of virtual CPU cores. For this exercise, increase it to <code>4</code>.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Adjust Disk Size:</strong></p>
+<div class="ulist">
+<ul>
+<li>
+<p>Click on the numerical value next to <strong>Disk Size</strong> (e.g., <code>100 GB</code>).</p>
+</li>
+<li>
+<p>Use the slider or type a new value to change the maximum disk allocation. For this exercise, increase it to <code>150 GB</code>.</p>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+<div id="img-settings-changes" class="imageblock unresolved">
+<div class="content">
+<a class="image" href="https://example.com/images/podman-desktop-settings-changes.png"><img src="images/podman-desktop-settings-changes.png" alt="Podman Desktop Settings with pending changes" width="800"></a>
+</div>
+<div class="title">Figure 2. Podman Desktop Settings with pending changes</div>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Observe the changes. Podman Desktop will indicate that changes are pending and require a restart of the Podman machine. A yellow banner typically appears at the top.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_activity_3_applying_changes_and_verification"><a class="anchor" href="#_activity_3_applying_changes_and_verification"></a>Activity 3: Applying Changes and Verification</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>To apply the new settings, you must restart the Podman machine. Click the blue <strong>Apply changes and restart</strong> button, usually found in the yellow banner or at the bottom of the <strong>Resources</strong> section.</p>
+</li>
+<li>
+<p>Confirm the restart when prompted. Podman Desktop will stop the current Podman machine, apply the new configuration, and then start it again. This process may take a few moments.</p>
+</li>
+<li>
+<p>Once the Podman machine has restarted, the new settings will be active.</p>
+</li>
+<li>
+<p>You can verify the changes by:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Checking the <strong>Resources</strong> section in Podman Desktop settings; the displayed values should now reflect your changes.</p>
+</li>
+<li>
+<p>Using the Podman CLI:</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Open your terminal or command prompt.</p>
+</li>
+<li>
+<p>Run the command <code>podman machine inspect podman-machine-default</code> (or the name of your Podman machine if it&#8217;s different).</p>
+</li>
+<li>
+<p>Examine the output for fields like <code>Memory</code> (in bytes), <code>CPUs</code>, and <code>DiskSize</code> (in bytes) to confirm the new allocations.</p>
+</li>
+</ol>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">podman machine inspect podman-machine-default | grep -E "Memory|CPUs|DiskSize"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This command will filter the output to show relevant lines for memory, CPU, and disk size, allowing you to quickly confirm your adjustments.</p>
+</div>
+<div class="paragraph">
+<p>Congratulations! You have successfully configured and applied new resource settings for your Podman machine, optimizing its performance for your containerized workloads. Remember to adjust these settings based on the specific demands of your development environment and applications.#  Managing container engine settings (memory, CPU, disk)</p>
+</div>
+</div>
+</div>
+</div>
+<h1 id="_managing_container_engine_settings_memory_cpu_disk" class="sect0"><a class="anchor" href="#_managing_container_engine_settings_memory_cpu_disk"></a>Managing Container Engine Settings (Memory, CPU, Disk)</h1>
+<div class="paragraph">
+<p>Managing the resources allocated to your container engine is crucial for optimizing performance, preventing resource contention, and ensuring the smooth operation of your containerized applications. Red Hat Build of Podman Desktop provides intuitive controls to configure these settings, particularly for the underlying Podman machine that hosts your containers on systems like Windows and macOS.</p>
+</div>
+<div class="sect1">
+<h2 id="_detailed_technical_explanation"><a class="anchor" href="#_detailed_technical_explanation"></a>Detailed Technical Explanation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>When you run containers, they consume resources from the host system, or more commonly, from a dedicated virtual machine (VM) like the Podman machine. Properly configuring these resources—memory, CPU, and disk space—is vital for several reasons:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Performance:</strong> Under-provisioning resources can lead to slow container startup, application lag, and crashes. Over-provisioning can starve your host system of resources it needs for other tasks.</p>
+</li>
+<li>
+<p><strong>Stability:</strong> Insufficient memory can cause containers to be killed by the operating system&#8217;s out-of-memory (OOM) killer. Insufficient disk space can prevent new images from being pulled or volumes from expanding.</p>
+</li>
+<li>
+<p><strong>Efficiency:</strong> Optimizing resource allocation ensures that your containers have what they need without wasting valuable system resources.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Podman Desktop centralizes the management of these settings, primarily for the <strong>Podman machine</strong>. The Podman machine is a lightweight Linux virtual machine that runs the Podman engine on macOS and Windows. On Linux, Podman runs directly on the host, and resource management for containers is typically done via <code>podman run</code> options or Cgroup configurations, though Podman Desktop can still show overall engine status.</p>
+</div>
+<div class="sect2">
+<h3 id="_memory_management"><a class="anchor" href="#_memory_management"></a>Memory Management</h3>
+<div class="paragraph">
+<p>Memory (RAM) is a critical resource for containers. Applications running inside containers need memory for their code, data, and runtime environment.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Impact:</strong></p>
+</li>
+<li>
+<p>Insufficient memory can lead to applications crashing, slow performance, or the kernel terminating processes (OOM killer).</p>
+</li>
+<li>
+<p>Excessive memory allocation to the Podman machine can reduce the memory available to your host operating system and other applications, making your computer sluggish.</p>
+</li>
+<li>
+<p><strong>Configuration:</strong> Podman Desktop allows you to specify the amount of RAM allocated to the Podman machine. This directly impacts the total memory available to all containers running within that machine. It&#8217;s recommended to allocate enough memory for your typical workload, leaving some headroom for your host OS.</p>
+</li>
+<li>
+<p><strong>Best Practices:</strong> Start with a reasonable default (e.g., 2GB-4GB for development) and monitor your container&#8217;s memory usage. Adjust upwards if you encounter OOM errors or performance bottlenecks.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_cpu_management"><a class="anchor" href="#_cpu_management"></a>CPU Management</h3>
+<div class="paragraph">
+<p>The Central Processing Unit (CPU) provides the processing power for your containers. Each container requires CPU cycles to execute its processes.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Impact:</strong></p>
+</li>
+<li>
+<p>Too few CPU cores allocated to the Podman machine can lead to slow execution of CPU-intensive containerized applications.</p>
+</li>
+<li>
+<p>Allocating too many CPU cores can be wasteful if your containers don&#8217;t fully utilize them, potentially impacting other host processes.</p>
+</li>
+<li>
+<p><strong>Configuration:</strong> Podman Desktop allows you to specify the number of virtual CPUs (vCPUs) allocated to the Podman machine. This determines how many parallel processing threads the containers within the machine can utilize.</p>
+</li>
+<li>
+<p><strong>Best Practices:</strong> A good starting point is 2-4 vCPUs. For development environments, this is often sufficient. If you are running multiple CPU-intensive containers, consider increasing this number. Remember that these are <strong>virtual</strong> CPUs; their performance also depends on the physical cores available on your host.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_disk_space_management"><a class="anchor" href="#_disk_space_management"></a>Disk Space Management</h3>
+<div class="paragraph">
+<p>Disk space is used for storing container images, container writable layers, volumes mounted by containers, and the operating system of the Podman machine itself.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Impact:</strong></p>
+</li>
+<li>
+<p>Running out of disk space can prevent new images from being pulled, containers from starting, or applications from writing data to volumes.</p>
+</li>
+<li>
+<p>Excessive disk allocation to the Podman machine might consume storage that could be used by your host OS or other applications.</p>
+</li>
+<li>
+<p><strong>Configuration:</strong></p>
+</li>
+<li>
+<p>Podman Desktop typically allows you to configure the <strong>initial</strong> virtual disk size for a new Podman machine. For existing machines, increasing disk size is generally a more involved operation, often requiring command-line tools.</p>
+</li>
+<li>
+<p>More commonly, within Podman Desktop, you manage <strong>used</strong> disk space by pruning old images, stopped containers, and unused volumes.</p>
+</li>
+<li>
+<p><strong>Best Practices:</strong></p>
+</li>
+<li>
+<p>Ensure your Podman machine has sufficient disk space for the images you pull and the data your containers generate.</p>
+</li>
+<li>
+<p>Regularly clean up unused resources (dangling images, stopped containers) to free up space. Podman Desktop provides tools for this.</p>
+</li>
+<li>
+<p>For persistent data, always use named volumes, as they are easier to manage and backup than data within container layers.</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+On Linux systems, Podman runs natively. Resource allocation for individual containers (memory, CPU limits) is typically configured when running containers using <code>podman run</code> options (e.g., <code>--memory</code>, <code>--cpus</code>). Podman Desktop on Linux primarily provides an interface for managing containers and images, rather than the engine&#8217;s core resource allocation as it does for the Podman machine on Windows/macOS.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_hands_on_activities"><a class="anchor" href="#_hands_on_activities"></a>Hands-on Activities</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>These activities will guide you through configuring the Podman machine&#8217;s resources using Podman Desktop.</p>
+</div>
+<div class="sect2">
+<h3 id="_lab_accessing_and_modifying_podman_machine_resources"><a class="anchor" href="#_lab_accessing_and_modifying_podman_machine_resources"></a>Lab: Accessing and Modifying Podman Machine Resources</h3>
+<div class="paragraph">
+<p>In this lab, you will navigate to the Podman Desktop settings to view and adjust the CPU and memory allocated to your Podman machine.</p>
+</div>
+<div class="ulist">
+<div class="title">Prerequisites:</div>
+<ul>
+<li>
+<p>Red Hat Build of Podman Desktop installed and running.</p>
+</li>
+<li>
+<p>A Podman machine initialized and running (this happens automatically during first run on Windows/macOS).</p>
+</li>
+</ul>
+</div>
+<div class="olist arabic">
+<div class="title">Step 1: Open Podman Desktop Settings</div>
+<ol class="arabic">
+<li>
+<p>Launch Red Hat Build of Podman Desktop.</p>
+</li>
+<li>
+<p>In the left-hand navigation bar, click on the <strong>gear icon</strong> (Settings) at the bottom.</p>
+</li>
+</ol>
+</div>
+<div class="olist arabic">
+<div class="title">Step 2: Navigate to Podman Machine Settings</div>
+<ol class="arabic">
+<li>
+<p>In the Settings view, select <strong>Resources</strong> from the left-hand menu.</p>
+</li>
+<li>
+<p>You will see a section for <strong>Podman Machine</strong> (on macOS/Windows) or <strong>Container Engine</strong> (on Linux, showing host resource limits).</p>
+</li>
+</ol>
+</div>
+<div class="olist arabic">
+<div class="title">Step 3: Adjust CPU and Memory</div>
+<ol class="arabic">
+<li>
+<p>Locate the <strong>Memory</strong> and <strong>CPUs</strong> sliders or input fields.</p>
+</li>
+<li>
+<p>For this exercise, try reducing the <strong>Memory</strong> slightly (e.g., from 4GB to 2GB) and <strong>CPUs</strong> (e.g., from 4 to 2).</p>
+<div class="admonitionblock caution">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-caution" title="Caution"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Do not set these values too low, especially if you are running other applications on your host. Setting memory below 2GB or CPUs below 2 might cause performance issues for Podman Desktop or your containers.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</li>
+<li>
+<p>Click the <strong>Apply</strong> button to save the changes.</p>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>For changes to memory and CPU on a Podman machine to take effect, the machine must be restarted. Podman Desktop will typically prompt you to restart the machine, or you can do it manually from the <strong>Dashboard</strong> or <strong>Resources</strong> section.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</li>
+<li>
+<p>If prompted, confirm the restart of the Podman machine. Wait for the machine to restart and show a "Running" status.</p>
+</li>
+</ol>
+</div>
+<div class="olist arabic">
+<div class="title">Step 4: Verify the New Settings</div>
+<ol class="arabic">
+<li>
+<p>Once the Podman machine is running again, open a terminal on your host machine (e.g., PowerShell on Windows, Terminal on macOS/Linux).</p>
+</li>
+<li>
+<p>Run the following command to inspect the Podman machine&#8217;s configuration:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">podman machine inspect podman-machine-default --format "{{.Host.CPUs}} CPUs, {{.Host.Memory}} MB Memory"</code></pre>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>The default Podman machine is usually named <code>podman-machine-default</code>. If you have multiple machines, replace this with the correct machine name.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</li>
+<li>
+<p>The output should reflect the CPU and memory values you set in Podman Desktop.</p>
+<div class="paragraph">
+<p>Example output:</p>
+</div>
+</li>
+</ol>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>2 CPUs, 2048 MB Memory</pre>
+</div>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Feel free to go back to the Podman Desktop settings and revert the CPU and memory settings to their original or preferred values. Remember to apply and restart the Podman machine.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_lab_managing_disk_space_and_cleaning_up_resources"><a class="anchor" href="#_lab_managing_disk_space_and_cleaning_up_resources"></a>Lab: Managing Disk Space and Cleaning Up Resources</h3>
+<div class="paragraph">
+<p>This lab focuses on maintaining disk space efficiency by removing unused container images and stopped containers.</p>
+</div>
+<div class="ulist">
+<div class="title">Prerequisites:</div>
+<ul>
+<li>
+<p>Red Hat Build of Podman Desktop installed and running.</p>
+</li>
+<li>
+<p>A Podman machine initialized and running.</p>
+</li>
+<li>
+<p>You should have some images pulled and potentially some stopped containers. If not, pull a small image like <code>docker.io/library/hello-world</code> and run it once to create a stopped container.</p>
+</li>
+</ul>
+</div>
+<div class="olist arabic">
+<div class="title">Step 1: Check Current Disk Usage</div>
+<ol class="arabic">
+<li>
+<p>In Podman Desktop, navigate to the <strong>Resources</strong> section (Settings &#8594; Resources).</p>
+</li>
+<li>
+<p>Look for the <strong>Disk usage</strong> metric. This provides an overview of how much disk space is being consumed by your Podman machine or container engine.</p>
+</li>
+<li>
+<p>Alternatively, you can go to the <strong>Images</strong> or <strong>Containers</strong> section to see individual resource consumption.</p>
+</li>
+</ol>
+</div>
+<div class="olist arabic">
+<div class="title">Step 2: Pull a Sample Image (if you don&#8217;t have many)</div>
+<ol class="arabic">
+<li>
+<p>In Podman Desktop, navigate to the <strong>Images</strong> section.</p>
+</li>
+<li>
+<p>Click <strong>Pull an image</strong>.</p>
+</li>
+<li>
+<p>Enter <code>docker.io/library/ubuntu</code> and click <strong>Pull image</strong>.</p>
+</li>
+<li>
+<p>Wait for the image to download.</p>
+</li>
+</ol>
+</div>
+<div class="olist arabic">
+<div class="title">Step 3: Run and Stop a Container</div>
+<ol class="arabic">
+<li>
+<p>Navigate to the <strong>Images</strong> section and locate the <code>ubuntu</code> image you just pulled.</p>
+</li>
+<li>
+<p>Hover over it and click the <strong>Play</strong> icon to run a new container from this image. Accept the default settings and click <strong>Start Container</strong>.</p>
+</li>
+<li>
+<p>Wait for the container to start. Then, navigate to the <strong>Containers</strong> section.</p>
+</li>
+<li>
+<p>Locate your newly created <code>ubuntu</code> container. Click the <strong>Stop</strong> button (square icon) to stop it. This container will now be in a 'Stopped' state but still consume disk space.</p>
+</li>
+</ol>
+</div>
+<div class="olist arabic">
+<div class="title">Step 4: Clean Up Unused Resources</div>
+<ol class="arabic">
+<li>
+<p>In Podman Desktop, navigate to the <strong>Dashboard</strong> or <strong>Settings</strong> section.</p>
+</li>
+<li>
+<p>On the <strong>Dashboard</strong>, you might see a "System Cleanup" card or similar.</p>
+</li>
+<li>
+<p>Alternatively, in <strong>Settings</strong>, go to <strong>Resources</strong>. You should see options like "Remove all unused images" or "Remove all stopped containers".</p>
+</li>
+<li>
+<p>Let&#8217;s clean up:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Click on <strong>Remove all stopped containers</strong>. Confirm the action if prompted.</p>
+</li>
+<li>
+<p>Click on <strong>Remove all unused images</strong>. Confirm the action if prompted.</p>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>"Unused images" typically refers to images that are not tagged and not currently used by a running container. Images used by stopped containers are generally <strong>not</strong> considered unused until the container itself is removed.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+<div class="olist arabic">
+<div class="title">Step 5: Verify Disk Space Recovery</div>
+<ol class="arabic">
+<li>
+<p>Go back to the <strong>Resources</strong> section and observe the <strong>Disk usage</strong>. You should see a reduction in the consumed disk space after cleaning up.</p>
+</li>
+<li>
+<p>You can also check the <strong>Images</strong> and <strong>Containers</strong> sections to confirm that the stopped container and any truly unused images have been removed.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>By regularly managing these settings and performing cleanup, you can ensure your Podman Desktop environment remains efficient and responsive.</p>
+</div>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="configuring-and-customizing-podman-desktop.html">Configuring and Customizing Podman Desktop</a></span>
+  <span class="next"><a href="configuring-registries-and-image-pull-secrets.html">Configuring registries and image pull secrets</a></span>
+</nav>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <img src="../../../_/img/rhl-logo-red.png" height="40px" alt="Red Hat"  href="https://redhat.com" >
+</footer><script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Integrating with Kubernetes and OpenShift clusters :: Red Hat Build of Podman Desktop: Installation, Configuration, and Troubleshooting</title>
+    <link rel="prev" href="setting-up-network-proxies.html">
+    <link rel="next" href="exploring-and-managing-extensions.html">
+    <meta name="generator" content="Antora 3.1.3">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+    <script>var uiRootPath = '../../../_'</script>
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://www.redhat.com" target="_blank"><img src="../../../_/img/redhat-logo.png" height="40px" alt="Red Hat"></a>
+      <a class="navbar-item" style="font-size: 24px; color: white" href="../../..">Red Hat Build of Podman Desktop: Installation, Configuration, and Troubleshooting</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="https://github.com/RedHatQuickCourses/REPLACEREPONAME/issues" target="_blank">Report Issues</a>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="podmandesktop" data-version="1.0.0">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html">Red Hat Build of Podman Desktop: Installation, Configuration, and Troubleshooting</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../index.html">Home</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../LABENV/index.html">Lab Environment</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../introduction-to-podman-desktop/introduction-to-podman-desktop.html">Introduction to Podman Desktop</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-podman-desktop/overview-of-podman-desktops-purpose-and-capabilities.html">Overview of Podman Desktop&#8217;s purpose and capabilities</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-podman-desktop/key-features-for-container-management.html">Key features for container management</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-podman-desktop/benefits-of-using-red-hat-build-of-podman-desktop.html">Benefits of using Red Hat Build of Podman Desktop</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../introduction-to-podman-desktop/introduction-to-podman-desktop.html">Introduction to Podman Desktop</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-podman-desktop/overview-of-podman-desktops-purpose-and-capabilities.html">Overview of Podman Desktop&#8217;s purpose and capabilities</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-podman-desktop/key-features-for-container-management.html">Key features for container management</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-podman-desktop/benefits-of-using-red-hat-build-of-podman-desktop.html">Benefits of using Red Hat Build of Podman Desktop</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../preparing-for-installation/preparing-for-installation.html">Preparing for Installation</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-for-installation/system-requirements-for-various-operating-systems.html">System requirements for various operating systems</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-for-installation/prerequisites-and-dependencies-eg-wsl-on-windows-podman-engine.html">Prerequisites and dependencies (e.g., WSL on Windows, Podman engine)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-for-installation/understanding-podman-machine-concept.html">Understanding Podman machine concept</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../preparing-for-installation/preparing-for-installation.html">Preparing for Installation</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-for-installation/system-requirements-for-various-operating-systems.html">System requirements for various operating systems</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-for-installation/prerequisites-and-dependencies-eg-wsl-on-windows-podman-engine.html">Prerequisites and dependencies (e.g., WSL on Windows, Podman engine)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-for-installation/understanding-podman-machine-concept.html">Understanding Podman machine concept</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/installing-podman-desktop-on-macos.html">Installing Podman Desktop on macOS</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/download-and-installation-process-via-installer.html">Download and installation process via installer</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/initial-setup-and-podman-machine-creation.html">Initial setup and Podman machine creation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/verifying-installation-and-basic-functionality.html">Verifying installation and basic functionality</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/installing-podman-desktop-on-macos.html">Installing Podman Desktop on macOS</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/download-and-installation-process-via-installer.html">Download and installation process via installer</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/initial-setup-and-podman-machine-creation.html">Initial setup and Podman machine creation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/verifying-installation-and-basic-functionality.html">Verifying installation and basic functionality</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/installing-podman-desktop-on-windows.html">Installing Podman Desktop on Windows</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/download-and-installation-process-via-installer.html">Download and installation process via installer</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/wsl-2-integration-and-configuration.html">WSL 2 integration and configuration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/initial-setup-and-podman-machine-creation.html">Initial setup and Podman machine creation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/verifying-installation-and-basic-functionality.html">Verifying installation and basic functionality</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/installing-podman-desktop-on-windows.html">Installing Podman Desktop on Windows</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/download-and-installation-process-via-installer.html">Download and installation process via installer</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/wsl-2-integration-and-configuration.html">WSL 2 integration and configuration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/initial-setup-and-podman-machine-creation.html">Initial setup and Podman machine creation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/verifying-installation-and-basic-functionality.html">Verifying installation and basic functionality</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/installing-podman-desktop-on-red-hat-enterprise-linux.html">Installing Podman Desktop on Red Hat Enterprise Linux</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/installation-steps-using-package-managers-eg-dnf.html">Installation steps using package managers (e.g., <code>dnf</code>)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/initial-setup-and-podman-machine-creation.html">Initial setup and Podman machine creation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/verifying-installation-and-basic-functionality.html">Verifying installation and basic functionality</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/installing-podman-desktop-on-red-hat-enterprise-linux.html">Installing Podman Desktop on Red Hat Enterprise Linux</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/installation-steps-using-package-managers-eg-dnf.html">Installation steps using package managers (e.g., <code>dnf</code>)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/initial-setup-and-podman-machine-creation.html">Initial setup and Podman machine creation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/verifying-installation-and-basic-functionality.html">Verifying installation and basic functionality</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/deploying-podman-desktop-in-air-gapped-environments.html">Deploying Podman Desktop in Air-Gapped Environments</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/challenges-and-considerations-for-air-gapped-deployments.html">Challenges and considerations for air-gapped deployments</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/gathering-necessary-installation-artifacts.html">Gathering necessary installation artifacts</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/step-by-step-offline-installation-procedure.html">Step-by-step offline installation procedure</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/post-installation-configuration-for-restricted-environments.html">Post-installation configuration for restricted environments</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/deploying-podman-desktop-in-air-gapped-environments.html">Deploying Podman Desktop in Air-Gapped Environments</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/challenges-and-considerations-for-air-gapped-deployments.html">Challenges and considerations for air-gapped deployments</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/gathering-necessary-installation-artifacts.html">Gathering necessary installation artifacts</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/step-by-step-offline-installation-procedure.html">Step-by-step offline installation procedure</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/post-installation-configuration-for-restricted-environments.html">Post-installation configuration for restricted environments</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="configuring-and-customizing-podman-desktop.html">Configuring and Customizing Podman Desktop</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="managing-container-engine-settings-memory-cpu-disk.html">Managing container engine settings (memory, CPU, disk)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="configuring-registries-and-image-pull-secrets.html">Configuring registries and image pull secrets</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="setting-up-network-proxies.html">Setting up network proxies</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="integrating-with-kubernetes-and-openshift-clusters.html">Integrating with Kubernetes and OpenShift clusters</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="exploring-and-managing-extensions.html">Exploring and managing extensions</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="configuring-and-customizing-podman-desktop.html">Configuring and Customizing Podman Desktop</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="managing-container-engine-settings-memory-cpu-disk.html">Managing container engine settings (memory, CPU, disk)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="configuring-registries-and-image-pull-secrets.html">Configuring registries and image pull secrets</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="setting-up-network-proxies.html">Setting up network proxies</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="integrating-with-kubernetes-and-openshift-clusters.html">Integrating with Kubernetes and OpenShift clusters</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="exploring-and-managing-extensions.html">Exploring and managing extensions</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/troubleshooting-podman-desktop-issues.html">Troubleshooting Podman Desktop Issues</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/common-installation-and-startup-problems.html">Common installation and startup problems</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/diagnosing-podman-machine-failures.html">Diagnosing Podman machine failures</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/resolving-image-pull-and-container-run-errors.html">Resolving image pull and container run errors</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/utilizing-logs-for-problem-identification.html">Utilizing logs for problem identification</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/best-practices-for-issue-prevention.html">Best practices for issue prevention</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/troubleshooting-podman-desktop-issues.html">Troubleshooting Podman Desktop Issues</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/common-installation-and-startup-problems.html">Common installation and startup problems</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/diagnosing-podman-machine-failures.html">Diagnosing Podman machine failures</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/resolving-image-pull-and-container-run-errors.html">Resolving image pull and container run errors</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/utilizing-logs-for-problem-identification.html">Utilizing logs for problem identification</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/best-practices-for-issue-prevention.html">Best practices for issue prevention</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../hands-on-exercises/hands-on-exercises.html">Hands-On Exercises</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-installing-podman-desktop-on-your-preferred-os.html">Lab: Installing Podman Desktop on your preferred OS</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-managing-podman-machines-and-container-engines.html">Lab: Managing Podman machines and container engines</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-deploying-and-interacting-with-a-container.html">Lab: Deploying and interacting with a container</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-configuring-a-private-registry-connection.html">Lab: Configuring a private registry connection</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-troubleshooting-a-simulated-podman-desktop-issue.html">Lab: Troubleshooting a simulated Podman Desktop issue</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../hands-on-exercises/hands-on-exercises.html">Hands-On Exercises</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-installing-podman-desktop-on-your-preferred-os.html">Lab: Installing Podman Desktop on your preferred OS</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-managing-podman-machines-and-container-engines.html">Lab: Managing Podman machines and container engines</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-deploying-and-interacting-with-a-container.html">Lab: Deploying and interacting with a container</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-configuring-a-private-registry-connection.html">Lab: Configuring a private registry connection</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-troubleshooting-a-simulated-podman-desktop-issue.html">Lab: Troubleshooting a simulated Podman Desktop issue</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../appendix/appendix.html">Appendix</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">Red Hat Build of Podman Desktop: Installation, Configuration, and Troubleshooting</span>
+    <span class="version">1.0.0</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <a class="title" href="../index.html">Red Hat Build of Podman Desktop: Installation, Configuration, and Troubleshooting</a>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">1.0.0</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">Red Hat Build of Podman Desktop: Installation, Configuration, and Troubleshooting</a></li>
+    <li><a href="configuring-and-customizing-podman-desktop.html">Configuring and Customizing Podman Desktop</a></li>
+    <li><a href="integrating-with-kubernetes-and-openshift-clusters.html">Integrating with Kubernetes and OpenShift clusters</a></li>
+  </ul>
+</nav>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Integrating with Kubernetes and OpenShift clusters</h1>
+<div class="paragraph">
+<p>Here is the detailed educational content for "Integrating with Kubernetes and OpenShift clusters" in Antora AsciiDoc format, incorporating technical explanations and hands-on activities.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-asciidoc hljs" data-lang="asciidoc">= Integrating with Kubernetes and OpenShift Clusters
+
+This section details how to integrate Red Hat Build of Podman Desktop with existing Kubernetes and OpenShift clusters, providing a unified interface for managing both local containers and remote cluster workloads.
+
+== Understanding Kubernetes and OpenShift Integration
+
+Podman Desktop extends its capabilities beyond managing local Podman containers by offering robust integration with Kubernetes and OpenShift clusters. This integration allows developers and administrators to manage containerized applications consistently, whether they are running on a local Podman engine or deployed to a remote cluster.
+
+=== Why Integrate?
+
+Integrating Podman Desktop with Kubernetes and OpenShift provides several key benefits, streamlining your development and operational workflows:
+
+*   *Unified Management Interface:* Consolidate the management of your local development containers and your remote cluster deployments into a single, intuitive graphical user interface. This reduces the need to switch between various CLI tools or web consoles.
+*   *Streamlined Development Workflow:* Test applications locally using Podman's powerful engine, then seamlessly deploy the same container images to a Kubernetes or OpenShift cluster for further testing or production deployment, all from within Podman Desktop.
+*   *Enhanced Visibility and Monitoring:* Gain quick insights into the status of pods, deployments, services, routes, and other resources running on your connected clusters. Podman Desktop presents a clear overview, helping you understand your cluster's state at a glance.
+*   *Simplified Troubleshooting:* View real-time logs, execute commands within running containers (shell access), and inspect resource details across your environments without needing complex `kubectl` or `oc` commands. This significantly speeds up issue diagnosis.
+
+=== How Podman Desktop Connects to Clusters
+
+Podman Desktop leverages standard Kubernetes configuration files, known as `kubeconfig` files, to establish and manage connections with clusters. These files are essential for authentication and interaction with the Kubernetes API server of a specific cluster.
+
+*   *Kubeconfig Files:* A `kubeconfig` file (typically found at `~/.kube/config` on Linux/macOS or `%USERPROFILE%\.kube\config` on Windows) contains information about clusters, users, and contexts.
+    *   *Clusters:* Defines the API server endpoint and certificate authority data.
+    *   *Users:* Contains user credentials (e.g., client certificates, tokens, usernames/passwords).
+    *   *Contexts:* Binds a cluster and a user together, often specifying a default namespace. This allows you to easily switch between different clusters and user identities.
+
+For OpenShift clusters, the connection mechanism is fundamentally similar. The `oc login` command, part of the OpenShift CLI, typically generates or modifies your `kubeconfig` file to include the OpenShift cluster's details and your authentication token. This makes the OpenShift cluster context readily accessible to Podman Desktop.
+
+Podman Desktop automatically detects `kubeconfig` contexts present in your default `kubeconfig` file. It then allows you to select which context you want to actively manage within the application, providing a dropdown or list of available clusters.
+
+== Hands-On Activity: Connecting to a Kubernetes Cluster
+
+In this lab, you will learn how to connect Red Hat Build of Podman Desktop to an existing Kubernetes cluster, explore its resources, and deploy a simple application.
+
+NOTE: This lab assumes you have access to a running Kubernetes cluster (e.g., Minikube, Kind, a remote cloud cluster like OpenShift, or a standard Kubernetes deployment). It also requires a valid `kubeconfig` file configured to access it. If you don't have a local cluster, you can easily start a Minikube instance with `minikube start`.
+
+=== Prerequisites
+
+*   Red Hat Build of Podman Desktop installed and running.
+*   A running Kubernetes cluster (e.g., Minikube).
+*   The `kubectl` command-line tool installed (recommended for initial verification and management outside Podman Desktop).
+
+=== Step 1: Verify Your Kubernetes Cluster Context
+
+Before using Podman Desktop, let's ensure your `kubeconfig` is correctly set up for your target Kubernetes cluster and that you can access it via `kubectl`.
+
+. Open your terminal or command prompt.
+. Run the following command to list your available Kubernetes contexts. This shows all clusters and configurations defined in your `kubeconfig` file.
++
+[source,bash]
+----
+kubectl config get-contexts
+----
++
+You should see a list of contexts. An asterisk (*) indicates the currently active context. Make a note of the context name you wish to use for this lab.
+
+. Optionally, verify the connection to your cluster by listing namespaces:
++
+[source,bash]
+----
+kubectl get namespaces
+----
++
+This command should return a list of namespaces in your cluster, confirming that your `kubeconfig` is valid and connectivity is established.
+
+=== Step 2: Connect Podman Desktop to the Kubernetes Cluster
+
+Now, let's use Podman Desktop to connect to your Kubernetes cluster.
+
+. Open Red Hat Build of Podman Desktop.
+. In the left-hand navigation pane, locate and click on the *Kubernetes* icon (often represented by the Kubernetes logo, or a cluster icon).
+. Podman Desktop will display detected Kubernetes contexts. If your cluster's context is not automatically active, you may see it listed as "Not Connected" or similar.
+. Click on the context name corresponding to your target Kubernetes cluster.
+. You should see an option to "Connect" or select it as the active context. Click to activate it.
++
+If the connection is successful, Podman Desktop will start displaying information about the selected cluster, such as deployed pods, deployments, and services. The status indicator for that context should change to "Connected" and turn green.
+
+image::kubernetes-connected-example.png[Podman Desktop Kubernetes Connected View, width=800, link=https://www.podman-desktop.io/img/screenshots/kubernetes-desktop.png]
+_Example: Podman Desktop showing a connected Kubernetes cluster. (Image is a placeholder; in a real Antora setup, `kubernetes-connected-example.png` would be a local asset.)_
+
+=== Step 3: Explore Cluster Resources
+
+With your cluster connected, you can now explore its resources directly from Podman Desktop.
+
+. While in the *Kubernetes* section of Podman Desktop, navigate through the different resource types available in the left sub-navigation (e.g., *Pods*, *Deployments*, *Services*, *ConfigMaps*, *Secrets*).
+. Click on *Pods* to view all pods running in your currently selected namespace (by default, this is often the `default` namespace unless configured otherwise in your `kubeconfig`).
+. Click on a specific pod to view its detailed information, including logs, environment variables, associated deployment, and resource consumption. You can also perform actions like `exec` into the container or delete the pod.
+
+=== Step 4: Deploy a Container Image to Kubernetes
+
+Podman Desktop provides a convenient way to deploy container images directly to your connected Kubernetes cluster.
+
+. In the left-hand navigation pane, click on *Images*.
+. Select an image that you want to deploy. For this example, let's use a simple `nginx` image (ensure it's available in your local image list or pull it first).
+. Right-click on the `nginx` image or click the "..." menu next to it and select *Deploy Image to Kubernetes*.
+. A dialog box will appear, prompting for deployment details:
+    *   **Deployment Name:** Provide a unique name for your Kubernetes Deployment (e.g., `my-nginx-app`).
+    *   **Image:** Ensure `nginx` is selected (you can specify a tag like `nginx:latest`).
+    *   **Port:** Specify the container port that NGINX listens on (e.g., `80`).
+    *   **Create Service:** Check this box to automatically create a corresponding Kubernetes Service for your deployment. You can typically choose the service type (e.g., `ClusterIP`, `NodePort`, `LoadBalancer` if your cluster supports it). For a local Minikube, `NodePort` is often a good choice for external access.
+. Click *Deploy*.
+
+. After a few moments, navigate back to the *Kubernetes* section in Podman Desktop.
+. Go to *Deployments* and verify that `my-nginx-app` is listed and its status is `Running` (or progressing towards it).
+. Go to *Pods* and verify that the `nginx` pod(s) associated with your deployment are running.
+. Go to *Services* and verify that a service for `my-nginx-app` has been created. If you chose `NodePort`, you can often find an external port mapping here, or an external IP if using `LoadBalancer` on a cloud cluster.
+
+=== Step 5: Clean Up (Optional)
+
+To remove the deployment and service you created in the cluster:
+
+. In Podman Desktop, navigate to *Kubernetes* -&gt; *Deployments*.
+. Find `my-nginx-app`, right-click on it (or click the "..." menu), and select *Delete Deployment*.
+. Confirm the deletion.
+. The associated pods and service will also be terminated.
+
+== Integrating with OpenShift Clusters
+
+Integrating Podman Desktop with OpenShift clusters follows a very similar process to Kubernetes, as OpenShift is a comprehensive Kubernetes distribution. The key difference lies in the initial authentication.
+
+=== Prerequisites
+
+*   Red Hat Build of Podman Desktop installed and running.
+*   Access to an OpenShift cluster.
+*   The `oc` command-line tool installed and configured to connect to your OpenShift cluster.
+
+=== Step 1: Log in to Your OpenShift Cluster
+
+Before Podman Desktop can connect, ensure your `kubeconfig` has the necessary OpenShift context. The `oc login` command is the standard way to achieve this.
+
+. Open your terminal or command prompt.
+. Log in to your OpenShift cluster using the `oc login` command. This will typically prompt you for your server URL and credentials (username/password or token).
++
+[source,bash]
+----
+oc login --token=&lt;your_token&gt; --server=&lt;your_openshift_api_url&gt;
+----
++
+or, for interactive login:
++
+[source,bash]
+----
+oc login &lt;your_openshift_api_url&gt;
+----
++
+This command will add or update the OpenShift context in your `kubeconfig` file (`~/.kube/config`).
+
+. Verify the current context and ensure your OpenShift cluster is listed:
++
+[source,bash]
+----
+kubectl config get-contexts
+----
++
+You should now see your OpenShift context listed among your available Kubernetes contexts.
+
+=== Step 2: Connect Podman Desktop to the OpenShift Cluster
+
+The steps to connect Podman Desktop to an OpenShift cluster are identical to connecting to a generic Kubernetes cluster, as Podman Desktop treats OpenShift as a Kubernetes context.
+
+. Open Red Hat Build of Podman Desktop.
+. Navigate to the *Kubernetes* section.
+. Podman Desktop will detect the OpenShift context from your `kubeconfig`.
+. Select your OpenShift context from the list to activate the connection.
+. Once connected, you can explore OpenShift resources (Pods, Deployments, Routes, Services, etc.) and deploy images just as you would with a standard Kubernetes cluster.
+
+== Advanced Configuration and Troubleshooting Tips
+
+When working with Kubernetes and OpenShift integration in Podman Desktop, keep the following considerations in mind:
+
+*   *Multiple Kubeconfig Files:* If you manage multiple `kubeconfig` files (e.g., for different projects or environments), you can merge them into a single file or specify the `KUBECONFIG` environment variable before launching Podman Desktop. Podman Desktop honors the `KUBECONFIG` environment variable if it points to a specific file or a colon-separated list of files.
+*   *Permissions Issues:* If Podman Desktop fails to connect or display resources, verify your `kubeconfig` file permissions. Also, ensure your user account has the necessary Role-Based Access Control (RBAC) permissions on the target cluster to view and manage the resources you're trying to access.
+*   *Network Proxies:* For restricted environments, ensure your network proxy settings are correctly configured both within Podman Desktop (in its settings) and for your `kubectl` (and `oc`) setup, as these can affect connectivity to remote API servers.
+*   *Outdated Kubeconfig:* Authentication tokens and certificates in `kubeconfig` files can expire. If you experience connection issues, try logging in again with `oc login` or refreshing your credentials.
+*   *OpenShift Specifics:* While Podman Desktop treats OpenShift as a Kubernetes cluster, certain OpenShift-specific resources (like `Routes` which map external hostnames to services, as opposed to generic Kubernetes `Ingress`) might be displayed in a generalized manner. For full, granular OpenShift-specific management, the `oc` CLI or the OpenShift Web Console will provide the most comprehensive tools, but Podman Desktop offers excellent day-to-day visibility and management.
+
+This comprehensive integration makes Red Hat Build of Podman Desktop a powerful tool for developers and operators working across diverse container environments, from local development to production-grade Kubernetes and OpenShift deployments.
+```#  Integrating with Kubernetes and OpenShift clusters
+
+= Integrating with Kubernetes and OpenShift Clusters
+
+Podman Desktop is not just for managing local containers and Podman machines; it also serves as a powerful interface for interacting with remote Kubernetes and OpenShift clusters. This integration streamlines development workflows, allowing you to deploy, manage, and monitor applications directly from your desktop, bridging the gap between local development and cloud deployments.
+
+== Technical Explanation: Bridging Local Development with Cluster Management
+
+Integrating Podman Desktop with Kubernetes and OpenShift clusters provides a unified experience for developers working with containerized applications. Instead of constantly switching between command-line tools and web consoles, Podman Desktop offers a graphical overview and interaction point for your cluster resources.
+
+=== The Role of Kubeconfig Files
+
+The foundation of this integration lies in the standard Kubernetes configuration file, `kubeconfig`. This file typically resides at `~/.kube/config` and contains connection details for one or more Kubernetes clusters, including server addresses, user authentication credentials, and contexts. Each *context* in a `kubeconfig` file defines a cluster, a user, and a namespace, allowing you to quickly switch between different environments (e.g., development, staging, production clusters) or different namespaces within a single cluster.
+
+Podman Desktop automatically detects and parses your `kubeconfig` file(s). It then presents a list of available clusters and contexts, enabling you to select which cluster you want to interact with.
+
+=== Key Integration Capabilities
+
+Once connected, Podman Desktop allows you to:
+
+*   **View Cluster Resources:** See a graphical representation of your cluster's pods, deployments, services, ingresses, config maps, secrets, and other standard Kubernetes objects. This provides a quick health check and overview of your running applications.
+*   **Deploy Applications:** Although not a full CI/CD tool, you can apply Kubernetes manifests (YAML files) directly through Podman Desktop to deploy or update applications on your connected cluster.
+*   **Manage Workloads:** Scale deployments, restart pods, delete resources, and perform other common operational tasks without leaving the desktop environment.
+*   **Access Logs and Shells:** Directly view container logs and access a shell into running pods, simplifying troubleshooting and debugging.
+*   **Port Forwarding:** Set up port forwarding from a service or pod in the cluster to your local machine, allowing you to access cluster applications as if they were running locally.
+
+=== OpenShift Specifics
+
+For OpenShift clusters, Podman Desktop leverages the standard Kubernetes API, but also recognizes OpenShift-specific resources where applicable. If you've logged into an OpenShift cluster using the `oc` command-line tool (e.g., `oc login --token=... --server=...`), your `kubeconfig` will be updated, and Podman Desktop will automatically pick up these OpenShift contexts. This allows for seamless interaction with OpenShift projects (namespaces), routes (ingresses), and other OpenShift constructs.
+
+=== Benefits for Developers
+
+*   **Simplified Workflow:** Centralize container and cluster management from a single application.
+*   **Visual Debugging:** Quickly identify issues by visually inspecting pod statuses, events, and logs.
+*   **Reduced Context Switching:** Spend less time in the terminal for routine tasks, freeing up mental overhead for development.
+*   **Local-to-Cluster Parity:** Easily deploy and test applications developed locally with Podman to a remote cluster, ensuring compatibility.
+
+== Hands-On Activity: Connecting Podman Desktop to a Remote Kubernetes/OpenShift Cluster
+
+In this lab, you will connect your Podman Desktop instance to an existing remote Kubernetes or OpenShift cluster. This assumes you have access to such a cluster and a corresponding `kubeconfig` file.
+
+=== Prerequisites
+
+*   An existing Kubernetes or OpenShift cluster (e.g., a cloud-managed Kubernetes service, a self-hosted cluster, or an OpenShift cluster).
+*   A `kubeconfig` file with credentials and context configured for your cluster. This file is typically located at `~/.kube/config` or provided by your cluster administrator.
+*   (Optional but recommended) `kubectl` or `oc` command-line tool installed and configured to verify connectivity independently.
+
+=== Lab: Connecting and Exploring Your Cluster
+
+Follow these steps to integrate Podman Desktop with your cluster:
+
+*   *Objective:* Connect Podman Desktop to a remote Kubernetes/OpenShift cluster and explore its resources.
+
+1.  **Verify Kubeconfig Access (Outside Podman Desktop):**
+    Before using Podman Desktop, ensure your `kubeconfig` file is correctly set up and allows you to connect to your cluster using the command line.
+
+    a.  Open your terminal or command prompt.
+    b.  List the available contexts:
+        ```bash
+        kubectl config get-contexts
+        # or for OpenShift
+        oc config get-contexts
+        ```
+        You should see your target cluster listed.
+
+    c.  Switch to the desired context (if not already current):
+        ```bash
+        kubectl config use-context &lt;your-cluster-context-name&gt;
+        # or for OpenShift
+        oc config use-context &lt;your-cluster-context-name&gt;
+        ```
+
+    d.  Test connectivity by listing pods in a namespace (e.g., `default` or one you have access to):
+        ```bash
+        kubectl get pods -n default
+        # or for OpenShift, if you have access to your project:
+        oc get pods -n &lt;your-project-name&gt;
+        ```
+        If you see a list of pods or resources, your `kubeconfig` is working correctly.
+
+2.  **Open Podman Desktop:**
+    Launch the Podman Desktop application on your machine.
+
+3.  **Navigate to Kubernetes Integration:**
+    a.  In the left navigation sidebar of Podman Desktop, locate and click on the *Kubernetes* icon. This usually looks like a Kubernetes "steering wheel" logo.
+
+4.  **Select Your Cluster Context:**
+    a.  Podman Desktop will automatically detect your `kubeconfig` file(s) and display the available clusters and contexts.
+    b.  At the top of the Kubernetes view, you'll see a dropdown menu labeled "Cluster" or showing your current context. Click on this dropdown.
+    c.  From the list, select the context corresponding to the remote Kubernetes or OpenShift cluster you verified in step 1.
+
+    *   *Troubleshooting Tip:* If your cluster context is not listed, ensure your `kubeconfig` file is located in the standard `~/.kube/config` path. If it's elsewhere, you might need to merge it into the default file or configure your `KUBECONFIG` environment variable before launching Podman Desktop.
+
+5.  **Explore Cluster Resources:**
+    Once connected, Podman Desktop will populate the Kubernetes view with resources from your selected cluster and context.
+    a.  Browse through the different categories in the left pane (e.g., *Workloads*, *Services*, *Storage*, *Configuration*).
+    b.  Click on *Workloads* &gt; *Pods* to see a list of running pods in your currently selected namespace.
+    c.  Click on any specific pod to view its details, logs, and events.
+    d.  (Optional) Try applying a simple manifest. For example, create a file named `nginx-deployment.yaml` with the following content:
+        ```yaml
+        apiVersion: apps/v1
+        kind: Deployment
+        metadata:
+          name: nginx-deployment
+          labels:
+            app: nginx
+        spec:
+          replicas: 1
+          selector:
+            matchLabels:
+              app: nginx
+          template:
+            metadata:
+              labels:
+                app: nginx
+            spec:
+              containers:
+              - name: nginx
+                image: nginx:latest
+                ports:
+                - containerPort: 80
+        ```
+        Then, from the Podman Desktop Kubernetes view, look for an "Apply" or "Deploy" button (often an icon in the top right, or accessible through a context menu) and select your `nginx-deployment.yaml` file. Observe the new deployment and pod appear in Podman Desktop. Remember to delete it after testing if you don't need it: `kubectl delete deployment nginx-deployment`.
+
+Congratulations! You have successfully integrated Podman Desktop with your remote Kubernetes/OpenShift cluster and explored its resources. This powerful capability allows you to manage and interact with your cluster from a convenient graphical interface.</code></pre>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="setting-up-network-proxies.html">Setting up network proxies</a></span>
+  <span class="next"><a href="exploring-and-managing-extensions.html">Exploring and managing extensions</a></span>
+</nav>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <img src="../../../_/img/rhl-logo-red.png" height="40px" alt="Red Hat"  href="https://redhat.com" >
+</footer><script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

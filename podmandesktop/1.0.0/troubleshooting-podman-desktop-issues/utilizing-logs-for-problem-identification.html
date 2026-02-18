@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Utilizing logs for problem identification :: Red Hat Build of Podman Desktop: Installation, Configuration, and Troubleshooting</title>
+    <link rel="prev" href="resolving-image-pull-and-container-run-errors.html">
+    <link rel="next" href="best-practices-for-issue-prevention.html">
+    <meta name="generator" content="Antora 3.1.3">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+    <script>var uiRootPath = '../../../_'</script>
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://www.redhat.com" target="_blank"><img src="../../../_/img/redhat-logo.png" height="40px" alt="Red Hat"></a>
+      <a class="navbar-item" style="font-size: 24px; color: white" href="../../..">Red Hat Build of Podman Desktop: Installation, Configuration, and Troubleshooting</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="https://github.com/RedHatQuickCourses/REPLACEREPONAME/issues" target="_blank">Report Issues</a>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="podmandesktop" data-version="1.0.0">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html">Red Hat Build of Podman Desktop: Installation, Configuration, and Troubleshooting</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../index.html">Home</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../LABENV/index.html">Lab Environment</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../introduction-to-podman-desktop/introduction-to-podman-desktop.html">Introduction to Podman Desktop</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-podman-desktop/overview-of-podman-desktops-purpose-and-capabilities.html">Overview of Podman Desktop&#8217;s purpose and capabilities</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-podman-desktop/key-features-for-container-management.html">Key features for container management</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-podman-desktop/benefits-of-using-red-hat-build-of-podman-desktop.html">Benefits of using Red Hat Build of Podman Desktop</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../introduction-to-podman-desktop/introduction-to-podman-desktop.html">Introduction to Podman Desktop</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-podman-desktop/overview-of-podman-desktops-purpose-and-capabilities.html">Overview of Podman Desktop&#8217;s purpose and capabilities</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-podman-desktop/key-features-for-container-management.html">Key features for container management</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-podman-desktop/benefits-of-using-red-hat-build-of-podman-desktop.html">Benefits of using Red Hat Build of Podman Desktop</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../preparing-for-installation/preparing-for-installation.html">Preparing for Installation</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-for-installation/system-requirements-for-various-operating-systems.html">System requirements for various operating systems</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-for-installation/prerequisites-and-dependencies-eg-wsl-on-windows-podman-engine.html">Prerequisites and dependencies (e.g., WSL on Windows, Podman engine)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-for-installation/understanding-podman-machine-concept.html">Understanding Podman machine concept</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../preparing-for-installation/preparing-for-installation.html">Preparing for Installation</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-for-installation/system-requirements-for-various-operating-systems.html">System requirements for various operating systems</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-for-installation/prerequisites-and-dependencies-eg-wsl-on-windows-podman-engine.html">Prerequisites and dependencies (e.g., WSL on Windows, Podman engine)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-for-installation/understanding-podman-machine-concept.html">Understanding Podman machine concept</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/installing-podman-desktop-on-macos.html">Installing Podman Desktop on macOS</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/download-and-installation-process-via-installer.html">Download and installation process via installer</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/initial-setup-and-podman-machine-creation.html">Initial setup and Podman machine creation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/verifying-installation-and-basic-functionality.html">Verifying installation and basic functionality</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/installing-podman-desktop-on-macos.html">Installing Podman Desktop on macOS</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/download-and-installation-process-via-installer.html">Download and installation process via installer</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/initial-setup-and-podman-machine-creation.html">Initial setup and Podman machine creation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/verifying-installation-and-basic-functionality.html">Verifying installation and basic functionality</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/installing-podman-desktop-on-windows.html">Installing Podman Desktop on Windows</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/download-and-installation-process-via-installer.html">Download and installation process via installer</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/wsl-2-integration-and-configuration.html">WSL 2 integration and configuration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/initial-setup-and-podman-machine-creation.html">Initial setup and Podman machine creation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/verifying-installation-and-basic-functionality.html">Verifying installation and basic functionality</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/installing-podman-desktop-on-windows.html">Installing Podman Desktop on Windows</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/download-and-installation-process-via-installer.html">Download and installation process via installer</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/wsl-2-integration-and-configuration.html">WSL 2 integration and configuration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/initial-setup-and-podman-machine-creation.html">Initial setup and Podman machine creation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/verifying-installation-and-basic-functionality.html">Verifying installation and basic functionality</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/installing-podman-desktop-on-red-hat-enterprise-linux.html">Installing Podman Desktop on Red Hat Enterprise Linux</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/installation-steps-using-package-managers-eg-dnf.html">Installation steps using package managers (e.g., <code>dnf</code>)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/initial-setup-and-podman-machine-creation.html">Initial setup and Podman machine creation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/verifying-installation-and-basic-functionality.html">Verifying installation and basic functionality</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/installing-podman-desktop-on-red-hat-enterprise-linux.html">Installing Podman Desktop on Red Hat Enterprise Linux</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/installation-steps-using-package-managers-eg-dnf.html">Installation steps using package managers (e.g., <code>dnf</code>)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/initial-setup-and-podman-machine-creation.html">Initial setup and Podman machine creation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/verifying-installation-and-basic-functionality.html">Verifying installation and basic functionality</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/deploying-podman-desktop-in-air-gapped-environments.html">Deploying Podman Desktop in Air-Gapped Environments</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/challenges-and-considerations-for-air-gapped-deployments.html">Challenges and considerations for air-gapped deployments</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/gathering-necessary-installation-artifacts.html">Gathering necessary installation artifacts</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/step-by-step-offline-installation-procedure.html">Step-by-step offline installation procedure</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/post-installation-configuration-for-restricted-environments.html">Post-installation configuration for restricted environments</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/deploying-podman-desktop-in-air-gapped-environments.html">Deploying Podman Desktop in Air-Gapped Environments</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/challenges-and-considerations-for-air-gapped-deployments.html">Challenges and considerations for air-gapped deployments</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/gathering-necessary-installation-artifacts.html">Gathering necessary installation artifacts</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/step-by-step-offline-installation-procedure.html">Step-by-step offline installation procedure</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/post-installation-configuration-for-restricted-environments.html">Post-installation configuration for restricted environments</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/configuring-and-customizing-podman-desktop.html">Configuring and Customizing Podman Desktop</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/managing-container-engine-settings-memory-cpu-disk.html">Managing container engine settings (memory, CPU, disk)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/configuring-registries-and-image-pull-secrets.html">Configuring registries and image pull secrets</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/setting-up-network-proxies.html">Setting up network proxies</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/integrating-with-kubernetes-and-openshift-clusters.html">Integrating with Kubernetes and OpenShift clusters</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/exploring-and-managing-extensions.html">Exploring and managing extensions</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/configuring-and-customizing-podman-desktop.html">Configuring and Customizing Podman Desktop</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/managing-container-engine-settings-memory-cpu-disk.html">Managing container engine settings (memory, CPU, disk)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/configuring-registries-and-image-pull-secrets.html">Configuring registries and image pull secrets</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/setting-up-network-proxies.html">Setting up network proxies</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/integrating-with-kubernetes-and-openshift-clusters.html">Integrating with Kubernetes and OpenShift clusters</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/exploring-and-managing-extensions.html">Exploring and managing extensions</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="troubleshooting-podman-desktop-issues.html">Troubleshooting Podman Desktop Issues</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="common-installation-and-startup-problems.html">Common installation and startup problems</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="diagnosing-podman-machine-failures.html">Diagnosing Podman machine failures</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="resolving-image-pull-and-container-run-errors.html">Resolving image pull and container run errors</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="utilizing-logs-for-problem-identification.html">Utilizing logs for problem identification</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="best-practices-for-issue-prevention.html">Best practices for issue prevention</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="troubleshooting-podman-desktop-issues.html">Troubleshooting Podman Desktop Issues</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="common-installation-and-startup-problems.html">Common installation and startup problems</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="diagnosing-podman-machine-failures.html">Diagnosing Podman machine failures</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="resolving-image-pull-and-container-run-errors.html">Resolving image pull and container run errors</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="utilizing-logs-for-problem-identification.html">Utilizing logs for problem identification</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="best-practices-for-issue-prevention.html">Best practices for issue prevention</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../hands-on-exercises/hands-on-exercises.html">Hands-On Exercises</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-installing-podman-desktop-on-your-preferred-os.html">Lab: Installing Podman Desktop on your preferred OS</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-managing-podman-machines-and-container-engines.html">Lab: Managing Podman machines and container engines</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-deploying-and-interacting-with-a-container.html">Lab: Deploying and interacting with a container</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-configuring-a-private-registry-connection.html">Lab: Configuring a private registry connection</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-troubleshooting-a-simulated-podman-desktop-issue.html">Lab: Troubleshooting a simulated Podman Desktop issue</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../hands-on-exercises/hands-on-exercises.html">Hands-On Exercises</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-installing-podman-desktop-on-your-preferred-os.html">Lab: Installing Podman Desktop on your preferred OS</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-managing-podman-machines-and-container-engines.html">Lab: Managing Podman machines and container engines</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-deploying-and-interacting-with-a-container.html">Lab: Deploying and interacting with a container</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-configuring-a-private-registry-connection.html">Lab: Configuring a private registry connection</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-troubleshooting-a-simulated-podman-desktop-issue.html">Lab: Troubleshooting a simulated Podman Desktop issue</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../appendix/appendix.html">Appendix</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">Red Hat Build of Podman Desktop: Installation, Configuration, and Troubleshooting</span>
+    <span class="version">1.0.0</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <a class="title" href="../index.html">Red Hat Build of Podman Desktop: Installation, Configuration, and Troubleshooting</a>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">1.0.0</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">Red Hat Build of Podman Desktop: Installation, Configuration, and Troubleshooting</a></li>
+    <li><a href="troubleshooting-podman-desktop-issues.html">Troubleshooting Podman Desktop Issues</a></li>
+    <li><a href="utilizing-logs-for-problem-identification.html">Utilizing logs for problem identification</a></li>
+  </ul>
+</nav>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Utilizing logs for problem identification</h1>
+<h1 id="_utilizing_logs_for_problem_identification" class="sect0"><a class="anchor" href="#_utilizing_logs_for_problem_identification"></a>Utilizing Logs for Problem Identification</h1>
+<div class="paragraph">
+<p>Troubleshooting Red Hat Build of Podman Desktop issues effectively often hinges on the ability to locate, access, and interpret various log files. Logs provide a chronological record of events, errors, and warnings, offering invaluable insights into the root cause of problems that might not be immediately apparent from the user interface. Understanding where to find these logs and how to analyze them is a fundamental skill for any Podman Desktop user or administrator.</p>
+</div>
+<div class="sect1">
+<h2 id="_understanding_podman_desktop_log_sources"><a class="anchor" href="#_understanding_podman_desktop_log_sources"></a>Understanding Podman Desktop Log Sources</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Podman Desktop interacts with several components, each potentially generating its own set of logs. Identifying the correct log source based on the issue you&#8217;re facing is the first step in effective troubleshooting.</p>
+</div>
+<div class="sect2">
+<h3 id="_podman_desktop_application_logs"><a class="anchor" href="#_podman_desktop_application_logs"></a>Podman Desktop Application Logs</h3>
+<div class="paragraph">
+<p>These logs pertain to the Podman Desktop application itself, including its user interface, extensions, and its interactions with the underlying container engine. Issues related to the application failing to start, UI glitches, or problems with extensions are often captured here.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Content:</strong> Records Podman Desktop&#8217;s internal operations, extension loading, UI events, and communication attempts with the Podman machine or other configured container engines.</p>
+</li>
+<li>
+<p><strong>Location (Default):</strong></p>
+</li>
+<li>
+<p><strong>macOS:</strong> <code>~/Library/Application Support/Podman Desktop/logs/</code></p>
+</li>
+<li>
+<p><strong>Windows:</strong> <code>%APPDATA%\Podman Desktop\logs\</code> (e.g., <code>C:\Users\&lt;username&gt;\AppData\Roaming\Podman Desktop\logs\</code>)</p>
+</li>
+<li>
+<p><strong>Linux:</strong> <code>~/.config/Podman Desktop/logs/</code></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_podman_machine_logs"><a class="anchor" href="#_podman_machine_logs"></a>Podman Machine Logs</h3>
+<div class="paragraph">
+<p>When using Podman Desktop on Windows or macOS, Podman runs inside a dedicated virtual machine called a Podman machine. The logs from this virtual machine&#8217;s operating system and the Podman daemon running within it are crucial for diagnosing issues related to the container engine itself, such as machine startup failures, network configuration problems within the VM, or the Podman service crashing.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Content:</strong> System logs of the Podman machine (e.g., <code>journalctl</code> output), Podman daemon logs, network configuration within the VM, and any errors encountered during the machine&#8217;s lifecycle.</p>
+</li>
+<li>
+<p><strong>Access:</strong> Accessed by connecting to the Podman machine via SSH.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_container_specific_logs"><a class="anchor" href="#_container_specific_logs"></a>Container-Specific Logs</h3>
+<div class="paragraph">
+<p>These logs are generated by the applications and processes running <strong>inside</strong> your containers. If a container fails to start, exits unexpectedly, or an application within it isn&#8217;t behaving as expected, these logs are the primary source of information.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Content:</strong> <code>stdout</code> and <code>stderr</code> streams from the main process of a container, as well as any other logging configured within the containerized application.</p>
+</li>
+<li>
+<p><strong>Access:</strong> Can be viewed directly from the Podman Desktop UI or using the <code>podman logs</code> command in the terminal.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_accessing_and_interpreting_logs"><a class="anchor" href="#_accessing_and_interpreting_logs"></a>Accessing and Interpreting Logs</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Once you know which logs to look for, the next step is accessing and interpreting them.</p>
+</div>
+<div class="sect2">
+<h3 id="_general_log_analysis_tips"><a class="anchor" href="#_general_log_analysis_tips"></a>General Log Analysis Tips</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Keywords:</strong> Look for keywords like <code>ERROR</code>, <code>FAIL</code>, <code>WARN</code>, <code>FATAL</code>, <code>EXCEPTION</code>, or <code>DENIED</code>.</p>
+</li>
+<li>
+<p><strong>Timestamps:</strong> Correlate events by their timestamps. If an issue occurred at a specific time, filter logs around that period.</p>
+</li>
+<li>
+<p><strong>Context:</strong> Read the surrounding lines to understand the sequence of events leading up to an error. An error message might be a symptom, not the root cause.</p>
+</li>
+<li>
+<p><strong>Call Stacks:</strong> For application errors, call stacks can point to the specific function or module where the failure originated.</p>
+</li>
+<li>
+<p><strong>Repetition:</strong> Recurring errors often indicate a persistent configuration problem or a service repeatedly failing to start.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_hands_on_activity_utilizing_logs_for_troubleshooting"><a class="anchor" href="#_hands_on_activity_utilizing_logs_for_troubleshooting"></a>Hands-On Activity: Utilizing Logs for Troubleshooting</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In this lab, you will practice accessing and reviewing different types of logs within Podman Desktop to diagnose potential issues.</p>
+</div>
+<div class="sect2">
+<h3 id="_lab_accessing_podman_desktop_application_logs"><a class="anchor" href="#_lab_accessing_podman_desktop_application_logs"></a>Lab: Accessing Podman Desktop Application Logs</h3>
+<div class="paragraph">
+<p>This activity will guide you to find the main Podman Desktop application logs.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Prerequisites:</strong></p>
+<div class="ulist">
+<ul>
+<li>
+<p>Red Hat Build of Podman Desktop installed and running.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Steps:</strong></p>
+</li>
+<li>
+<p><strong>Open Podman Desktop.</strong></p>
+</li>
+<li>
+<p>Navigate to the <strong>Settings</strong> icon (usually a gear icon) in the bottom-left corner.</p>
+</li>
+<li>
+<p>In the Settings sidebar, select <strong>Troubleshooting</strong>.</p>
+</li>
+<li>
+<p>Under the "Logs" section, you will see an option like <strong>Show Logs</strong> or <strong>Open logs directory</strong>. Click this button.
+A file explorer or finder window will open, displaying the log files for Podman Desktop.</p>
+</li>
+<li>
+<p>Locate the most recent log file (often named <code>main.log</code> or similar, potentially with a timestamp).</p>
+</li>
+<li>
+<p>Open the log file with a text editor.
+Review the contents. You&#8217;ll likely see information about Podman Desktop starting up, extensions being loaded, and routine operations. Look for any entries marked <code>ERROR</code> or <code>WARN</code>.</p>
+<div class="literalblock">
+<div class="content">
+<pre>[TIP]
+If you've just experienced a problem (e.g., an extension failed to load), checking the end of the `main.log` file immediately after the event can often pinpoint the issue.</pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_lab_accessing_podman_machine_logs"><a class="anchor" href="#_lab_accessing_podman_machine_logs"></a>Lab: Accessing Podman Machine Logs</h3>
+<div class="paragraph">
+<p>This activity focuses on accessing the underlying Podman machine&#8217;s system logs.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Prerequisites:</strong></p>
+<div class="ulist">
+<ul>
+<li>
+<p>A running Podman machine (e.g., <code>podman machine list</code> shows a <code>Running</code> machine).</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Steps:</strong></p>
+</li>
+<li>
+<p><strong>Open your system&#8217;s terminal or command prompt.</strong></p>
+</li>
+<li>
+<p><strong>List your Podman machines</strong> to identify the active one (usually named <code>podman-machine-default</code>):
+<code><code>bash
+podman machine list
+</code></code>
+You should see output similar to this:
+<code>`
+NAME                    VM TYPE   CPUS        MEMORY      DISK SIZE   API SOCKET                    STATE      DEFAULT
+podman-machine-default  qemu      2           2.147GB     107.37GB    /var/run/podman/podman.sock   Running    true
+</code>`</p>
+</li>
+<li>
+<p><strong>SSH into the Podman machine:</strong>
+<code><code>bash
+podman machine ssh podman-machine-default
+</code></code>
+(Replace <code>podman-machine-default</code> with your machine&#8217;s name if different.)
+You are now logged into the virtual machine.</p>
+</li>
+<li>
+<p><strong>View the Podman service logs</strong> using <code>journalctl</code>:
+<code><code>bash
+sudo journalctl -u podman.service --since "1 hour ago"
+</code></code>
+This command displays logs for the <code>podman.service</code> unit from the last hour.</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>sudo</code>: Required to view system logs.</p>
+</li>
+<li>
+<p><code>-u podman.service</code>: Filters logs specifically for the Podman service.</p>
+</li>
+<li>
+<p><code>--since "1 hour ago"</code>: Filters logs from the last hour (adjust as needed, e.g., <code>"5 minutes ago"</code>).</p>
+</li>
+<li>
+<p>To view all logs and scroll: <code>sudo journalctl -u podman.service</code></p>
+</li>
+<li>
+<p>To follow new logs in real-time: <code>sudo journalctl -u podman.service -f</code></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Examine the output</strong> for errors related to the Podman daemon starting, network issues within the VM, or other system-level problems affecting container operations.</p>
+</li>
+<li>
+<p><strong>Exit the Podman machine</strong> when you are done:
+<code><code>bash
+exit
+</code></code></p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_lab_accessing_container_specific_logs"><a class="anchor" href="#_lab_accessing_container_specific_logs"></a>Lab: Accessing Container-Specific Logs</h3>
+<div class="paragraph">
+<p>This activity demonstrates how to retrieve logs from a running container, both via the Podman Desktop UI and the command line.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Prerequisites:</strong></p>
+<div class="ulist">
+<ul>
+<li>
+<p>A running Podman machine.</p>
+</li>
+<li>
+<p>A running container. If you don&#8217;t have one, create a simple one:
+<code><code>bash
+podman run -d --name my-logging-container quay.io/libpod/alpine:latest sh -c 'i=0; while true; do echo "Log message $i"; i=$i+1; sleep 5; done'
+</code></code>
+This command starts an Alpine container that prints a log message every 5 seconds.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Steps (Using Podman Desktop UI):</strong></p>
+</li>
+<li>
+<p><strong>Open Podman Desktop.</strong></p>
+</li>
+<li>
+<p>Navigate to the <strong>Containers</strong> section in the left sidebar.</p>
+</li>
+<li>
+<p>Locate and click on your <code>my-logging-container</code> (or any other running container).</p>
+</li>
+<li>
+<p>In the container&#8217;s detail view, select the <strong>Logs</strong> tab.
+You will see the <code>stdout</code> and <code>stderr</code> output from your containerized application displayed in real-time. This is useful for observing the behavior of your application.</p>
+</li>
+<li>
+<p><strong>Steps (Using Command Line):</strong></p>
+</li>
+<li>
+<p><strong>Open your system&#8217;s terminal or command prompt.</strong></p>
+</li>
+<li>
+<p><strong>List running containers</strong> to get the container ID or name:
+<code><code>bash
+podman ps
+</code></code>
+You should see your <code>my-logging-container</code> listed.</p>
+</li>
+<li>
+<p><strong>Retrieve logs for the container:</strong>
+<code><code>bash
+podman logs my-logging-container
+</code></code>
+(Replace <code>my-logging-container</code> with your container&#8217;s name or ID.)
+You will see the complete history of <code>stdout</code> and <code>stderr</code> from the container.</p>
+</li>
+<li>
+<p><strong>View logs in real-time (follow mode):</strong>
+<code><code>bash
+podman logs -f my-logging-container
+</code></code>
+The <code>-f</code> (or <code>--follow</code>) option will tail the logs, showing new output as it&#8217;s generated, similar to <code>tail -f</code>. Press <code>Ctrl+C</code> to exit.</p>
+</li>
+<li>
+<p><strong>Simulate an error and check logs:</strong></p>
+</li>
+<li>
+<p>Let&#8217;s create a container that immediately fails.
+<code><code>bash
+podman run --rm --name failing-container quay.io/libpod/alpine:latest sh -c 'echo "Starting a failing process"; exit 1'
+</code></code></p>
+</li>
+<li>
+<p>Even though it exited, its logs are still available.
+<code><code>bash
+podman logs failing-container
+</code></code>
+You should see <code>Starting a failing process</code> and then potentially a message indicating the container exited with code 1. This demonstrates how logs help understand <strong>why</strong> a container stopped.</p>
+</li>
+<li>
+<p><strong>Clean up:</strong> Remove the containers you created for this lab.
+<code><code>bash
+podman stop my-logging-container
+podman rm my-logging-container
+podman rm failing-container # If it was still present, it was --rm, so it cleaned itself up.
+</code></code></p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>By mastering the art of log inspection, you gain a powerful tool for troubleshooting and maintaining your containerized environments with Red Hat Build of Podman Desktop. Always remember to check the relevant logs when an issue arises, as they hold the key to understanding the problem&#8217;s origins.#  Utilizing logs for problem identification</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_utilizing_logs_for_problem_identification_2"><a class="anchor" href="#_utilizing_logs_for_problem_identification_2"></a>Utilizing Logs for Problem Identification</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Effective troubleshooting is a critical skill for any developer or system administrator working with container technologies. When issues arise with Red Hat Build of Podman Desktop, one of the most powerful diagnostic tools at your disposal is the application&#8217;s logging system. Logs provide a chronological record of events, operations, errors, and warnings, offering invaluable insights into the internal workings of the application and its interactions with the underlying container engine. By learning how to access, interpret, and analyze these logs, you can quickly identify the root cause of problems, from installation glitches to container runtime errors.</p>
+</div>
+<div class="paragraph">
+<p>This section will delve into the technical aspects of Podman Desktop logging, explaining where to find logs, what information they contain, and how to use them to diagnose and resolve common issues.</p>
+</div>
+<div class="sect2">
+<h3 id="_understanding_podman_desktop_log_mechanics"><a class="anchor" href="#_understanding_podman_desktop_log_mechanics"></a>Understanding Podman Desktop Log Mechanics</h3>
+<div class="paragraph">
+<p>Podman Desktop, like most complex applications, generates various types of logs to record its activities. These logs are crucial for understanding the sequence of events leading up to an issue, identifying error codes, and pinpointing which component of the application or underlying system is failing.</p>
+</div>
+<div class="paragraph">
+<p>Logs typically include:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Timestamps:</strong> Indicate when an event occurred, essential for correlating issues with user actions.</p>
+</li>
+<li>
+<p><strong>Log Levels:</strong> Categorize messages by severity (e.g., <code>DEBUG</code>, <code>INFO</code>, <code>WARN</code>, <code>ERROR</code>, <code>FATAL</code>).</p>
+</li>
+<li>
+<p><strong>Component/Module Information:</strong> Specifies which part of Podman Desktop or its extensions generated the log entry.</p>
+</li>
+<li>
+<p><strong>Message Details:</strong> The actual description of the event, operation, or error.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Podman Desktop primarily generates logs related to its user interface, its interactions with the Podman engine (including Podman Machine), and any installed extensions. While Podman Desktop provides a convenient way to access its own application logs, it&#8217;s also important to remember that the underlying Podman engine itself generates separate logs that might be relevant for deeper engine-specific issues.</p>
+</div>
+<div class="sect3">
+<h4 id="_where_to_find_podman_desktop_logs"><a class="anchor" href="#_where_to_find_podman_desktop_logs"></a>Where to Find Podman Desktop Logs</h4>
+<div class="paragraph">
+<p>Podman Desktop provides a convenient way to access its main application logs directly through the UI. This is often the first place to look. However, understanding the file system locations can be helpful for advanced scenarios or when the UI is not accessible.</p>
+</div>
+<div class="paragraph">
+<div class="title">Podman Desktop UI Access</div>
+<p>The easiest method to access logs is through the Podman Desktop interface:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Navigate to the <code>?</code> icon (Help menu) in the left-hand navigation pane.</p>
+</li>
+<li>
+<p>Select <strong>Troubleshooting</strong>.</p>
+</li>
+<li>
+<p>Here, you&#8217;ll find options to <strong>Show logs</strong> and <strong>Open logs directory</strong>.</p>
+</li>
+<li>
+<p>The <strong>Show logs</strong> option displays a live stream or a recent snapshot of the application logs directly within the UI, making it easy to monitor events.</p>
+</li>
+<li>
+<p>The <strong>Open logs directory</strong> option opens the folder containing the log files in your system&#8217;s file explorer, allowing you to view historical logs or share them for further analysis.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<div class="title">File System Locations</div>
+<p>The exact location of the log files varies slightly depending on your operating system:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>macOS:</strong> <code>~/Library/Logs/Podman Desktop/log.log</code></p>
+</li>
+<li>
+<p><strong>Windows:</strong> <code>%APPDATA%\Podman Desktop\log.log</code> (e.g., <code>C:\Users\&lt;username&gt;\AppData\Roaming\Podman Desktop\log.log</code>)</p>
+</li>
+<li>
+<p><strong>Linux:</strong> <code>~/.config/Podman Desktop/log.log</code></p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The <code>log.log</code> file is the primary application log. Podman Desktop may also maintain rotated log files (e.g., <code>log.1.log</code>, <code>log.2.log</code>) to prevent a single log file from growing excessively large.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_interpreting_log_entries"><a class="anchor" href="#_interpreting_log_entries"></a>Interpreting Log Entries</h4>
+<div class="paragraph">
+<p>When reviewing logs, pay close attention to the following:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong><code>ERROR</code> and <code>WARN</code> messages:</strong> These indicate critical failures or potential problems that could lead to issues. They often provide specific error codes or descriptive text that directly points to a problem.</p>
+</li>
+<li>
+<p><strong>Timestamps:</strong> Look at the time an error occurred and compare it with when you experienced the issue. This helps in narrowing down the relevant log entries.</p>
+</li>
+<li>
+<p><strong>Context:</strong> Examine the log entries <strong>before</strong> and <strong>after</strong> an <code>ERROR</code> message. Often, preceding <code>INFO</code> or <code>DEBUG</code> messages can provide context about what the application was attempting to do when the error occurred.</p>
+</li>
+<li>
+<p><strong>Component Names:</strong> Log entries often specify the component that generated the message (e.g., <code>ImagePuller</code>, <code>ExtensionManager</code>, <code>PodmanMachineProvider</code>). This helps in isolating the problematic area.</p>
+</li>
+<li>
+<p><strong>Keywords:</strong> Search for keywords related to your problem, such as "fail," "error," "unable to," "timeout," or specific resource names (e.g., "registry," "image," "container").</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_hands_on_activity_diagnosing_an_image_pull_issue_using_logs"><a class="anchor" href="#_hands_on_activity_diagnosing_an_image_pull_issue_using_logs"></a>Hands-on Activity: Diagnosing an Image Pull Issue Using Logs</h3>
+<div class="paragraph">
+<p>In this lab, you will simulate a common issue – failing to pull an image due to an incorrect tag or non-existent image – and then use Podman Desktop&#8217;s logging features to identify the problem.</p>
+</div>
+<div class="sect3">
+<h4 id="_prerequisites"><a class="anchor" href="#_prerequisites"></a>Prerequisites</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>Red Hat Build of Podman Desktop installed and running.</p>
+</li>
+<li>
+<p>A functional Podman machine (if on Windows/macOS).</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_lab_steps"><a class="anchor" href="#_lab_steps"></a>Lab Steps</h4>
+<div class="paragraph">
+<div class="title">Goal</div>
+<p>Learn to access Podman Desktop logs via the UI and use them to identify the cause of a container image pull failure.</p>
+</div>
+<div class="olist loweralpha">
+<div class="title">Step 1: Open Podman Desktop and Access Logs</div>
+<ol class="loweralpha" type="a">
+<li>
+<p>Launch Red Hat Build of Podman Desktop.</p>
+</li>
+<li>
+<p>In the left-hand navigation, click on the <code>?</code> icon (Help menu) at the bottom.</p>
+</li>
+<li>
+<p>Select <strong>Troubleshooting</strong>.</p>
+</li>
+<li>
+<p>Click on <strong>Show logs</strong>. A new panel or window will open displaying the application logs. Keep this window open or at least accessible.</p>
+</li>
+</ol>
+</div>
+<div class="olist loweralpha">
+<div class="title">Step 2: Simulate an Image Pull Failure</div>
+<ol class="loweralpha" type="a">
+<li>
+<p>Navigate to the <strong>Images</strong> section in Podman Desktop.</p>
+</li>
+<li>
+<p>Click the <strong>Pull Image</strong> button.</p>
+</li>
+<li>
+<p>In the <strong>Image Name</strong> field, enter a clearly invalid or non-existent image name, for example: <code>quay.io/non-existent-user/non-existent-image:latest</code>.</p>
+</li>
+<li>
+<p>Click <strong>Pull</strong>.</p>
+</li>
+<li>
+<p>Observe the notification in Podman Desktop indicating that the image pull failed.</p>
+</li>
+</ol>
+</div>
+<div class="olist loweralpha">
+<div class="title">Step 3: Analyze the Logs</div>
+<ol class="loweralpha" type="a">
+<li>
+<p>Switch back to the <strong>Troubleshooting</strong> &#8594; <strong>Show logs</strong> view.</p>
+</li>
+<li>
+<p>Scroll to the bottom or refresh the log view to see the most recent entries.</p>
+</li>
+<li>
+<p>Look for <code>ERROR</code> or <code>WARN</code> messages that occurred around the time you attempted the image pull.</p>
+</li>
+<li>
+<p>Identify entries related to "pulling image," "registry," or "manifest."</p>
+</li>
+</ol>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+You might see messages similar to:
+<code>[ERROR] [ImagePuller] Error pulling image "quay.io/non-existent-user/non-existent-image:latest": could not find manifest list for "quay.io/non-existent-user/non-existent-image:latest": manifest unknown: manifest unknown</code>
+or
+<code>[ERROR] Failed to pull image 'quay.io/non-existent-user/non-existent-image:latest': could not find manifest list for "quay.io/non-existent-user/non-existent-image:latest": manifest unknown: manifest unknown</code>
+</td>
+</tr>
+</table>
+</div>
+<div class="olist loweralpha">
+<div class="title">Step 4: Interpret the Findings</div>
+<ol class="loweralpha" type="a">
+<li>
+<p>The <code>ERROR</code> message clearly indicates that the manifest for the specified image could not be found. This directly tells you that either the image name is incorrect, the tag is wrong, or the image simply does not exist in the specified registry.</p>
+</li>
+<li>
+<p>Without logs, you might only see a generic "pull failed" message. With logs, you get the precise technical reason from the container engine&#8217;s perspective.</p>
+</li>
+</ol>
+</div>
+<div class="olist loweralpha">
+<div class="title">Step 5: (Optional) Open the Log Directory</div>
+<ol class="loweralpha" type="a">
+<li>
+<p>Go back to the <strong>Troubleshooting</strong> menu.</p>
+</li>
+<li>
+<p>Click <strong>Open logs directory</strong>. This will open your operating system&#8217;s file explorer to the directory containing the <code>log.log</code> file. You can open this file with any text editor to perform more advanced searches or to copy specific sections.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>By successfully completing this lab, you&#8217;ve gained practical experience in utilizing Podman Desktop&#8217;s logging capabilities to diagnose issues. This method is applicable to a wide range of problems, from network configuration issues to extension failures. Remember that logs are your technical breadcrumbs; follow them to uncover the path to resolution.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="resolving-image-pull-and-container-run-errors.html">Resolving image pull and container run errors</a></span>
+  <span class="next"><a href="best-practices-for-issue-prevention.html">Best practices for issue prevention</a></span>
+</nav>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <img src="../../../_/img/rhl-logo-red.png" height="40px" alt="Red Hat"  href="https://redhat.com" >
+</footer><script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

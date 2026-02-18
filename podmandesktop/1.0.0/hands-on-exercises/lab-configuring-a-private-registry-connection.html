@@ -1,0 +1,1188 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Lab: Configuring a private registry connection :: Red Hat Build of Podman Desktop: Installation, Configuration, and Troubleshooting</title>
+    <link rel="prev" href="lab-deploying-and-interacting-with-a-container.html">
+    <link rel="next" href="lab-troubleshooting-a-simulated-podman-desktop-issue.html">
+    <meta name="generator" content="Antora 3.1.3">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+    <script>var uiRootPath = '../../../_'</script>
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://www.redhat.com" target="_blank"><img src="../../../_/img/redhat-logo.png" height="40px" alt="Red Hat"></a>
+      <a class="navbar-item" style="font-size: 24px; color: white" href="../../..">Red Hat Build of Podman Desktop: Installation, Configuration, and Troubleshooting</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="https://github.com/RedHatQuickCourses/REPLACEREPONAME/issues" target="_blank">Report Issues</a>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="podmandesktop" data-version="1.0.0">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html">Red Hat Build of Podman Desktop: Installation, Configuration, and Troubleshooting</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../index.html">Home</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../LABENV/index.html">Lab Environment</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../introduction-to-podman-desktop/introduction-to-podman-desktop.html">Introduction to Podman Desktop</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-podman-desktop/overview-of-podman-desktops-purpose-and-capabilities.html">Overview of Podman Desktop&#8217;s purpose and capabilities</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-podman-desktop/key-features-for-container-management.html">Key features for container management</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-podman-desktop/benefits-of-using-red-hat-build-of-podman-desktop.html">Benefits of using Red Hat Build of Podman Desktop</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../introduction-to-podman-desktop/introduction-to-podman-desktop.html">Introduction to Podman Desktop</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-podman-desktop/overview-of-podman-desktops-purpose-and-capabilities.html">Overview of Podman Desktop&#8217;s purpose and capabilities</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-podman-desktop/key-features-for-container-management.html">Key features for container management</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-podman-desktop/benefits-of-using-red-hat-build-of-podman-desktop.html">Benefits of using Red Hat Build of Podman Desktop</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../preparing-for-installation/preparing-for-installation.html">Preparing for Installation</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-for-installation/system-requirements-for-various-operating-systems.html">System requirements for various operating systems</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-for-installation/prerequisites-and-dependencies-eg-wsl-on-windows-podman-engine.html">Prerequisites and dependencies (e.g., WSL on Windows, Podman engine)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-for-installation/understanding-podman-machine-concept.html">Understanding Podman machine concept</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../preparing-for-installation/preparing-for-installation.html">Preparing for Installation</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-for-installation/system-requirements-for-various-operating-systems.html">System requirements for various operating systems</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-for-installation/prerequisites-and-dependencies-eg-wsl-on-windows-podman-engine.html">Prerequisites and dependencies (e.g., WSL on Windows, Podman engine)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-for-installation/understanding-podman-machine-concept.html">Understanding Podman machine concept</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/installing-podman-desktop-on-macos.html">Installing Podman Desktop on macOS</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/download-and-installation-process-via-installer.html">Download and installation process via installer</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/initial-setup-and-podman-machine-creation.html">Initial setup and Podman machine creation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/verifying-installation-and-basic-functionality.html">Verifying installation and basic functionality</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/installing-podman-desktop-on-macos.html">Installing Podman Desktop on macOS</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/download-and-installation-process-via-installer.html">Download and installation process via installer</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/initial-setup-and-podman-machine-creation.html">Initial setup and Podman machine creation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/verifying-installation-and-basic-functionality.html">Verifying installation and basic functionality</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/installing-podman-desktop-on-windows.html">Installing Podman Desktop on Windows</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/download-and-installation-process-via-installer.html">Download and installation process via installer</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/wsl-2-integration-and-configuration.html">WSL 2 integration and configuration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/initial-setup-and-podman-machine-creation.html">Initial setup and Podman machine creation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/verifying-installation-and-basic-functionality.html">Verifying installation and basic functionality</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/installing-podman-desktop-on-windows.html">Installing Podman Desktop on Windows</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/download-and-installation-process-via-installer.html">Download and installation process via installer</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/wsl-2-integration-and-configuration.html">WSL 2 integration and configuration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/initial-setup-and-podman-machine-creation.html">Initial setup and Podman machine creation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/verifying-installation-and-basic-functionality.html">Verifying installation and basic functionality</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/installing-podman-desktop-on-red-hat-enterprise-linux.html">Installing Podman Desktop on Red Hat Enterprise Linux</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/installation-steps-using-package-managers-eg-dnf.html">Installation steps using package managers (e.g., <code>dnf</code>)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/initial-setup-and-podman-machine-creation.html">Initial setup and Podman machine creation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/verifying-installation-and-basic-functionality.html">Verifying installation and basic functionality</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/installing-podman-desktop-on-red-hat-enterprise-linux.html">Installing Podman Desktop on Red Hat Enterprise Linux</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/installation-steps-using-package-managers-eg-dnf.html">Installation steps using package managers (e.g., <code>dnf</code>)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/initial-setup-and-podman-machine-creation.html">Initial setup and Podman machine creation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/verifying-installation-and-basic-functionality.html">Verifying installation and basic functionality</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/deploying-podman-desktop-in-air-gapped-environments.html">Deploying Podman Desktop in Air-Gapped Environments</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/challenges-and-considerations-for-air-gapped-deployments.html">Challenges and considerations for air-gapped deployments</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/gathering-necessary-installation-artifacts.html">Gathering necessary installation artifacts</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/step-by-step-offline-installation-procedure.html">Step-by-step offline installation procedure</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/post-installation-configuration-for-restricted-environments.html">Post-installation configuration for restricted environments</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/deploying-podman-desktop-in-air-gapped-environments.html">Deploying Podman Desktop in Air-Gapped Environments</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/challenges-and-considerations-for-air-gapped-deployments.html">Challenges and considerations for air-gapped deployments</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/gathering-necessary-installation-artifacts.html">Gathering necessary installation artifacts</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/step-by-step-offline-installation-procedure.html">Step-by-step offline installation procedure</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/post-installation-configuration-for-restricted-environments.html">Post-installation configuration for restricted environments</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/configuring-and-customizing-podman-desktop.html">Configuring and Customizing Podman Desktop</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/managing-container-engine-settings-memory-cpu-disk.html">Managing container engine settings (memory, CPU, disk)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/configuring-registries-and-image-pull-secrets.html">Configuring registries and image pull secrets</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/setting-up-network-proxies.html">Setting up network proxies</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/integrating-with-kubernetes-and-openshift-clusters.html">Integrating with Kubernetes and OpenShift clusters</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/exploring-and-managing-extensions.html">Exploring and managing extensions</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/configuring-and-customizing-podman-desktop.html">Configuring and Customizing Podman Desktop</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/managing-container-engine-settings-memory-cpu-disk.html">Managing container engine settings (memory, CPU, disk)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/configuring-registries-and-image-pull-secrets.html">Configuring registries and image pull secrets</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/setting-up-network-proxies.html">Setting up network proxies</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/integrating-with-kubernetes-and-openshift-clusters.html">Integrating with Kubernetes and OpenShift clusters</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/exploring-and-managing-extensions.html">Exploring and managing extensions</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/troubleshooting-podman-desktop-issues.html">Troubleshooting Podman Desktop Issues</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/common-installation-and-startup-problems.html">Common installation and startup problems</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/diagnosing-podman-machine-failures.html">Diagnosing Podman machine failures</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/resolving-image-pull-and-container-run-errors.html">Resolving image pull and container run errors</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/utilizing-logs-for-problem-identification.html">Utilizing logs for problem identification</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/best-practices-for-issue-prevention.html">Best practices for issue prevention</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/troubleshooting-podman-desktop-issues.html">Troubleshooting Podman Desktop Issues</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/common-installation-and-startup-problems.html">Common installation and startup problems</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/diagnosing-podman-machine-failures.html">Diagnosing Podman machine failures</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/resolving-image-pull-and-container-run-errors.html">Resolving image pull and container run errors</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/utilizing-logs-for-problem-identification.html">Utilizing logs for problem identification</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/best-practices-for-issue-prevention.html">Best practices for issue prevention</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="hands-on-exercises.html">Hands-On Exercises</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="lab-installing-podman-desktop-on-your-preferred-os.html">Lab: Installing Podman Desktop on your preferred OS</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="lab-managing-podman-machines-and-container-engines.html">Lab: Managing Podman machines and container engines</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="lab-deploying-and-interacting-with-a-container.html">Lab: Deploying and interacting with a container</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="lab-configuring-a-private-registry-connection.html">Lab: Configuring a private registry connection</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="lab-troubleshooting-a-simulated-podman-desktop-issue.html">Lab: Troubleshooting a simulated Podman Desktop issue</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="hands-on-exercises.html">Hands-On Exercises</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="lab-installing-podman-desktop-on-your-preferred-os.html">Lab: Installing Podman Desktop on your preferred OS</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="lab-managing-podman-machines-and-container-engines.html">Lab: Managing Podman machines and container engines</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="lab-deploying-and-interacting-with-a-container.html">Lab: Deploying and interacting with a container</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="lab-configuring-a-private-registry-connection.html">Lab: Configuring a private registry connection</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="lab-troubleshooting-a-simulated-podman-desktop-issue.html">Lab: Troubleshooting a simulated Podman Desktop issue</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../appendix/appendix.html">Appendix</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">Red Hat Build of Podman Desktop: Installation, Configuration, and Troubleshooting</span>
+    <span class="version">1.0.0</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <a class="title" href="../index.html">Red Hat Build of Podman Desktop: Installation, Configuration, and Troubleshooting</a>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">1.0.0</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">Red Hat Build of Podman Desktop: Installation, Configuration, and Troubleshooting</a></li>
+    <li><a href="hands-on-exercises.html">Hands-On Exercises</a></li>
+    <li><a href="lab-configuring-a-private-registry-connection.html">Lab: Configuring a private registry connection</a></li>
+  </ul>
+</nav>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Lab: Configuring a private registry connection</h1>
+<h1 id="_lab_configuring_a_private_registry_connection" class="sect0"><a class="anchor" href="#_lab_configuring_a_private_registry_connection"></a>Lab: Configuring a Private Registry Connection</h1>
+<div class="quoteblock abstract">
+<blockquote>
+This lab guides you through the process of configuring Podman Desktop to connect to a private container image registry. You will learn how to add a registry, provide authentication credentials, and verify the connection by pulling and optionally pushing images.
+</blockquote>
+</div>
+<div class="sect1">
+<h2 id="_introduction_to_private_registries"><a class="anchor" href="#_introduction_to_private_registries"></a>Introduction to Private Registries</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In enterprise environments and secure development workflows, container images are often stored in <strong>private registries</strong> rather than public ones like Docker Hub. Private registries offer several benefits:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Security</strong>: They provide a controlled environment for storing proprietary or sensitive images, often behind corporate firewalls or with strict access controls.</p>
+</li>
+<li>
+<p><strong>Compliance</strong>: Many organizations have regulatory requirements to store images in specific locations or with specific security scanning policies.</p>
+</li>
+<li>
+<p><strong>Performance</strong>: Storing images closer to your development or deployment environments can reduce pull times.</p>
+</li>
+<li>
+<p><strong>Version Control</strong>: They facilitate managing specific versions of internal applications and their dependencies.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Podman Desktop provides a user-friendly interface to manage connections to these private registries, making it seamless to pull and push images just as you would with public registries, but with the added layer of authentication and access control.</p>
+</div>
+<div class="sect2">
+<h3 id="_learning_objectives"><a class="anchor" href="#_learning_objectives"></a>Learning Objectives</h3>
+<div class="paragraph">
+<p>By the end of this lab, you will be able to:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Understand the purpose and benefits of private container registries.</p>
+</li>
+<li>
+<p>Navigate Podman Desktop&#8217;s registry management settings.</p>
+</li>
+<li>
+<p>Add a new private registry connection to Podman Desktop.</p>
+</li>
+<li>
+<p>Configure authentication for a private registry.</p>
+</li>
+<li>
+<p>Verify a private registry connection by pulling an image.</p>
+</li>
+<li>
+<p>(Optional) Push an image to a private registry using Podman Desktop.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_prerequisites"><a class="anchor" href="#_prerequisites"></a>Prerequisites</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Before starting this lab, ensure you have:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>A running instance of Red Hat Build of Podman Desktop.</p>
+</li>
+<li>
+<p>Access to a private container registry (e.g., a self-hosted registry, Quay.io private repository, Docker Hub private repository, or similar).</p>
+</li>
+<li>
+<p>Valid credentials (username and password or token) for accessing your chosen private registry.</p>
+</li>
+<li>
+<p>The full URL of your private registry (e.g., <code>registry.example.com</code>, <code>quay.io</code>, <code>docker.io</code>).</p>
+</li>
+<li>
+<p>(Optional but Recommended) A test image within your private registry that you can attempt to pull, or a simple <code>Dockerfile</code> to build and push.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_lab_activity_configuring_a_private_registry_connection"><a class="anchor" href="#_lab_activity_configuring_a_private_registry_connection"></a>Lab Activity: Configuring a Private Registry Connection</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This lab will walk you through the process of adding, authenticating, and verifying a private registry connection within Podman Desktop.</p>
+</div>
+<div class="sect2">
+<h3 id="_step_1_open_podman_desktop_and_navigate_to_registry_settings"><a class="anchor" href="#_step_1_open_podman_desktop_and_navigate_to_registry_settings"></a>Step 1: Open Podman Desktop and Navigate to Registry Settings</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Launch Red Hat Build of Podman Desktop.</p>
+</li>
+<li>
+<p>In the left-hand navigation pane, click on the <strong>Settings</strong> (gear) icon.</p>
+</li>
+<li>
+<p>From the Settings menu, select <strong>Registries</strong>.</p>
+<div class="literalblock">
+<div class="content">
+<pre>You should now see a list of configured registries, which might include default public registries like `docker.io` and `quay.io`.</pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_step_2_add_a_new_private_registry"><a class="anchor" href="#_step_2_add_a_new_private_registry"></a>Step 2: Add a New Private Registry</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>On the Registries page, click the <strong>+ Add Registry</strong> button.</p>
+</li>
+<li>
+<p>A new form will appear to configure your registry.</p>
+</li>
+<li>
+<p>In the <strong>Name</strong> field, provide a descriptive name for your registry (e.g., <code>My Private Registry</code>, <code>Quay Enterprise</code>). This is for your reference within Podman Desktop.</p>
+</li>
+<li>
+<p>In the <strong>Registry URL</strong> field, enter the full URL of your private registry.</p>
+<div class="literalblock">
+<div class="content">
+<pre>For example:
+*   If using a self-hosted registry: `registry.example.com`
+*   If using Quay.io: `quay.io`
+*   If using Docker Hub (for private repos): `docker.io`</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>NOTE: Do not include `http://` or `https://` in the URL. Podman Desktop handles the protocol.</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Leave the <strong>Insecure Registry</strong> checkbox unchecked unless your registry is specifically configured for insecure HTTP access (which is not recommended for production environments).</p>
+</li>
+<li>
+<p>Click the <strong>Add registry</strong> button.</p>
+<div class="literalblock">
+<div class="content">
+<pre>The new registry will now appear in your list of registries, but it likely won't be authenticated yet.</pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_step_3_configure_authentication_for_the_private_registry"><a class="anchor" href="#_step_3_configure_authentication_for_the_private_registry"></a>Step 3: Configure Authentication for the Private Registry</h3>
+<div class="paragraph">
+<p>Even if a registry appears in the list, Podman Desktop needs credentials to interact with private repositories within it.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>In the list of registries, locate the private registry you just added.</p>
+</li>
+<li>
+<p>Click the <strong>Authenticate</strong> button next to its entry.</p>
+</li>
+<li>
+<p>A dialog will prompt you for authentication details:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Username</strong>: Enter your username for the private registry.</p>
+</li>
+<li>
+<p><strong>Password/Token</strong>: Enter your password or an access token for the private registry.</p>
+<div class="literalblock">
+<div class="content">
+<pre>NOTE: For some registries (like Docker Hub or Quay.io), you might need to generate an access token or application password instead of using your primary account password for security best practices. Consult your registry's documentation for details.</pre>
+</div>
+</div>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Click the <strong>Log in</strong> button.</p>
+<div class="literalblock">
+<div class="content">
+<pre>Podman Desktop will attempt to log in to the registry using the provided credentials. If successful, the "Authenticate" button will disappear, and you might see a "Logged in as &lt;username&gt;" status next to the registry entry.</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>If authentication fails, double-check your username, password/token, and the registry URL.</pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_step_4_verify_registry_connection_by_pulling_an_image"><a class="anchor" href="#_step_4_verify_registry_connection_by_pulling_an_image"></a>Step 4: Verify Registry Connection by Pulling an Image</h3>
+<div class="paragraph">
+<p>Now that Podman Desktop is authenticated, let&#8217;s verify the connection by attempting to pull an image that resides only in your private registry.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Navigate back to the main Podman Desktop dashboard by clicking the <strong>Containers</strong> icon in the left-hand navigation pane.</p>
+</li>
+<li>
+<p>Click on the <strong>Images</strong> tab.</p>
+</li>
+<li>
+<p>In the search bar, type the full path to an image in your private registry.</p>
+<div class="literalblock">
+<div class="content">
+<pre>For example, if your registry is `registry.example.com` and you have an image named `my-app` with tag `latest` in a namespace `myproject`, you would search for: `registry.example.com/myproject/my-app:latest`</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Press <code>Enter</code> or click the search icon.</p>
+</li>
+<li>
+<p>If the image is found, Podman Desktop will display it. Click the <strong>Pull</strong> button next to the image.</p>
+<div class="literalblock">
+<div class="content">
+<pre>Podman Desktop will attempt to pull the image. Monitor the activity log or the image status. If the pull is successful, the image will appear in your local image list. This confirms that Podman Desktop can successfully communicate and authenticate with your private registry to pull images.</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>If the pull fails, review the error message. Common issues include:
+*   Incorrect image path or tag.
+*   Authentication issues (credentials might be expired or incorrect).
+*   Network connectivity problems to the registry.</pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_step_5_optional_push_an_image_to_the_private_registry"><a class="anchor" href="#_step_5_optional_push_an_image_to_the_private_registry"></a>Step 5: (Optional) Push an Image to the Private Registry</h3>
+<div class="paragraph">
+<p>To fully test write access to your private registry, you can build a simple image and push it.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Create a Simple Dockerfile:</strong>
+Open a text editor and save the following content as <code>Dockerfile</code> in an empty directory:</p>
+<div class="literalblock">
+<div class="content">
+<pre>```dockerfile
+# Dockerfile
+FROM alpine:latest
+CMD ["echo", "Hello from my private registry!"]
+```</pre>
+</div>
+</div>
+</li>
+<li>
+<p><strong>Build the Image:</strong>
+Open your terminal or command prompt. Navigate to the directory where you saved your <code>Dockerfile</code>. Use the <code>podman build</code> command to build your image, tagging it with your private registry&#8217;s path.</p>
+<div class="literalblock">
+<div class="content">
+<pre>Replace `registry.example.com/myproject/my-test-app:latest` with your actual private registry URL, namespace, and desired image name/tag.</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>```bash
+podman build -t registry.example.com/myproject/my-test-app:latest .
+```</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>You should see output indicating a successful build.</pre>
+</div>
+</div>
+</li>
+<li>
+<p><strong>Verify Image in Podman Desktop:</strong>
+Go back to Podman Desktop, navigate to the <strong>Images</strong> tab. You should see your newly built image listed locally.</p>
+</li>
+<li>
+<p><strong>Push the Image:</strong>
+In Podman Desktop, locate your <code>registry.example.com/myproject/my-test-app:latest</code> image in the list.
+Click the <strong>Push</strong> icon (upward arrow) next to the image.</p>
+<div class="literalblock">
+<div class="content">
+<pre>Podman Desktop will attempt to push the image to your private registry. Monitor the activity log. If successful, the image will be available in your private registry, confirming full read/write access from Podman Desktop.</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>You can often verify this by logging into your private registry's web interface (if available) or by attempting to pull the image from another system.</pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_summary"><a class="anchor" href="#_summary"></a>Summary</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In this lab, you successfully configured Podman Desktop to connect to a private container image registry. You learned how to add the registry URL, provide necessary authentication credentials, and verify the connection by pulling an image. Optionally, you also practiced building and pushing an image, demonstrating full interaction capabilities with your secure image repository. This capability is crucial for working with proprietary applications and maintaining a secure supply chain for your containerized workloads.#  Lab: Configuring a private registry connection</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-adoc hljs" data-lang="adoc">= Lab: Configuring a Private Registry Connection
+
+[.lead]
+This lab guides you through the essential process of configuring Red Hat Build of Podman Desktop to connect securely to a private container image registry. Mastering this skill is crucial for organizations to manage proprietary applications, ensure supply chain security, and comply with various regulatory standards.
+
+== Introduction to Private Registries
+
+image::private-registry-concept.png[Private Registry Concept, 600, 400]
+_Figure: Conceptual overview of private container registries_
+
+Container images, the building blocks of modern applications, are stored and distributed through registries. While public registries such as Docker Hub and Quay.io host a vast array of open-source images, enterprises and development teams frequently rely on **private registries** for internal development, proprietary applications, and enhanced security controls.
+
+The primary motivations for utilizing private registries include:
+
+*   **Enhanced Security:** Private registries allow organizations to control access to their images, ensuring that only authorized users or systems can pull or push specific versions.
+*   **Compliance and Governance:** Many industries have stringent compliance requirements that necessitate keeping application artifacts, including container images, within a controlled private network or environment.
+*   **Performance Optimization:** Hosting a registry within a local network reduces latency for image pulls, significantly speeding up development and deployment cycles, especially in air-gapped or high-throughput environments.
+*   **Software Supply Chain Control:** Private registries provide a centralized location to vet, scan, and approve all images used within an organization, strengthening the software supply chain against vulnerabilities and unauthorized components.
+
+Red Hat Build of Podman Desktop is designed to seamlessly integrate with various container registries, offering a user-friendly interface to manage connections to public, private, and cloud-hosted registry services.
+
+== Lab Scenario
+
+In this hands-on lab, we will simulate a real-world scenario by:
+
+.  Setting up a temporary, local private registry using a Podman container. This allows us to practice without needing access to a pre-existing enterprise registry.
+.  Exploring the fundamental principles of authentication with container registries.
+.  Configuring Red Hat Build of Podman Desktop to authenticate with and pull a custom image from this newly created local private registry.
+
+== Prerequisites
+
+Before you begin this lab, please ensure you have the following:
+
+*   Red Hat Build of Podman Desktop installed, running, and connected to a functional Podman engine.
+*   A working `podman` CLI installation on your host machine.
+*   Basic command-line familiarity.
+*   Administrative or root privileges on your system, as port binding for the local registry might require it.
+
+== Step 1: Set Up a Temporary Local Private Registry
+
+To simulate a private registry environment, we will deploy a `registry:2` container image on your local machine. This container will serve as our secure, private image repository for the duration of this lab.
+
+.  Open your terminal or command prompt and execute the following command to start the registry container:
++
+[source,bash]
+----
+podman run -d -p 5000:5000 --name local-registry registry:2
+----
++
+Let's break down this command:
+*   `podman run -d`: Executes the `registry:2` image as a container in detached mode, meaning it runs in the background.
+*   `-p 5000:5000`: This crucial flag maps port 5000 on your *host machine* to port 5000 inside the *container*. Port 5000 is the standard default port for container registries.
+*   `--name local-registry`: Assigns a descriptive name (`local-registry`) to the container for easy identification and management.
+*   `registry:2`: Specifies the official Docker Registry image, version 2, which is widely used for hosting container images.
+
+.  Verify that your local registry container is running successfully by listing all active containers:
++
+[source,bash]
+----
+podman ps
+----
++
+You should observe an output similar to this, confirming your `local-registry` container is active:
++
+```text
+CONTAINER ID  IMAGE         COMMAND    CREATED        STATUS        PORTS                   NAMES
+[...]         registry:2               X seconds ago  Up X seconds  0.0.0.0:5000-&gt;5000/tcp  local-registry</code></pre>
+</div>
+</div>
+<div id="troubleshooting-local-registry" class="admonitionblock caution">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-caution" title="Caution"></i>
+</td>
+<td class="content">
+If the <code>local-registry</code> container fails to start or shows an <code>Exited</code> status, troubleshoot by checking the container logs:
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">podman logs local-registry</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>A common issue is port 5000 already being in use. Ensure no other application on your system is occupying this port.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_step_2_authenticate_with_the_local_private_registry_via_cli"><a class="anchor" href="#_step_2_authenticate_with_the_local_private_registry_via_cli"></a>Step 2: Authenticate with the Local Private Registry via CLI</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Understanding the underlying CLI authentication mechanism is beneficial, even though Podman Desktop simplifies credential management. When you authenticate to a registry using the <code>podman login</code> command, your credentials (username and an encoded password/token) are securely stored in a configuration file, typically <code>~/.config/containers/auth.json</code> on Linux/macOS or a similar location on Windows. Podman Desktop can then leverage these stored credentials.</p>
+</div>
+<div class="paragraph">
+<p>For our local registry, we&#8217;ll use a dummy set of credentials.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>In your terminal, execute the login command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">podman login localhost:5000</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>When prompted for <code>Username</code>, type <code>podmanuser</code> and press <code>Enter</code>.</p>
+</li>
+<li>
+<p>When prompted for <code>Password</code>, type <code>password123</code> and press <code>Enter</code>.</p>
+</li>
+<li>
+<p>A <code>Login Succeeded!</code> message will confirm that your credentials have been accepted and stored.</p>
+</li>
+</ol>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+In a production environment, <code>localhost:5000</code> would be replaced with the actual registry URL (e.g., <code>my-private-registry.example.com</code>), and you would use a strong, securely generated password or an access token.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_step_3_configure_podman_desktop_to_use_the_private_registry"><a class="anchor" href="#_step_3_configure_podman_desktop_to_use_the_private_registry"></a>Step 3: Configure Podman Desktop to Use the Private Registry</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Now that our local registry is running and we&#8217;ve authenticated via the CLI, let&#8217;s configure Podman Desktop to recognize and utilize these credentials.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Open <strong>Red Hat Build of Podman Desktop</strong>.</p>
+</li>
+<li>
+<p>Locate and click the <strong>Settings</strong> (gear icon) in the left-hand navigation sidebar.</p>
+</li>
+<li>
+<p>Within the Settings menu, select <strong>Registries</strong>.</p>
+</li>
+</ol>
+</div>
+<div class="imageblock unresolved">
+<div class="content">
+<img src="podman-desktop-settings-registries.png" alt="Podman Desktop Settings - Registries" width="600" height="400">
+</div>
+</div>
+<div class="paragraph">
+<p><em>Figure: Accessing the Registries settings in Podman Desktop</em></p>
+</div>
+<div class="paragraph">
+<p>Podman Desktop often automatically detects and displays registry configurations from your <code>auth.json</code> file. You should see <code>localhost:5000</code> listed, possibly under "Insecure registries" or "Registries," indicating it&#8217;s using the CLI configuration.</p>
+</div>
+<div class="paragraph">
+<p>If the registry does not appear automatically, or if you prefer to manage it directly through the UI:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Click the <strong>Add registry</strong> button.</p>
+</li>
+<li>
+<p>In the "Add Registry" dialog:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Enter <code>localhost:5000</code> as the <strong>Registry URL</strong>.</p>
+</li>
+<li>
+<p>(Optional) Provide a <strong>Display name</strong> such as <code>My Local Podman Registry</code>.</p>
+</li>
+<li>
+<p>For <strong>Authentication</strong>, select <code>Authentication required</code>.</p>
+</li>
+<li>
+<p>Enter <code>podmanuser</code> for the <strong>Username</strong>.</p>
+</li>
+<li>
+<p>Enter <code>password123</code> for the <strong>Password</strong>.</p>
+</li>
+<li>
+<p>Crucially, check the <code>Insecure registry</code> checkbox. Since our local registry is running over HTTP without TLS/SSL, Podman Desktop needs to be explicitly told to trust this insecure connection.</p>
+</li>
+<li>
+<p>Click <strong>Add registry</strong>.</p>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+<div class="imageblock unresolved">
+<div class="content">
+<img src="podman-desktop-add-registry.png" alt="Add Registry in Podman Desktop" width="600" height="400">
+</div>
+</div>
+<div class="paragraph">
+<p><em>Figure: Manually adding a new registry in Podman Desktop</em></p>
+</div>
+<div class="paragraph">
+<p>You should now see <code>localhost:5000</code> clearly configured within Podman Desktop&#8217;s Registries list.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_step_4_verify_image_pull_from_the_private_registry"><a class="anchor" href="#_step_4_verify_image_pull_from_the_private_registry"></a>Step 4: Verify Image Pull from the Private Registry</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>To confirm that Podman Desktop can successfully interact with our private registry, we will:
+1.  Push a simple custom image to the local registry.
+2.  Attempt to pull that image from the registry using Podman Desktop.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Create a simple Dockerfile:</strong></p>
+<div class="paragraph">
+<p>In an empty directory, create a file named <code>Dockerfile</code> with the following content:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-dockerfile hljs" data-lang="dockerfile">FROM alpine/git
+CMD ["echo", "Hello from local private registry!"]</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This <code>Dockerfile</code> creates a minimal image based on <code>alpine/git</code> that simply prints a message when run.</p>
+</div>
+</li>
+<li>
+<p><strong>Build and Tag the Image:</strong></p>
+<div class="paragraph">
+<p>Use Podman to build this image and tag it specifically for your local registry:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">podman build -t localhost:5000/my-app:latest .</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The tag <code>localhost:5000/my-app:latest</code> specifies that this image belongs to the registry running on <code>localhost:5000</code>.</p>
+</div>
+</li>
+<li>
+<p><strong>Push the Image to Your Local Private Registry:</strong></p>
+<div class="paragraph">
+<p>Now, push the newly built image to your private registry:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">podman push localhost:5000/my-app:latest</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You will see output indicating the image layers are being pushed to <code>localhost:5000</code>. This confirms your CLI can push to the configured registry.</p>
+</div>
+</li>
+<li>
+<p><strong>Pull the Image Using Podman Desktop:</strong></p>
+<div class="paragraph">
+<p>Switch back to <strong>Podman Desktop</strong>.</p>
+</div>
+</li>
+<li>
+<p>Navigate to the <strong>Images</strong> section in the left-hand navigation pane.</p>
+</li>
+<li>
+<p>Click the <strong>Pull Image</strong> button, typically found at the top right of the Images view.</p>
+</li>
+<li>
+<p>In the "Pull an image" dialog box, enter the full image name: <code>localhost:5000/my-app:latest</code>.</p>
+</li>
+<li>
+<p>Click <strong>Pull image</strong>.</p>
+</li>
+</ol>
+</div>
+<div class="imageblock unresolved">
+<div class="content">
+<img src="podman-desktop-pull-image-from-private.png" alt="Pull Image from Private Registry" width="600" height="400">
+</div>
+</div>
+<div class="paragraph">
+<p><em>Figure: Initiating an image pull from the local private registry in Podman Desktop</em></p>
+</div>
+<div class="paragraph">
+<p>Upon successful completion, the <code>localhost:5000/my-app:latest</code> image will appear in your list of local images within Podman Desktop. This verifies that Podman Desktop successfully authenticated with your private registry and pulled the image.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+If you encounter issues, double-check that your <code>podman login</code> was successful and that all registry configuration details (URL, username, password, insecure flag) in Podman Desktop precisely match. For detailed diagnostics, access Podman Desktop logs via <code>Help</code> &#8594; <code>Show Logs</code>.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_step_5_clean_up"><a class="anchor" href="#_step_5_clean_up"></a>Step 5: Clean Up</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>After completing the lab, it&#8217;s good practice to remove the temporary resources you created.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Stop and Remove the Local Registry Container:</strong></p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">podman stop local-registry
+podman rm local-registry</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p><strong>Remove the Images from Your Local Podman Storage:</strong></p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">podman rmi localhost:5000/my-app:latest
+podman rmi registry:2</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If you receive an error about an image being in use, you might need to force removal using <code>podman rmi -f &lt;image_id_or_name&gt;</code>.
+</td>
+</tr>
+</table>
+</div>
+</li>
+<li>
+<p><strong>Optional: Remove Registry Credentials:</strong></p>
+<div class="paragraph">
+<p>You can remove the authentication credentials for <code>localhost:5000</code> from your <code>auth.json</code> file, though for a transient local registry, this is often unnecessary. A clean way to do this via CLI is:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">podman logout localhost:5000</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_summary_2"><a class="anchor" href="#_summary_2"></a>Summary</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Congratulations! In this lab, you have successfully:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Deployed and managed a temporary local private container image registry.</p>
+</li>
+<li>
+<p>Gained an understanding of CLI-based authentication for private registries.</p>
+</li>
+<li>
+<p>Configured Red Hat Build of Podman Desktop to recognize and securely use credentials for a private registry.</p>
+</li>
+<li>
+<p>Verified the end-to-end connection by pushing and pulling a custom image to and from your private registry.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>This hands-on experience equips you with a fundamental skill for managing container images in secure, enterprise-grade environments using Red Hat Build of Podman Desktop.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs"></code></pre>
+</div>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="lab-deploying-and-interacting-with-a-container.html">Lab: Deploying and interacting with a container</a></span>
+  <span class="next"><a href="lab-troubleshooting-a-simulated-podman-desktop-issue.html">Lab: Troubleshooting a simulated Podman Desktop issue</a></span>
+</nav>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <img src="../../../_/img/rhl-logo-red.png" height="40px" alt="Red Hat"  href="https://redhat.com" >
+</footer><script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Step-by-step offline installation procedure :: Red Hat Build of Podman Desktop: Installation, Configuration, and Troubleshooting</title>
+    <link rel="prev" href="gathering-necessary-installation-artifacts.html">
+    <link rel="next" href="post-installation-configuration-for-restricted-environments.html">
+    <meta name="generator" content="Antora 3.1.3">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+    <script>var uiRootPath = '../../../_'</script>
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://www.redhat.com" target="_blank"><img src="../../../_/img/redhat-logo.png" height="40px" alt="Red Hat"></a>
+      <a class="navbar-item" style="font-size: 24px; color: white" href="../../..">Red Hat Build of Podman Desktop: Installation, Configuration, and Troubleshooting</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="https://github.com/RedHatQuickCourses/REPLACEREPONAME/issues" target="_blank">Report Issues</a>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="podmandesktop" data-version="1.0.0">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html">Red Hat Build of Podman Desktop: Installation, Configuration, and Troubleshooting</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../index.html">Home</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../LABENV/index.html">Lab Environment</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../introduction-to-podman-desktop/introduction-to-podman-desktop.html">Introduction to Podman Desktop</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-podman-desktop/overview-of-podman-desktops-purpose-and-capabilities.html">Overview of Podman Desktop&#8217;s purpose and capabilities</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-podman-desktop/key-features-for-container-management.html">Key features for container management</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-podman-desktop/benefits-of-using-red-hat-build-of-podman-desktop.html">Benefits of using Red Hat Build of Podman Desktop</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../introduction-to-podman-desktop/introduction-to-podman-desktop.html">Introduction to Podman Desktop</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-podman-desktop/overview-of-podman-desktops-purpose-and-capabilities.html">Overview of Podman Desktop&#8217;s purpose and capabilities</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-podman-desktop/key-features-for-container-management.html">Key features for container management</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-podman-desktop/benefits-of-using-red-hat-build-of-podman-desktop.html">Benefits of using Red Hat Build of Podman Desktop</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../preparing-for-installation/preparing-for-installation.html">Preparing for Installation</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-for-installation/system-requirements-for-various-operating-systems.html">System requirements for various operating systems</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-for-installation/prerequisites-and-dependencies-eg-wsl-on-windows-podman-engine.html">Prerequisites and dependencies (e.g., WSL on Windows, Podman engine)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-for-installation/understanding-podman-machine-concept.html">Understanding Podman machine concept</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../preparing-for-installation/preparing-for-installation.html">Preparing for Installation</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-for-installation/system-requirements-for-various-operating-systems.html">System requirements for various operating systems</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-for-installation/prerequisites-and-dependencies-eg-wsl-on-windows-podman-engine.html">Prerequisites and dependencies (e.g., WSL on Windows, Podman engine)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-for-installation/understanding-podman-machine-concept.html">Understanding Podman machine concept</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/installing-podman-desktop-on-macos.html">Installing Podman Desktop on macOS</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/download-and-installation-process-via-installer.html">Download and installation process via installer</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/initial-setup-and-podman-machine-creation.html">Initial setup and Podman machine creation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/verifying-installation-and-basic-functionality.html">Verifying installation and basic functionality</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/installing-podman-desktop-on-macos.html">Installing Podman Desktop on macOS</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/download-and-installation-process-via-installer.html">Download and installation process via installer</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/initial-setup-and-podman-machine-creation.html">Initial setup and Podman machine creation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/verifying-installation-and-basic-functionality.html">Verifying installation and basic functionality</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/installing-podman-desktop-on-windows.html">Installing Podman Desktop on Windows</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/download-and-installation-process-via-installer.html">Download and installation process via installer</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/wsl-2-integration-and-configuration.html">WSL 2 integration and configuration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/initial-setup-and-podman-machine-creation.html">Initial setup and Podman machine creation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/verifying-installation-and-basic-functionality.html">Verifying installation and basic functionality</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/installing-podman-desktop-on-windows.html">Installing Podman Desktop on Windows</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/download-and-installation-process-via-installer.html">Download and installation process via installer</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/wsl-2-integration-and-configuration.html">WSL 2 integration and configuration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/initial-setup-and-podman-machine-creation.html">Initial setup and Podman machine creation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/verifying-installation-and-basic-functionality.html">Verifying installation and basic functionality</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/installing-podman-desktop-on-red-hat-enterprise-linux.html">Installing Podman Desktop on Red Hat Enterprise Linux</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/installation-steps-using-package-managers-eg-dnf.html">Installation steps using package managers (e.g., <code>dnf</code>)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/initial-setup-and-podman-machine-creation.html">Initial setup and Podman machine creation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/verifying-installation-and-basic-functionality.html">Verifying installation and basic functionality</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/installing-podman-desktop-on-red-hat-enterprise-linux.html">Installing Podman Desktop on Red Hat Enterprise Linux</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/installation-steps-using-package-managers-eg-dnf.html">Installation steps using package managers (e.g., <code>dnf</code>)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/initial-setup-and-podman-machine-creation.html">Initial setup and Podman machine creation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/verifying-installation-and-basic-functionality.html">Verifying installation and basic functionality</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="deploying-podman-desktop-in-air-gapped-environments.html">Deploying Podman Desktop in Air-Gapped Environments</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="challenges-and-considerations-for-air-gapped-deployments.html">Challenges and considerations for air-gapped deployments</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="gathering-necessary-installation-artifacts.html">Gathering necessary installation artifacts</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="step-by-step-offline-installation-procedure.html">Step-by-step offline installation procedure</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="post-installation-configuration-for-restricted-environments.html">Post-installation configuration for restricted environments</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="deploying-podman-desktop-in-air-gapped-environments.html">Deploying Podman Desktop in Air-Gapped Environments</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="challenges-and-considerations-for-air-gapped-deployments.html">Challenges and considerations for air-gapped deployments</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="gathering-necessary-installation-artifacts.html">Gathering necessary installation artifacts</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="step-by-step-offline-installation-procedure.html">Step-by-step offline installation procedure</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="post-installation-configuration-for-restricted-environments.html">Post-installation configuration for restricted environments</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/configuring-and-customizing-podman-desktop.html">Configuring and Customizing Podman Desktop</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/managing-container-engine-settings-memory-cpu-disk.html">Managing container engine settings (memory, CPU, disk)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/configuring-registries-and-image-pull-secrets.html">Configuring registries and image pull secrets</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/setting-up-network-proxies.html">Setting up network proxies</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/integrating-with-kubernetes-and-openshift-clusters.html">Integrating with Kubernetes and OpenShift clusters</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/exploring-and-managing-extensions.html">Exploring and managing extensions</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/configuring-and-customizing-podman-desktop.html">Configuring and Customizing Podman Desktop</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/managing-container-engine-settings-memory-cpu-disk.html">Managing container engine settings (memory, CPU, disk)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/configuring-registries-and-image-pull-secrets.html">Configuring registries and image pull secrets</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/setting-up-network-proxies.html">Setting up network proxies</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/integrating-with-kubernetes-and-openshift-clusters.html">Integrating with Kubernetes and OpenShift clusters</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/exploring-and-managing-extensions.html">Exploring and managing extensions</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/troubleshooting-podman-desktop-issues.html">Troubleshooting Podman Desktop Issues</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/common-installation-and-startup-problems.html">Common installation and startup problems</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/diagnosing-podman-machine-failures.html">Diagnosing Podman machine failures</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/resolving-image-pull-and-container-run-errors.html">Resolving image pull and container run errors</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/utilizing-logs-for-problem-identification.html">Utilizing logs for problem identification</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/best-practices-for-issue-prevention.html">Best practices for issue prevention</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/troubleshooting-podman-desktop-issues.html">Troubleshooting Podman Desktop Issues</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/common-installation-and-startup-problems.html">Common installation and startup problems</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/diagnosing-podman-machine-failures.html">Diagnosing Podman machine failures</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/resolving-image-pull-and-container-run-errors.html">Resolving image pull and container run errors</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/utilizing-logs-for-problem-identification.html">Utilizing logs for problem identification</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/best-practices-for-issue-prevention.html">Best practices for issue prevention</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../hands-on-exercises/hands-on-exercises.html">Hands-On Exercises</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-installing-podman-desktop-on-your-preferred-os.html">Lab: Installing Podman Desktop on your preferred OS</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-managing-podman-machines-and-container-engines.html">Lab: Managing Podman machines and container engines</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-deploying-and-interacting-with-a-container.html">Lab: Deploying and interacting with a container</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-configuring-a-private-registry-connection.html">Lab: Configuring a private registry connection</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-troubleshooting-a-simulated-podman-desktop-issue.html">Lab: Troubleshooting a simulated Podman Desktop issue</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../hands-on-exercises/hands-on-exercises.html">Hands-On Exercises</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-installing-podman-desktop-on-your-preferred-os.html">Lab: Installing Podman Desktop on your preferred OS</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-managing-podman-machines-and-container-engines.html">Lab: Managing Podman machines and container engines</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-deploying-and-interacting-with-a-container.html">Lab: Deploying and interacting with a container</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-configuring-a-private-registry-connection.html">Lab: Configuring a private registry connection</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-troubleshooting-a-simulated-podman-desktop-issue.html">Lab: Troubleshooting a simulated Podman Desktop issue</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../appendix/appendix.html">Appendix</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">Red Hat Build of Podman Desktop: Installation, Configuration, and Troubleshooting</span>
+    <span class="version">1.0.0</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <a class="title" href="../index.html">Red Hat Build of Podman Desktop: Installation, Configuration, and Troubleshooting</a>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">1.0.0</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">Red Hat Build of Podman Desktop: Installation, Configuration, and Troubleshooting</a></li>
+    <li><a href="deploying-podman-desktop-in-air-gapped-environments.html">Deploying Podman Desktop in Air-Gapped Environments</a></li>
+    <li><a href="step-by-step-offline-installation-procedure.html">Step-by-step offline installation procedure</a></li>
+  </ul>
+</nav>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Step-by-step offline installation procedure</h1>
+<div class="paragraph">
+<p>Here&#8217;s the detailed educational content for "Step-by-step offline installation procedure," crafted as a Content Architect in Antora AsciiDoc format.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-adoc hljs" data-lang="adoc">= Deploying Podman Desktop in Air-Gapped Environments
+
+// This content covers the objective: "Deploying Podman Desktop in Air-Gapped Environments"
+// Specifically, the sub-topic: "Step-by-step offline installation procedure"
+
+An air-gapped environment refers to a network security measure where a computer or network is physically isolated from unsecured networks, such as the public internet. This isolation is implemented to prevent unauthorized access and cyberattacks on highly sensitive systems. While offering maximum security, air-gapped environments pose significant challenges for software deployment, as direct access to online repositories and update services is unavailable.
+
+== Step-by-Step Offline Installation Procedure for Podman Desktop
+
+Deploying Red Hat Build of Podman Desktop in an air-gapped environment requires meticulous preparation and a clear understanding of all dependencies. The core strategy involves gathering all necessary installation artifacts on an internet-connected "bastion" host, transferring them securely, and then performing the installation and configuration on the isolated target machine.
+
+The process can be broken down into three main phases: Preparation, Transfer, and Installation &amp; Configuration.
+
+=== Phase 1: Preparation on an Internet-Connected "Bastion" Host
+
+This phase focuses on identifying and downloading all required software components and their dependencies. It's crucial to perform this on a machine with internet access that matches the *target operating system* and *architecture* of your air-gapped environment as closely as possible.
+
+.Identify Target System and Required Components
+Before downloading, clearly identify:
+*   **Operating System** (Windows, macOS, Red Hat Enterprise Linux) of the air-gapped target machine.
+*   **Architecture** (e.g., x86_64, arm64).
+*   **Specific Podman Desktop Version** you intend to install. This ensures all dependencies are compatible.
+
+.Gather Necessary Installation Artifacts
+You will need to download the following components. Create a dedicated directory to store all these files.
+
+==== Download Podman Desktop Installer
+
+*   **For Windows:**
+    Download the Podman Desktop `.exe` installer.
+    Example: `podman-desktop-setup-&lt;version&gt;.exe`
+*   **For macOS:**
+    Download the Podman Desktop `.dmg` installer.
+    Example: `podman-desktop-&lt;version&gt;.dmg`
+*   **For Red Hat Enterprise Linux:**
+    If using package managers, you'll need the Podman Desktop RPM package and *all* its dependencies.
+    Example: `podman-desktop-&lt;version&gt;.rpm`
+    You might need to use `repoquery --requires --resolve podman-desktop` (or similar for other package managers like `apt-rdepends` for Debian-based systems) on an internet-connected system with the same OS version to identify all required RPMs. Download each dependency individually.
+
+==== Download Podman Engine and Dependencies
+
+Podman Desktop relies on the Podman engine. This also needs to be available offline.
+
+*   **For Windows/macOS:**
+    Podman Desktop for Windows and macOS uses a `podman machine` (a Linux virtual machine) to run the Podman engine. The critical component here is the *Podman machine OS image*.
+    The default image is often downloaded on first run. You need to pre-stage this.
+    The image is typically a QCOW2 file. You can often find links to download these directly from Podman's GitHub releases or Red Hat's product pages.
+    Example: `podman-machine-default.qcow2`
+    If your system doesn't have a hypervisor installed (e.g., WSL2 for Windows, HyperKit/QEMU for macOS), you might also need its installer. For Windows, this primarily means ensuring WSL2 is available.
+*   **For Red Hat Enterprise Linux:**
+    Download the `podman` RPM package and *all* its dependencies.
+    Example: `podman-&lt;version&gt;.rpm`, `container-selinux-&lt;version&gt;.rpm`, etc.
+    Again, use `repoquery --requires --resolve podman` to get a comprehensive list.
+
+==== Download WSL 2 Components (for Windows Target Systems)
+
+If your air-gapped target is Windows and WSL 2 is not already installed, you will need:
+
+*   **WSL 2 Linux kernel update package:**
+    Download the latest x64 installer from Microsoft's WSL documentation.
+    Example: `wsl_update_x64.msi`
+*   **A WSL 2 compatible Linux distribution:**
+    While typically installed from the Microsoft Store, you can download a `.appx` package or a `.tar.gz` root filesystem image for offline installation. For example, for Ubuntu, you can search for "Ubuntu Microsoft Store AppX download" or use `wsl --export` from an existing WSL installation on the bastion host.
+    Example: `Ubuntu.appx` or `ubuntu.tar.gz`
+
+==== Download Container Images (Optional but Recommended)
+
+To run containers without internet access, you'll need local images.
+
+.  **Pull required base images:** Use `podman pull &lt;image_name&gt;:&lt;tag&gt;` to pull images like `registry.access.redhat.com/ubi8/ubi`, `docker.io/library/nginx`, `quay.io/libpod/fedora-toolbox`, etc.
+.  **Save images as tar archives:** Export the pulled images.
+   ```bash
+   podman save -o &lt;output_filename&gt;.tar &lt;image_name&gt;:&lt;tag&gt;
+   # Example:
+   podman save -o ubi8_ubi.tar registry.access.redhat.com/ubi8/ubi:latest
+   ```
+
+==== Download Podman Desktop Extensions (Optional)
+
+If you plan to use Podman Desktop extensions (e.g., Kubernetes, Quay), download their `.vsix` files from their respective marketplaces or GitHub releases.
+
+.  **Consolidate all artifacts:** After downloading everything, organize all files into a single directory on the bastion host.
+.  **Create an archive:** Compress the directory into a single archive (e.g., `.zip`, `.tar.gz`).
+   ```bash
+   tar -czvf podman-desktop-offline-bundle.tar.gz podman-desktop-artifacts/
+   ```
+
+=== Phase 2: Secure Transfer to Air-Gapped Machine
+
+Transfer the consolidated archive to the air-gapped target machine using an approved secure method. This often involves:
+
+*   **Physical Media:** USB drives, external hard drives, or optical media. Ensure the media is scanned for malware before and after transfer.
+*   **Secure File Transfer Protocol (SFTP/SCP) via a Jump Host:** If a strictly controlled jump host is permitted between network segments.
+
+Once transferred, place the archive in a suitable directory (e.g., `/tmp/podman-desktop-install` on Linux, `C:\podman-desktop-install` on Windows). Extract the contents.
+
+=== Phase 3: Installation and Configuration on Air-Gapped Machine
+
+This phase involves installing the components using the pre-staged artifacts and configuring Podman Desktop for offline operation.
+
+.Installation Steps by Operating System
+
+==== For Windows Target Systems
+
+1.  **Install WSL 2 (if not already present):**
+    a.  Enable the "Virtual Machine Platform" and "Windows Subsystem for Linux" optional features via PowerShell (run as Administrator):
+        ```powershell
+        dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
+        dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
+        ```
+        Restart your machine if prompted.
+    b.  Install the WSL 2 Linux kernel update package:
+        ```bash
+        # Navigate to the directory where you extracted the artifacts
+        .\wsl_update_x64.msi
+        ```
+    c.  Set WSL 2 as the default version:
+        ```powershell
+        wsl --set-default-version 2
+        ```
+    d.  Install your chosen Linux distribution for WSL 2 (using the `.appx` or `.tar.gz`):
+        *   If `.appx`: Double-click the `.appx` file or use PowerShell:
+            ```powershell
+            Add-AppxPackage .\Ubuntu.appx
+            ```
+        *   If `.tar.gz`:
+            ```powershell
+            mkdir C:\wsl-distros\ubuntu
+            wsl --import Ubuntu C:\wsl-distros\ubuntu .\ubuntu.tar.gz --version 2
+            ```
+            You'll need to configure a default user for the imported distribution.
+2.  **Install Podman Desktop:**
+    ```bash
+    .\podman-desktop-setup-&lt;version&gt;.exe
+    ```
+    Follow the on-screen prompts.
+3.  **Configure Podman Machine for Offline Use:**
+    Podman Desktop will likely attempt to create a `podman machine` on first run. Since it can't download the image, you'll need to manually import the `podman-machine-default.qcow2` file you downloaded.
+    a.  Open a terminal (PowerShell or Command Prompt).
+    b.  List existing machines to confirm none were created or if there's a failed attempt:
+        ```bash
+        podman machine ls
+        ```
+    c.  Initialize a new machine using your pre-staged image. You might need to specify the path to your downloaded `qcow2` file.
+        ```bash
+        # Ensure podman.exe is in your PATH, typically installed with Podman Desktop
+        # Navigate to the directory where you extracted the artifacts
+        podman machine init --image-path .\podman-machine-default.qcow2
+        ```
+    d.  Start the Podman machine:
+        ```bash
+        podman machine start
+        ```
+    e.  Verify the machine is running and accessible from Podman Desktop.
+
+==== For macOS Target Systems
+
+1.  **Install Podman Desktop:**
+    a.  Mount the `.dmg` file.
+    b.  Drag the Podman Desktop application to your Applications folder.
+2.  **Configure Podman Machine for Offline Use:**
+    Similar to Windows, Podman Desktop will attempt to create a machine.
+    a.  Open your terminal.
+    b.  Initialize a new machine, specifying the pre-staged `podman-machine-default.qcow2` image.
+        ```bash
+        # Navigate to the directory where you extracted the artifacts
+        podman machine init --image-path /path/to/extracted/artifacts/podman-machine-default.qcow2
+        ```
+    c.  Start the Podman machine:
+        ```bash
+        podman machine start
+        ```
+    d.  Verify the machine is running and accessible within Podman Desktop.
+
+==== For Red Hat Enterprise Linux Target Systems
+
+1.  **Install Podman and Podman Desktop RPMs:**
+    Navigate to the directory containing all the downloaded RPMs (Podman, Podman Desktop, and all their dependencies).
+    ```bash
+    sudo dnf install ./*.rpm --nogpgcheck --setopt=install_weak_deps=False
+    ```
+    *   `--nogpgcheck`: Required because you won't have GPG keys for local files by default. Use with caution in production, ensuring source integrity beforehand.
+    *   `--setopt=install_weak_deps=False`: Prevents `dnf` from trying to pull additional weak dependencies from online repositories.
+    *   If you have many dependencies and want better management, consider setting up a local repository using `createrepo` on the bastion host and transferring the entire repository structure.
+2.  **Initialize and Start Podman Machine (if using a VM-based setup, less common for native Linux):**
+    While Podman Desktop on Linux can directly use the host's Podman socket, if you specifically want to run containers in an isolated Podman machine VM, you'd follow similar `podman machine init` steps as for macOS/Windows, using your pre-staged `qcow2` image.
+    ```bash
+    # (Optional, if using podman machine on Linux)
+    podman machine init --image-path /path/to/extracted/artifacts/podman-machine-default.qcow2
+    podman machine start
+    ```
+    For most Linux native installations, Podman Desktop will automatically detect the host's Podman engine.
+
+.Post-Installation Configuration
+
+1.  **Load Pre-Saved Container Images:**
+    After ensuring your Podman engine or machine is running, load the container images you saved earlier.
+    ```bash
+    podman load -i &lt;image_filename&gt;.tar
+    # Example:
+    podman load -i ubi8_ubi.tar
+    ```
+    Verify images are available: `podman images`
+2.  **Configure Registries (Optional for offline):**
+    While direct internet access to public registries is unavailable, you can configure Podman Desktop to point to an *internal, air-gapped registry* if one exists.
+    *   Open Podman Desktop settings.
+    *   Navigate to "Registries".
+    *   Add your internal registry, specifying its insecure-registry status if applicable.
+3.  **Install Podman Desktop Extensions:**
+    If you downloaded `.vsix` files for extensions:
+    *   Open Podman Desktop.
+    *   Go to "Extensions" (usually from the left-hand navigation).
+    *   Look for an option like "Install from VSIX..." or similar. Select your downloaded files.
+4.  **Verify Functionality:**
+    *   Open Podman Desktop.
+    *   Check that the Podman engine is connected and healthy.
+    *   Confirm your loaded container images appear.
+    *   Try running a simple container using one of your loaded images (e.g., `podman run --name mycontainer ubi8/ubi:latest echo "Hello Air-Gapped World!"`).
+    *   Check container logs and status.
+
+By following these detailed steps, you can successfully deploy and configure Red Hat Build of Podman Desktop in a secure, air-gapped environment, ensuring container management capabilities remain available even without direct internet connectivity.
+```#  Step-by-step offline installation procedure
+
+= Deploying Podman Desktop in Air-Gapped Environments: Step-by-Step Offline Installation
+:page-aliases: air-gapped-installation.adoc
+:page-tag: air-gapped, offline, installation, podman-desktop, security
+
+This guide provides a comprehensive, step-by-step procedure for installing Red Hat Build of Podman Desktop in environments that lack direct internet connectivity, commonly known as "air-gapped" or "offline" environments. This scenario requires careful pre-planning and preparation to gather all necessary installation artifacts from an online source before transferring them to the isolated system.
+
+== Understanding Air-Gapped Deployments and Their Challenges
+
+Air-gapped environments are isolated computer networks that are physically separated from unsecured networks, such as the public internet. This isolation is typically implemented for stringent security reasons, to protect highly sensitive data or critical infrastructure from cyber threats and unauthorized access. While providing superior security, air-gapped setups introduce significant operational complexities, especially for software deployment.
+
+=== Technical Challenges of Air-Gapped Installations
+
+Installing modern software, particularly container management tools like Podman Desktop, in an air-gapped environment presents several unique technical hurdles:
+
+*   *Dynamic Dependency Resolution*: Software installers often rely on package managers or online repositories to resolve and download dependencies (libraries, runtime components, operating system updates) during the installation process. In an air-gapped setup, these external downloads are blocked, leading to failed installations unless all dependencies are pre-sourced.
+*   *Container Image Acquisition*: Podman Desktop's core function is managing containers. Container images are typically pulled from public registries (e.g., Docker Hub, Quay.io, Red Hat's registry). Without internet access, the ability to pull these images is nonexistent, requiring a strategy to pre-load or serve images from an internal, air-gapped registry.
+*   *Podman Machine Creation (macOS/Windows)*: On macOS and Windows, Podman Desktop utilizes a lightweight virtual machine (the Podman machine) to host the Podman engine. The `podman machine init` command, which sets up this VM, automatically downloads a specific operating system image (e.g., Fedora CoreOS or Red Hat CoreOS) from an online source. This automatic download mechanism fails in an air-gapped context, necessitating the manual acquisition of this OS image.
+*   *Updates and Patches*: Keeping the software updated with the latest features, bug fixes, and security patches becomes a manual, controlled process rather than an automated one.
+*   *Certificate Trust Management*: Private container registries within an air-gapped environment often use internal Certificate Authorities (CAs) or self-signed certificates. Podman Desktop and the underlying Podman engine must be explicitly configured to trust these certificates to communicate securely with the registry.
+
+To effectively overcome these challenges, a meticulous pre-planning phase is crucial. This involves gathering *all* required components from a trusted online source, ensuring they are compatible with the target air-gapped environment, and securely transferring them.
+
+== Preparing for Offline Installation: Gathering Artifacts
+
+Before commencing the installation in your air-gapped environment, you must first prepare an "online staging environment" to download all necessary files.
+
+=== Prerequisites for the Online Staging Environment
+
+*   An internet-connected machine with sufficient storage (typically several GBs).
+*   A reliable and secure method for transferring large files to the air-gapped environment (e.g., USB drive, external hard drive, DVD, or a designated secure data transfer mechanism).
+*   Administrative privileges on the online staging machine to install Podman (if needed for `podman machine init --display-only` or pre-pulling images).
+
+=== Required Artifacts to Gather
+
+The following items *must* be downloaded and prepared based on your air-gapped target operating system:
+
+1.  *Red Hat Build of Podman Desktop Installer*:
+    *   Download the appropriate installer for your air-gapped operating system from the official Red Hat Build of Podman Desktop releases page or a trusted Red Hat repository.
+        *   *Windows*: `.msi` (Microsoft Installer) file.
+        *   *macOS*: `.dmg` (Disk Image) file.
+        *   *Linux (RHEL/Fedora)*: `.rpm` (Red Hat Package Manager) package.
+        *   *Linux (Debian/Ubuntu)*: `.deb` (Debian Package) package.
+
+2.  *Podman Engine and Related Dependencies (for Linux installations)*:
+    *   For Linux hosts, Podman Desktop requires the underlying Podman engine to be installed. You must download the `podman` package and *all* its transitive dependencies.
+    *   *Method (RHEL/Fedora)*: Use `sudo dnf download --resolve podman` to download Podman and all its RPM dependencies into a specified directory.
+    *   *Method (Debian/Ubuntu)*: This is more complex; you might need `apt-get download` for `podman` and then manually identify and download its dependencies using `apt-cache depends podman`.
+
+3.  *Podman Machine OS Image (for macOS and Windows installations)*:
+    *   This is critical. The `podman machine init` command automatically downloads an OS image (e.g., `fedora-coreos.qcow2`). You need to acquire this specific `.qcow2` image beforehand.
+    *   *Method*:
+        *   On an *online* machine, install the `podman` engine.
+        *   Run `podman machine init --display-only` to output the exact URL from which the image would be downloaded.
+        *   Use `curl` or a web browser to download the `.qcow2` image file from that URL.
+        *   *Example (Fedora CoreOS)*: `curl -L &lt;URL_FROM_DISPLAY_ONLY&gt; -o fedora-coreos-latest.qcow2`
+    *   Alternatively, if you have a specific custom OS image you wish to use for your Podman machine, ensure it's in a compatible QCOW2 format.
+
+4.  *WSL 2 Components (for Windows installations, if needed)*:
+    *   If the Windows machine in your air-gapped environment does not have WSL 2 already installed and updated, you will need to download:
+        *   The latest WSL 2 Linux kernel update package (`.msi`).
+        *   (Optional) A chosen Linux distribution package for WSL 2 (e.g., Ubuntu, Debian) from the Microsoft Store, if you prefer not to use the default Podman machine bundled with Fedora CoreOS.
+
+5.  *Necessary Container Images (Optional but Highly Recommended)*:
+    *   If you plan to run specific applications or services immediately after installation, it's highly recommended to pre-pull their container images on the online machine.
+    *   *Method 1 (Saving to tarball)*:
+        ```bash
+        podman pull your-image:tag
+        podman save -o your-image.tar your-image:tag
+        ```
+    *   *Method 2 (Pushing to an Air-Gapped Registry)*: If an air-gapped container registry already exists or will be set up, pre-pull images, re-tag them for your internal registry, and push them to it from a secure transfer zone.
+
+6.  *Registry Certificates (if using a private air-gapped registry)*:
+    *   If your air-gapped environment utilizes a private container registry with custom TLS/SSL certificates, ensure you obtain all necessary certificate files (`.crt`, `.pem` for root CAs and any intermediates) to configure trust on the Podman Desktop host and within the Podman machine.
+
+=== Hands-on Activity: Gathering Podman Desktop Air-Gapped Artifacts
+
+Perform these steps on your internet-connected *online staging environment*.
+
+.  **Identify Target Operating System**: Determine the exact operating system (Windows, macOS, or specific Linux distribution like RHEL 9) of your air-gapped machine. This is crucial for selecting the correct installers and dependencies.
+.  **Download Podman Desktop Installer**:
+    *   Navigate to the official Podman Desktop GitHub releases page (e.g., `https://github.com/containers/podman-desktop/releases`).
+    *   Download the appropriate installer (`.msi`, `.dmg`, `.rpm`, or `.deb`) corresponding to the latest stable release for your target OS.
+    *   *Example (macOS)*: Download `Podman-Desktop-*-mac.dmg`
+.  **Download Podman Machine OS Image (for macOS/Windows air-gapped targets)**:
+    *   First, install the `podman` engine on your *online staging machine* if it's not already present.
+    *   Execute `podman machine init --display-only` in your terminal. This command will output the URL for the `qcow2` image that Podman would download.
+    *   Use `curl` or a web browser to download this image. For example:
+        ```bash
+        curl -L &lt;NOTED_URL_FROM_DISPLAY_ONLY&gt; -o fedora-coreos-latest.qcow2
+        ```
+    *   Ensure the downloaded file is named descriptively (e.g., `fedora-coreos-39.qcow2`).
+.  **Download WSL 2 Kernel Update (for Windows air-gapped targets, if needed)**:
+    *   Search for "WSL2 Linux kernel update package" on Microsoft's official documentation and download the latest `.msi` installer.
+.  **Download Podman Engine and Linux Dependencies (for Linux air-gapped targets)**:
+    *   On a *similar online Linux machine* (e.g., RHEL 9 if your target is RHEL 9):
+        ```bash
+        mkdir podman-deps
+        cd podman-deps
+        sudo dnf download --resolve podman
+        ```
+        This command will download the `podman` RPM and all its transitive RPM dependencies into the `podman-deps` directory.
+    *   For Debian/Ubuntu, you'd typically use `apt download &lt;package_name&gt;` for `podman` and its key dependencies.
+.  **Prepare Container Images (Optional but Recommended)**:
+    *   Pull a test image from a public registry: `podman pull quay.io/podman/hello`
+    *   Save it to a tarball: `podman save -o podman-hello.tar quay.io/podman/hello`
+    *   Repeat for any other essential application images.
+.  **Collect Registry Certificates (if applicable)**:
+    *   Obtain any necessary `.crt` or `.pem` files for your air-gapped private registry's root and intermediate Certificate Authorities.
+.  **Transfer All Artifacts**: Copy all downloaded files (Podman Desktop installer, Podman machine QCOW2 image, WSL update, Linux RPMs/DEBs, container image tarballs, registry certificates) to a secure portable storage device.
+
+== Step-by-Step Offline Installation Procedure on Air-Gapped Machines
+
+Once all artifacts are gathered on your online staging environment and securely transferred to your air-gapped machine, you can proceed with the installation.
+
+=== Hands-on Activity: Installing Podman Desktop Offline
+
+.  **Transfer Artifacts to Target Machine**:
+    *   Ensure all collected files are copied from your portable storage device to a designated, accessible directory on your air-gapped target machine.
+    *   *Example*: Create a directory like `/opt/podman-desktop-offline-install/` on Linux/macOS or `C:\PodmanDesktopOffline\` on Windows.
+
+.  **Install WSL 2 (Windows only, if needed)**:
+    *   If you downloaded the WSL 2 kernel update package, execute it:
+        ```cmd
+        msiexec /i &lt;path_to_wsl_update_package.msi&gt; /quiet /norestart
+        ```
+    *   You might also need to manually enable the "Virtual Machine Platform" and "Windows Subsystem for Linux" features via PowerShell with administrator privileges:
+        ```powershell
+        dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
+        dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
+        ```
+    *   Restart your Windows machine if prompted or if you enabled new features to ensure they are active.
+
+.  **Install Podman Engine (Linux only)**:
+    *   Navigate to the directory containing the downloaded RPMs or DEBs.
+    *   *For RHEL/Fedora*:
+        ```bash
+        sudo dnf install ./*.rpm --nogpgcheck
+        ```
+        The `--nogpgcheck` flag is often necessary in air-gapped environments if the GPG keys for the Red Hat repositories are not locally available or imported. Use with caution in high-security contexts; verify package integrity through other means.
+    *   *For Debian/Ubuntu*:
+        ```bash
+        sudo dpkg -i ./*.deb
+        sudo apt-get install -f # To fix any missing dependencies after dpkg
+        ```
+    *   Verify the Podman engine installation: `podman --version`
+
+.  **Install Red Hat Build of Podman Desktop**:
+    *   Locate the downloaded Podman Desktop installer file.
+    *   *Windows*: Double-click the `.msi` file and follow the on-screen installation wizard.
+    *   *macOS*: Double-click the `.dmg` file, then drag the `Podman Desktop.app` icon to your Applications folder.
+    *   *Linux (RHEL/Fedora)*:
+        ```bash
+        sudo dnf install ./podman-desktop-*.rpm
+        ```
+    *   *Linux (Debian/Ubuntu)*:
+        ```bash
+        sudo dpkg -i ./podman-desktop-*.deb
+        sudo apt-get install -f # To handle any missing dependencies post-installation
+        ```
+
+.  **Initial Setup and Podman Machine Creation (macOS/Windows)**:
+    *   Launch Podman Desktop from your Applications or Start Menu. It will likely detect that no Podman machine is running or configured.
+    *   When Podman Desktop prompts you to initialize a new Podman machine, you *must* use the pre-downloaded OS image. Do *not* allow it to attempt an online download.
+    *   Open your terminal (macOS) or Command Prompt/PowerShell (Windows) and navigate to the directory where you saved the `fedora-coreos-latest.qcow2` (or your custom image).
+    *   Run the command to create the machine using your local image:
+        ```bash
+        podman machine init --image-path /path/to/fedora-coreos-latest.qcow2
+        ```
+        *Replace `/path/to/fedora-coreos-latest.qcow2` with the actual, full path to your downloaded OS image file.*
+    *   Once the machine is initialized, start it:
+        ```bash
+        podman machine start
+        ```
+    *   Return to Podman Desktop. It should now detect the running Podman machine and establish a connection. The status bar should indicate "Podman machine running."
+
+.  **Verify Basic Functionality**:
+    *   In Podman Desktop, navigate to the "Containers" or "Images" section.
+    *   Confirm that the connection to the Podman engine is active (indicated by a green status).
+    *   If you pre-saved container images into tarballs, load one:
+        ```bash
+        podman load -i /path/to/podman-hello.tar
+        ```
+        Then, verify that the image appears in Podman Desktop's "Images" section.
+    *   Run a simple container from the loaded image:
+        ```bash
+        podman run -d -p 8080:80 --name hello-test quay.io/podman/hello
+        ```
+        Verify that the `hello-test` container appears and is running in Podman Desktop. You should be able to access it via `http://localhost:8080`.
+
+.  **Configure Air-Gapped Registry (if applicable)**:
+    *   If your air-gapped environment includes an internal container registry, you must configure Podman Desktop and the underlying Podman engine to use it.
+    *   **Install Registry Certificates**:
+        *   Copy your registry's root and any intermediate `.crt` or `.pem` files to the appropriate trusted certificate store on both the *host system* and *within the Podman machine*.
+            *   *Linux Host*: Copy to `/etc/pki/ca-trust/source/anchors/` (then run `sudo update-ca-trust extract`).
+            *   *Windows Host*: Import into the "Trusted Root Certification Authorities" store via `certmgr.msc`.
+            *   *macOS Host*: Import into Keychain Access (System Roots).
+            *   *Within Podman Machine (macOS/Windows)*: Use `podman machine ssh` to access the VM. Copy the certificates to `/etc/pki/ca-trust/source/anchors/` and run `sudo update-ca-trust extract` inside the VM.
+    *   **Configure `registries.conf`**:
+        *   Edit the `registries.conf` file on the host machine (and potentially within the Podman machine via `podman machine ssh`).
+            *   *Linux Host*: `/etc/containers/registries.conf`
+            *   *macOS/Windows (inside Podman machine)*: `~/.config/containers/registries.conf` (or similar path in the VM).
+        *   Add a `[[registry]]` section for your air-gapped registry. This is crucial for Podman to know where to pull images from. Consider adding it to `unqualified-search-registries` if you want to use short names.
+        *   *Example entry in `registries.conf`*:
+            ```ini
+            [[registry]]
+            location = "your-air-gapped-registry.local:5000"
+            insecure = false # Set to true if not using TLS or using self-signed certs without proper CA trust
+            # prefix = "your-air-gapped-registry.local:5000" # Use if you want to re-tag images for this registry
+            ```
+        *   Restart Podman Desktop or the Podman machine for the changes to take effect.
+    *   **Test Registry Connection**:
+        *   Attempt to pull an image from your air-gapped registry:
+            ```bash
+            podman pull your-air-gapped-registry.local:5000/your-application:latest
+            ```
+        *   Verify the image appears in Podman Desktop's "Images" section.
+
+== Troubleshooting Offline Installation Issues
+
+Offline installations can be intricate due to the manual nature of dependency management. Here are common issues and troubleshooting tips:
+
+*   *Missing Podman Machine Image*: If `podman machine init` fails on macOS/Windows, double-check that the `--image-path` argument points to the *exact*, correct location of the downloaded `.qcow2` file. Ensure the file permissions allow access.
+*   *WSL 2 Not Enabled/Updated (Windows)*: Verify that the "Virtual Machine Platform" and "Windows Subsystem for Linux" features are enabled in Windows Features, and that the WSL 2 kernel update package was installed and the system rebooted. Run `wsl --status` in PowerShell to confirm WSL 2 is active.
+*   *Linux Dependency Resolution Failures*: If `dnf install` or `dpkg -i` commands fail, it almost always indicates a missing dependency. Review the error messages carefully to identify the missing packages. Ensure *all* necessary RPMs/DEBs were downloaded from the online staging environment.
+*   *Certificate Errors (for Air-Gapped Registry)*: This is a very common issue.
+    *   Verify that all necessary root and intermediate CA certificates are correctly installed in the trust stores of *both* the host OS and the Podman machine.
+    *   Ensure `registries.conf` is correctly configured, especially the `insecure = true` flag if you are temporarily bypassing TLS verification (not recommended for production). Proper certificate trust is the preferred method.
+*   *Incorrect Registry Configuration*: Carefully review the `registries.conf` file for typos in the `location` or `prefix` fields. Ensure the registry port is correct (e.g., `:5000`).
+*   *Firewall Rules*: Even in an air-gapped environment, local firewalls (e.g., `firewalld` on Linux, Windows Defender Firewall) might block communication between Podman Desktop and the Podman machine, or between the Podman machine and your air-gapped registry. Ensure necessary ports (e.g., 80, 443, 5000, SSH port for Podman machine) are open.
+
+By meticulously following these detailed steps for preparation and installation, and employing the troubleshooting guidance, you can successfully deploy Red Hat Build of Podman Desktop in challenging air-gapped environments, ensuring your container management capabilities remain robust, secure, and fully functional.</code></pre>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="gathering-necessary-installation-artifacts.html">Gathering necessary installation artifacts</a></span>
+  <span class="next"><a href="post-installation-configuration-for-restricted-environments.html">Post-installation configuration for restricted environments</a></span>
+</nav>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <img src="../../../_/img/rhl-logo-red.png" height="40px" alt="Red Hat"  href="https://redhat.com" >
+</footer><script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

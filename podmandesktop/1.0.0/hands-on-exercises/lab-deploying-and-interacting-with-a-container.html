@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Lab: Deploying and interacting with a container :: Red Hat Build of Podman Desktop: Installation, Configuration, and Troubleshooting</title>
+    <link rel="prev" href="lab-managing-podman-machines-and-container-engines.html">
+    <link rel="next" href="lab-configuring-a-private-registry-connection.html">
+    <meta name="generator" content="Antora 3.1.3">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+    <script>var uiRootPath = '../../../_'</script>
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://www.redhat.com" target="_blank"><img src="../../../_/img/redhat-logo.png" height="40px" alt="Red Hat"></a>
+      <a class="navbar-item" style="font-size: 24px; color: white" href="../../..">Red Hat Build of Podman Desktop: Installation, Configuration, and Troubleshooting</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="https://github.com/RedHatQuickCourses/REPLACEREPONAME/issues" target="_blank">Report Issues</a>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="podmandesktop" data-version="1.0.0">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html">Red Hat Build of Podman Desktop: Installation, Configuration, and Troubleshooting</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../index.html">Home</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../LABENV/index.html">Lab Environment</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../introduction-to-podman-desktop/introduction-to-podman-desktop.html">Introduction to Podman Desktop</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-podman-desktop/overview-of-podman-desktops-purpose-and-capabilities.html">Overview of Podman Desktop&#8217;s purpose and capabilities</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-podman-desktop/key-features-for-container-management.html">Key features for container management</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-podman-desktop/benefits-of-using-red-hat-build-of-podman-desktop.html">Benefits of using Red Hat Build of Podman Desktop</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../introduction-to-podman-desktop/introduction-to-podman-desktop.html">Introduction to Podman Desktop</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-podman-desktop/overview-of-podman-desktops-purpose-and-capabilities.html">Overview of Podman Desktop&#8217;s purpose and capabilities</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-podman-desktop/key-features-for-container-management.html">Key features for container management</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-podman-desktop/benefits-of-using-red-hat-build-of-podman-desktop.html">Benefits of using Red Hat Build of Podman Desktop</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../preparing-for-installation/preparing-for-installation.html">Preparing for Installation</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-for-installation/system-requirements-for-various-operating-systems.html">System requirements for various operating systems</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-for-installation/prerequisites-and-dependencies-eg-wsl-on-windows-podman-engine.html">Prerequisites and dependencies (e.g., WSL on Windows, Podman engine)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-for-installation/understanding-podman-machine-concept.html">Understanding Podman machine concept</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../preparing-for-installation/preparing-for-installation.html">Preparing for Installation</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-for-installation/system-requirements-for-various-operating-systems.html">System requirements for various operating systems</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-for-installation/prerequisites-and-dependencies-eg-wsl-on-windows-podman-engine.html">Prerequisites and dependencies (e.g., WSL on Windows, Podman engine)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-for-installation/understanding-podman-machine-concept.html">Understanding Podman machine concept</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/installing-podman-desktop-on-macos.html">Installing Podman Desktop on macOS</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/download-and-installation-process-via-installer.html">Download and installation process via installer</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/initial-setup-and-podman-machine-creation.html">Initial setup and Podman machine creation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/verifying-installation-and-basic-functionality.html">Verifying installation and basic functionality</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/installing-podman-desktop-on-macos.html">Installing Podman Desktop on macOS</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/download-and-installation-process-via-installer.html">Download and installation process via installer</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/initial-setup-and-podman-machine-creation.html">Initial setup and Podman machine creation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/verifying-installation-and-basic-functionality.html">Verifying installation and basic functionality</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/installing-podman-desktop-on-windows.html">Installing Podman Desktop on Windows</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/download-and-installation-process-via-installer.html">Download and installation process via installer</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/wsl-2-integration-and-configuration.html">WSL 2 integration and configuration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/initial-setup-and-podman-machine-creation.html">Initial setup and Podman machine creation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/verifying-installation-and-basic-functionality.html">Verifying installation and basic functionality</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/installing-podman-desktop-on-windows.html">Installing Podman Desktop on Windows</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/download-and-installation-process-via-installer.html">Download and installation process via installer</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/wsl-2-integration-and-configuration.html">WSL 2 integration and configuration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/initial-setup-and-podman-machine-creation.html">Initial setup and Podman machine creation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/verifying-installation-and-basic-functionality.html">Verifying installation and basic functionality</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/installing-podman-desktop-on-red-hat-enterprise-linux.html">Installing Podman Desktop on Red Hat Enterprise Linux</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/installation-steps-using-package-managers-eg-dnf.html">Installation steps using package managers (e.g., <code>dnf</code>)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/initial-setup-and-podman-machine-creation.html">Initial setup and Podman machine creation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/verifying-installation-and-basic-functionality.html">Verifying installation and basic functionality</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/installing-podman-desktop-on-red-hat-enterprise-linux.html">Installing Podman Desktop on Red Hat Enterprise Linux</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/installation-steps-using-package-managers-eg-dnf.html">Installation steps using package managers (e.g., <code>dnf</code>)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/initial-setup-and-podman-machine-creation.html">Initial setup and Podman machine creation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/verifying-installation-and-basic-functionality.html">Verifying installation and basic functionality</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/deploying-podman-desktop-in-air-gapped-environments.html">Deploying Podman Desktop in Air-Gapped Environments</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/challenges-and-considerations-for-air-gapped-deployments.html">Challenges and considerations for air-gapped deployments</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/gathering-necessary-installation-artifacts.html">Gathering necessary installation artifacts</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/step-by-step-offline-installation-procedure.html">Step-by-step offline installation procedure</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/post-installation-configuration-for-restricted-environments.html">Post-installation configuration for restricted environments</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/deploying-podman-desktop-in-air-gapped-environments.html">Deploying Podman Desktop in Air-Gapped Environments</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/challenges-and-considerations-for-air-gapped-deployments.html">Challenges and considerations for air-gapped deployments</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/gathering-necessary-installation-artifacts.html">Gathering necessary installation artifacts</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/step-by-step-offline-installation-procedure.html">Step-by-step offline installation procedure</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/post-installation-configuration-for-restricted-environments.html">Post-installation configuration for restricted environments</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/configuring-and-customizing-podman-desktop.html">Configuring and Customizing Podman Desktop</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/managing-container-engine-settings-memory-cpu-disk.html">Managing container engine settings (memory, CPU, disk)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/configuring-registries-and-image-pull-secrets.html">Configuring registries and image pull secrets</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/setting-up-network-proxies.html">Setting up network proxies</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/integrating-with-kubernetes-and-openshift-clusters.html">Integrating with Kubernetes and OpenShift clusters</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/exploring-and-managing-extensions.html">Exploring and managing extensions</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/configuring-and-customizing-podman-desktop.html">Configuring and Customizing Podman Desktop</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/managing-container-engine-settings-memory-cpu-disk.html">Managing container engine settings (memory, CPU, disk)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/configuring-registries-and-image-pull-secrets.html">Configuring registries and image pull secrets</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/setting-up-network-proxies.html">Setting up network proxies</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/integrating-with-kubernetes-and-openshift-clusters.html">Integrating with Kubernetes and OpenShift clusters</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/exploring-and-managing-extensions.html">Exploring and managing extensions</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/troubleshooting-podman-desktop-issues.html">Troubleshooting Podman Desktop Issues</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/common-installation-and-startup-problems.html">Common installation and startup problems</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/diagnosing-podman-machine-failures.html">Diagnosing Podman machine failures</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/resolving-image-pull-and-container-run-errors.html">Resolving image pull and container run errors</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/utilizing-logs-for-problem-identification.html">Utilizing logs for problem identification</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/best-practices-for-issue-prevention.html">Best practices for issue prevention</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/troubleshooting-podman-desktop-issues.html">Troubleshooting Podman Desktop Issues</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/common-installation-and-startup-problems.html">Common installation and startup problems</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/diagnosing-podman-machine-failures.html">Diagnosing Podman machine failures</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/resolving-image-pull-and-container-run-errors.html">Resolving image pull and container run errors</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/utilizing-logs-for-problem-identification.html">Utilizing logs for problem identification</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/best-practices-for-issue-prevention.html">Best practices for issue prevention</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="hands-on-exercises.html">Hands-On Exercises</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="lab-installing-podman-desktop-on-your-preferred-os.html">Lab: Installing Podman Desktop on your preferred OS</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="lab-managing-podman-machines-and-container-engines.html">Lab: Managing Podman machines and container engines</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="lab-deploying-and-interacting-with-a-container.html">Lab: Deploying and interacting with a container</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="lab-configuring-a-private-registry-connection.html">Lab: Configuring a private registry connection</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="lab-troubleshooting-a-simulated-podman-desktop-issue.html">Lab: Troubleshooting a simulated Podman Desktop issue</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="hands-on-exercises.html">Hands-On Exercises</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="lab-installing-podman-desktop-on-your-preferred-os.html">Lab: Installing Podman Desktop on your preferred OS</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="lab-managing-podman-machines-and-container-engines.html">Lab: Managing Podman machines and container engines</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="lab-deploying-and-interacting-with-a-container.html">Lab: Deploying and interacting with a container</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="lab-configuring-a-private-registry-connection.html">Lab: Configuring a private registry connection</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="lab-troubleshooting-a-simulated-podman-desktop-issue.html">Lab: Troubleshooting a simulated Podman Desktop issue</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../appendix/appendix.html">Appendix</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">Red Hat Build of Podman Desktop: Installation, Configuration, and Troubleshooting</span>
+    <span class="version">1.0.0</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <a class="title" href="../index.html">Red Hat Build of Podman Desktop: Installation, Configuration, and Troubleshooting</a>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">1.0.0</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">Red Hat Build of Podman Desktop: Installation, Configuration, and Troubleshooting</a></li>
+    <li><a href="hands-on-exercises.html">Hands-On Exercises</a></li>
+    <li><a href="lab-deploying-and-interacting-with-a-container.html">Lab: Deploying and interacting with a container</a></li>
+  </ul>
+</nav>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Lab: Deploying and interacting with a container</h1>
+<h1 id="_lab_deploying_and_interacting_with_a_container" class="sect0"><a class="anchor" href="#_lab_deploying_and_interacting_with_a_container"></a>Lab: Deploying and Interacting with a Container</h1>
+<div class="paragraph">
+<p>In this lab, you will gain practical experience in the fundamental aspects of container management: deploying a new container from an image and interacting with it using Red Hat Build of Podman Desktop. This exercise will solidify your understanding of how containers encapsulate applications and how Podman Desktop simplifies their lifecycle management.</p>
+</div>
+<div class="sect2">
+<h3 id="_understanding_container_deployment"><a class="anchor" href="#_understanding_container_deployment"></a>Understanding Container Deployment</h3>
+<div class="paragraph">
+<p>Before we dive into the hands-on activity, let&#8217;s briefly review the core concepts involved in deploying and interacting with containers.</p>
+</div>
+<div class="paragraph">
+<p>A <strong>container</strong> is a lightweight, standalone, executable package that includes everything needed to run a piece of software, including the code, a runtime, system tools, system libraries, and settings. Containers are built from <strong>container images</strong>, which are immutable templates containing the application and its dependencies.</p>
+</div>
+<div class="paragraph">
+<p>When you "deploy" or "run" a container, you are essentially creating a running instance of a container image. Podman Desktop acts as a graphical interface that abstracts away the complexities of command-line operations, allowing you to easily pull images, configure container settings (like port mappings, environment variables, and resource limits), and manage the container&#8217;s lifecycle.</p>
+</div>
+<div class="paragraph">
+<p>Key concepts for this lab:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Container Image:</strong> A read-only template used to create containers. Think of it as a blueprint. Examples include <code>nginx</code>, <code>httpd</code>, <code>ubuntu</code>.</p>
+</li>
+<li>
+<p><strong>Container Instance:</strong> A running (or stopped) instance of an image. You can have multiple containers running from the same image.</p>
+</li>
+<li>
+<p><strong>Port Mapping (Port Forwarding):</strong> Containers run in an isolated network namespace. To make a service inside a container accessible from your host machine, you need to map a port from the container to a port on your host. For example, mapping container port <code>80</code> (where a web server typically listens) to host port <code>8080</code>.</p>
+</li>
+<li>
+<p><strong>Container Lifecycle:</strong> The stages a container goes through:</p>
+</li>
+<li>
+<p><strong>Created:</strong> The container is defined but not yet running.</p>
+</li>
+<li>
+<p><strong>Running:</strong> The application inside the container is active.</p>
+</li>
+<li>
+<p><strong>Paused:</strong> The container&#8217;s processes are suspended.</p>
+</li>
+<li>
+<p><strong>Stopped:</strong> The container&#8217;s processes are terminated, but the container still exists and can be restarted.</p>
+</li>
+<li>
+<p><strong>Removed:</strong> The container instance is deleted from your system.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Podman Desktop provides a user-friendly interface to manage these aspects, allowing you to visualize and control your containerized applications without needing to remember complex <code>podman</code> CLI commands.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_lab_deploying_and_interacting_with_a_web_server_container"><a class="anchor" href="#_lab_deploying_and_interacting_with_a_web_server_container"></a>Lab: Deploying and Interacting with a Web Server Container</h3>
+<div class="paragraph">
+<p>In this lab, you will deploy an Nginx web server container, make it accessible from your browser, and practice basic interaction methods.</p>
+</div>
+<div class="sect3">
+<h4 id="_objectives"><a class="anchor" href="#_objectives"></a>Objectives</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>Pull a container image using Podman Desktop.</p>
+</li>
+<li>
+<p>Create and run a new container from the pulled image.</p>
+</li>
+<li>
+<p>Configure port mapping to access the containerized application.</p>
+</li>
+<li>
+<p>Verify the container&#8217;s functionality via a web browser.</p>
+</li>
+<li>
+<p>View container logs.</p>
+</li>
+<li>
+<p>Execute commands inside a running container.</p>
+</li>
+<li>
+<p>Stop and remove the container.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_prerequisites"><a class="anchor" href="#_prerequisites"></a>Prerequisites</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>Red Hat Build of Podman Desktop installed and running.</p>
+</li>
+<li>
+<p>A Podman machine configured and started (refer to previous labs if needed).</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_activity_steps"><a class="anchor" href="#_activity_steps"></a>Activity Steps</h4>
+<div class="paragraph">
+<p>Follow these steps to deploy and interact with your first container.</p>
+</div>
+<div class="paragraph">
+<div class="title">Open Podman Desktop</div>
+<p>Launch Red Hat Build of Podman Desktop. Ensure your Podman machine is running and connected. You should see "Podman machine" listed under <strong>Engine</strong> in the dashboard, with a green indicator.</p>
+</div>
+<div class="paragraph">
+<div class="title">Pull the Nginx Image</div>
+<p>The first step is to get the Nginx container image.</p>
+</div>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>In the Podman Desktop sidebar, navigate to <strong>Images</strong>.</p>
+</li>
+<li>
+<p>Click the <strong>Pull image</strong> button.</p>
+</li>
+<li>
+<p>In the <strong>Image Name</strong> field, type <code>nginx:latest</code>.</p>
+</li>
+<li>
+<p>Ensure the correct registry is selected (e.g., <code>registry.access.redhat.com</code> or <code>docker.io</code>). For <code>nginx:latest</code>, <code>docker.io</code> is typically the source.</p>
+</li>
+<li>
+<p>Click <strong>Pull</strong>.</p>
+<div class="paragraph">
+<p>Podman Desktop will download the <code>nginx:latest</code> image. You will see its progress, and once complete, it will appear in your list of local images.</p>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<div class="title">Run a New Container</div>
+<p>Now, let&#8217;s create a new container instance from the <code>nginx:latest</code> image.</p>
+</div>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>In the <strong>Images</strong> view, locate the <code>nginx:latest</code> image you just pulled.</p>
+</li>
+<li>
+<p>Hover over the image entry and click the <strong>Play</strong> icon (Run image) that appears.</p>
+</li>
+<li>
+<p>The <strong>Run a new container</strong> dialog will open.</p>
+</li>
+<li>
+<p>In the <strong>Container Name</strong> field, enter <code>my-nginx-webserver</code>.</p>
+</li>
+<li>
+<p>Under <strong>Port Mappings</strong>, click <strong>Add generated port</strong>. Podman Desktop will suggest an available host port (e.g., <code>49153</code>) mapped to the container&#8217;s internal port <code>80</code>. <strong>Note down the Host Port assigned to <code>80/tcp</code></strong>.</p>
+<div class="imageblock unresolved">
+<div class="content">
+<img src="run_container_port_mapping.png" alt="Run a new container with port mapping" width="800">
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Nginx, by default, listens on port <code>80</code> inside the container for HTTP traffic. By mapping it to a host port (e.g., <code>8080</code> or an ephemeral port like <code>49153</code>), you can access the web server from your host machine&#8217;s browser.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</li>
+<li>
+<p>Click <strong>Run</strong>.</p>
+<div class="paragraph">
+<p>Podman Desktop will create and start the container. You will be redirected to the <strong>Containers</strong> view, where <code>my-nginx-webserver</code> should appear with a green <strong>Running</strong> status.</p>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<div class="title">Verify Container Functionality</div>
+<p>Let&#8217;s confirm that the Nginx web server is accessible.</p>
+</div>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>In the <strong>Containers</strong> view, click on <code>my-nginx-webserver</code> to open its details panel.</p>
+</li>
+<li>
+<p>Scroll down to the <strong>Ports</strong> section. You will see the mapped port, for example, <code>0.0.0.0:49153 &#8594; 80/tcp</code>.</p>
+</li>
+<li>
+<p>Open your web browser and navigate to <code><a href="http://localhost:<a href="#HOST_PORT&gt;&gt" class="bare">http://localhost:&lt;&lt;HOST_PORT&gt;&gt</a>;</code> (replace <code>&lt;&lt;HOST_PORT">[HOST_PORT&gt;&gt" class="bare">http://localhost:&lt;&lt;HOST_PORT&gt;&gt</a>;</code> (replace <code>&lt;&lt;HOST_PORT]</a></code> with the host port you noted earlier, e.g., <code><a href="http://localhost:49153" class="bare">http://localhost:49153</a></code>).</p>
+<div class="paragraph">
+<p>You should see the "Welcome to nginx!" default page. This confirms that your container is running and correctly exposed.</p>
+</div>
+<div class="imageblock unresolved">
+<div class="content">
+<img src="nginx_welcome_page.png" alt="Nginx welcome page in browser" width="800">
+</div>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<div class="title">View Container Logs</div>
+<p>Logs are essential for monitoring and troubleshooting containers.</p>
+</div>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>In the Podman Desktop <strong>Containers</strong> view, select <code>my-nginx-webserver</code>.</p>
+</li>
+<li>
+<p>In the container&#8217;s details panel, navigate to the <strong>Logs</strong> tab.</p>
+<div class="paragraph">
+<p>You will see output from the Nginx server, including access logs from your browser request and startup messages. This tab is invaluable for diagnosing issues.</p>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<div class="title">Execute Commands Inside the Container</div>
+<p>You can interact with a running container&#8217;s shell environment.</p>
+</div>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>In the Podman Desktop <strong>Containers</strong> view, select <code>my-nginx-webserver</code>.</p>
+</li>
+<li>
+<p>In the container&#8217;s details panel, navigate to the <strong>Terminal</strong> tab.</p>
+</li>
+<li>
+<p>You should see a command prompt for the container&#8217;s shell (e.g., <code>root@&lt;container-id&gt;:/#</code>).</p>
+</li>
+<li>
+<p>Try some basic Linux commands:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>ls -l /usr/share/nginx/html</code>: List the files in the Nginx web root.</p>
+</li>
+<li>
+<p><code>hostname</code>: See the container&#8217;s hostname.</p>
+</li>
+<li>
+<p><code>ip a</code>: View the container&#8217;s network configuration.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Type <code>exit</code> to close the terminal session.</p>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Executing commands inside a container is useful for debugging, inspecting files, or making temporary changes for testing purposes. For persistent changes, you should always rebuild the image or use volumes.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<div class="title">Stop and Remove the Container</div>
+<p>To clean up resources, you&#8217;ll stop and then remove the container.</p>
+</div>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>In the Podman Desktop <strong>Containers</strong> view, locate <code>my-nginx-webserver</code>.</p>
+</li>
+<li>
+<p>Hover over the container entry and click the <strong>Stop</strong> icon (square button).</p>
+<div class="paragraph">
+<p>The container&#8217;s status will change from <strong>Running</strong> to <strong>Stopped</strong>. The web server will no longer be accessible in your browser.</p>
+</div>
+</li>
+<li>
+<p>Once stopped, hover over the container entry again and click the <strong>Delete</strong> icon (trash can).</p>
+</li>
+<li>
+<p>Confirm the removal when prompted.</p>
+<div class="paragraph">
+<p>The <code>my-nginx-webserver</code> container will be removed from your list of containers. The <code>nginx:latest</code> image, however, remains downloaded and can be used to create new containers later.</p>
+</div>
+</li>
+</ol>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p><strong>Troubleshooting Tip:</strong>
+*   If your container fails to start, check the <strong>Logs</strong> tab immediately for error messages.
+*   If you can&#8217;t access the web server in your browser, double-check the host port mapping (<code><a href="http://localhost:&lt;&lt;HOST_PORT&gt;&gt" class="bare">http://localhost:&lt;&lt;HOST_PORT&gt;&gt</a>;</code>) and ensure no other application on your host is already using that port.
+*   If you see "Error pulling image," verify the image name and registry, and check your internet connection.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>This lab has guided you through the essential steps of deploying a container, exposing its services, and interacting with it using Red Hat Build of Podman Desktop. You now have a foundational understanding of how to manage containerized applications within this powerful tool.#  Lab: Deploying and interacting with a container</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-asciidoc hljs" data-lang="asciidoc">= Lab: Deploying and Interacting with a Container
+:navtitle: Lab: Deploying and Interacting with a Container
+:page-aliases: training:hands-on-exercises:lab-deploy-interact-container.adoc
+
+Welcome to this hands-on lab, where you will gain practical experience in deploying and interacting with containers using Red Hat Build of Podman Desktop. This lab builds upon your initial setup of Podman Desktop and its underlying container engine, allowing you to bring your first application to life within a containerized environment.
+
+[[introduction]]
+== Introduction
+
+Containers have revolutionized application deployment by providing a lightweight, portable, and consistent environment for applications to run. Podman Desktop acts as your graphical command center, simplifying the complex world of container management. In this lab, you will learn the fundamental steps of:
+
+*   **Pulling a container image**: Retrieving an application's blueprint from a registry.
+*   **Running a container**: Instantiating an image into a live, isolated process.
+*   **Interacting with a running container**: Monitoring its status, accessing its shell, and managing its lifecycle.
+
+This practical experience is crucial for understanding how to leverage containers for development, testing, and even production workloads.
+
+[[prerequisites]]
+== Prerequisites
+
+Before you begin this lab, ensure you have:
+
+*   Red Hat Build of Podman Desktop successfully installed and running on your system.
+*   A Podman machine created and started (if applicable for your operating system, e.g., Windows or macOS). You can verify its status in the "Dashboard" section of Podman Desktop.
+*   An active internet connection to pull container images from public registries.
+
+[[technical-explanation]]
+== Technical Explanation: From Image to Running Container
+
+At the heart of containerization are *images* and *containers*. Understanding the distinction between these two concepts is fundamental to working with any container platform.
+
+*   **Container Image**: An image is a lightweight, standalone, executable package that includes everything needed to run a piece of software, including the code, a runtime, system tools, system libraries, and settings. Think of it as a read-only template or a blueprint for creating containers. Images are typically stored in *registries* like Quay.io (Red Hat's enterprise-grade registry) or Docker Hub. They are built up in layers, making them efficient to store and share, as common layers can be reused across multiple images.
+*   **Container**: A container is a runnable instance of an image. When you execute an image, it becomes a container. Each container is an isolated environment, meaning it has its own filesystem, network stack, and process space, separate from the host system and other containers. This isolation ensures consistency and prevents conflicts between applications. Multiple containers can run simultaneously from the same image, each operating independently.
+
+Podman Desktop streamlines the entire process, providing a user-friendly interface over the powerful Podman engine:
+
+.   **Image Management**: Podman Desktop allows you to browse, pull, and manage container images from various registries directly from its user interface. You can search for images, inspect their details, and keep track of local image versions.
+.   **Container Creation**: With a few clicks, you can select an image and create a new container. Podman Desktop simplifies the configuration of critical parameters like port mappings, environment variables, and volume mounts, which define how the container interacts with the host and other containers.
+.   **Lifecycle Management**: Once a container is running, Podman Desktop provides intuitive tools to start, stop, restart, delete, inspect, and even open a shell into the container. This complete lifecycle management is crucial for daily development and operational tasks.
+.   **Port Mapping**: For applications running inside a container to be accessible from outside (e.g., a web server, an API), you need to establish a connection between a port on the container and a port on your host machine. This is called *port mapping* or *port forwarding*. For example, mapping container port `80` to host port `8080` allows you to access the web server by navigating to `http://localhost:8080` in your browser. Without port mapping, the application running inside the container would not be reachable from your host system.
+
+In this lab, we will use the `nginx` web server image. NGINX is a popular, open-source web server often used for reverse proxying, load balancing, and HTTP caching. Its simplicity and immediate visual feedback (a "Welcome to nginx!" page) make it an excellent choice for demonstrating basic container deployments.
+
+[[hands-on-activity]]
+== Hands-On Activity: Deploying and Interacting with NGINX
+
+In this activity, you will deploy an NGINX web server in a container and then explore various ways to interact with it using Podman Desktop.
+
+=== Objective
+
+*   Pull the `nginx` container image from a public registry.
+*   Run an `nginx` container, configuring a port mapping to expose the web server.
+*   Verify the web server is accessible from your host machine.
+*   Inspect container details, view real-time logs, and open a terminal within the running container.
+*   Manage the container's lifecycle by stopping and removing the instance.
+
+=== Steps
+
+.   **Open Podman Desktop and Verify Engine Status**
+    .   Launch Red Hat Build of Podman Desktop.
+    .   On the Dashboard, ensure that your Podman machine (if applicable for your OS like Windows/macOS) is *Running* and that the "Container Engine" status is displayed as green, indicating it's active and ready.
++
+image::podman-desktop-dashboard-running.png[Podman Desktop Dashboard with Running Engine, 600]
++
+*Troubleshooting Tip*: If your Podman machine is not running, click the "Start" button next to it. If you encounter persistent issues, refer to the "Troubleshooting Podman Desktop Issues" section of this training for guidance on common startup problems.
+
+.   **Navigate to the Images Section**
+    .   In the left-hand navigation pane of Podman Desktop, click on *Images*. This section provides an overview of all container images currently stored on your local machine, allowing you to manage them.
++
+image::podman-desktop-navigate-images.png[Navigate to Images Section]
+
+.   **Search and Pull the NGINX Image**
+    .   In the "Images" view, use the search bar at the top to search for `nginx`.
+    .   You will see various NGINX images from different registries. For this lab, we will use the official `nginx` image from Docker Hub. Locate the `docker.io/library/nginx` entry.
+    .   Click the *Pull* button next to `docker.io/library/nginx`. This action will download the latest version of the NGINX image to your local machine.
+    .   A notification will appear, indicating the image is being pulled. Once the pull is complete, `docker.io/library/nginx:latest` should appear in your list of local images.
++
+image::podman-desktop-pull-nginx.png[Pull NGINX Image from Registry]
+
+.   **Run a Container from the NGINX Image**
+    .   Once the `nginx` image is successfully pulled, locate it in your *Images* list.
+    .   Click the "play" icon (Run Image) next to `docker.io/library/nginx:latest`. This will open the "Run a new container" dialog.
+    .   **Container Name**: Enter a descriptive name for your container, such as `my-nginx-webserver`.
+    .   **Port Mappings**: This is a critical step for making the web server accessible.
+        *   Click *Add Port Mapping*.
+        *   In the *Host Port* field, enter `8080`.
+        *   In the *Container Port* field, enter `80`.
+        *   Ensure the *Protocol* is set to `TCP`.
+        +
+        This mapping configures your container so that any network traffic directed to port `8080` on your host machine will be forwarded to port `80` inside the `my-nginx-webserver` container, where the NGINX web server is listening.
+    .   Review other settings (like environment variables, volumes, and advanced options), but leave them at their defaults for this basic deployment.
+    .   Click the *Run* button at the bottom of the dialog.
+    +
+    image::podman-desktop-run-nginx-container.png[Run NGINX Container with Host Port 8080 mapped to Container Port 80]
+
+.   **Verify the Running Container and Access the Web Server**
+    .   After clicking *Run*, Podman Desktop will redirect you to the *Containers* section.
+    .   You should see your `my-nginx-webserver` container listed with a green *Running* status.
+    .   Click on the container name `my-nginx-webserver` to view its detailed information.
+    .   In the *Summary* tab, under the "Ports" section, you should see `8080:80/tcp`. Click the *Open in Browser* icon (a small globe) next to `localhost:8080`.
+    .   Your default web browser should open to `http://localhost:8080` and display the "Welcome to nginx!" default page. This confirms that your container is running successfully and the NGINX web server is accessible from your host machine through the configured port mapping!
+    +
+    image::podman-desktop-nginx-running-browser.png[Nginx Welcome Page in Browser after Successful Deployment]
+
+.   **Interact with the Container: Logs, Inspect, and Terminal Access**
+    .   While still viewing the `my-nginx-webserver` container details in Podman Desktop:
+        *   **Logs**: Click the *Logs* tab. Here, you will see the real-time standard output and standard error streams from the NGINX process inside the container. If you refresh `http://localhost:8080` in your browser a few times, you should observe new access entries appearing in the logs, demonstrating active interaction. This tab is invaluable for monitoring container health and debugging application issues.
+        +
+        image::podman-desktop-nginx-logs.png[Nginx Container Logs Showing Access Entries]
+        *   **Inspect**: Click the *Inspect* tab. This tab provides a wealth of low-level JSON-formatted information about the container, including its configuration, network settings, mounted volumes, IP addresses, and other runtime details. This information is invaluable for advanced debugging, understanding container runtime specifics, and verifying configuration.
+        *   **Terminal**: Click the *Terminal* tab. This feature opens a command-line interface (shell) directly inside your running NGINX container. You can now execute commands as if you were logged into the container itself. For example, type `ls /etc/nginx` and press Enter to list the NGINX configuration files within the container. You can also try `ping localhost` or `cat /var/log/nginx/access.log`. Type `exit` and press Enter to close the terminal session and return to Podman Desktop.
+        +
+        image::podman-desktop-nginx-terminal.png[Nginx Container Terminal for Executing Commands]
+
+.   **Stop and Remove the Container**
+    .   From the *Containers* list, or from the detailed view of `my-nginx-webserver`, locate the action buttons at the top right of the container entry (or at the top of the details view).
+    .   **Stop**: Click the *Stop* button (square icon). The container's status will change from *Running* to *Exited*. If you try to access `http://localhost:8080` in your browser now, it will fail because the NGINX web server process inside the container has been gracefully shut down.
+    .   **Remove**: With the container in an *Exited* state, click the *Delete* button (trash can icon). Confirm the deletion when prompted.
+    .   The `my-nginx-webserver` container will now be removed from your list of containers. The `nginx` image, however, remains locally stored on your machine for future use, so you don't need to pull it again if you wish to run another NGINX container.
+
+[[troubleshooting-tips]]
+== Troubleshooting Tips
+
+*   **Port Conflict Error**: If you encounter an error message like "Port 8080 already in use" when attempting to run the container, it indicates that another application or process on your host machine is already utilizing port `8080`. To resolve this, simply try using a different *Host Port* for your NGINX container (e.g., `8081`, `8000`, or any other unused port).
+*   **"Welcome to NGINX" Page Not Showing**:
+    *   **Container Status**: First, ensure the container status in Podman Desktop is *Running*.
+    *   **Port Mapping**: Double-check that your port mapping is correctly configured (Host Port `8080` to Container Port `80`/TCP).
+    *   **Firewall**: If you are still unable to access `http://localhost:8080`, your operating system's firewall might be blocking the connection. Ensure that traffic on the selected host port (`8080`) is allowed.
+    *   **Logs**: Check the container's *Logs* tab immediately after starting it. Any errors during the NGINX server's startup will be reported here.
+*   **Image Pull Issues**: If an image fails to pull, check your internet connection. If you are behind a corporate proxy, ensure you have configured network proxies within Podman Desktop (refer to the "Configuring Network Proxies" section of this training).
+*   **Container Fails to Start or Exits Immediately**: The most common reason for this is a misconfiguration or an issue with the application inside the container. Always review the *Logs* tab of the container immediately after attempting to start it. Error messages in the logs are usually very helpful in diagnosing startup failures.
+
+[[summary]]
+== Summary
+
+Congratulations! You have successfully deployed your first containerized application using Red Hat Build of Podman Desktop. You now possess foundational practical skills in container management, including how to:
+
+*   Pull container images from remote registries to your local machine.
+*   Run a container, including configuring essential parameters like port mappings to make the application accessible.
+*   Verify and interact with running containers by viewing real-time logs, inspecting detailed configuration, and accessing a terminal within the container for debugging or administrative tasks.
+*   Manage the container lifecycle by gracefully stopping and cleanly removing container instances.
+
+This foundational knowledge is critical for anyone working with containerized applications and serves as a springboard for more advanced topics like persistent storage (volume mounts), environment variables for dynamic configuration, and orchestrating multi-container applications.</code></pre>
+</div>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="lab-managing-podman-machines-and-container-engines.html">Lab: Managing Podman machines and container engines</a></span>
+  <span class="next"><a href="lab-configuring-a-private-registry-connection.html">Lab: Configuring a private registry connection</a></span>
+</nav>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <img src="../../../_/img/rhl-logo-red.png" height="40px" alt="Red Hat"  href="https://redhat.com" >
+</footer><script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

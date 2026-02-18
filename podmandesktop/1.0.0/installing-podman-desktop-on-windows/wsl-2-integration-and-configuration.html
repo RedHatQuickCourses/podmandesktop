@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>WSL 2 integration and configuration :: Red Hat Build of Podman Desktop: Installation, Configuration, and Troubleshooting</title>
+    <link rel="prev" href="download-and-installation-process-via-installer.html">
+    <link rel="next" href="initial-setup-and-podman-machine-creation.html">
+    <meta name="generator" content="Antora 3.1.3">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+    <script>var uiRootPath = '../../../_'</script>
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://www.redhat.com" target="_blank"><img src="../../../_/img/redhat-logo.png" height="40px" alt="Red Hat"></a>
+      <a class="navbar-item" style="font-size: 24px; color: white" href="../../..">Red Hat Build of Podman Desktop: Installation, Configuration, and Troubleshooting</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="https://github.com/RedHatQuickCourses/REPLACEREPONAME/issues" target="_blank">Report Issues</a>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="podmandesktop" data-version="1.0.0">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html">Red Hat Build of Podman Desktop: Installation, Configuration, and Troubleshooting</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../index.html">Home</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../LABENV/index.html">Lab Environment</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../introduction-to-podman-desktop/introduction-to-podman-desktop.html">Introduction to Podman Desktop</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-podman-desktop/overview-of-podman-desktops-purpose-and-capabilities.html">Overview of Podman Desktop&#8217;s purpose and capabilities</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-podman-desktop/key-features-for-container-management.html">Key features for container management</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-podman-desktop/benefits-of-using-red-hat-build-of-podman-desktop.html">Benefits of using Red Hat Build of Podman Desktop</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../introduction-to-podman-desktop/introduction-to-podman-desktop.html">Introduction to Podman Desktop</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-podman-desktop/overview-of-podman-desktops-purpose-and-capabilities.html">Overview of Podman Desktop&#8217;s purpose and capabilities</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-podman-desktop/key-features-for-container-management.html">Key features for container management</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-podman-desktop/benefits-of-using-red-hat-build-of-podman-desktop.html">Benefits of using Red Hat Build of Podman Desktop</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../preparing-for-installation/preparing-for-installation.html">Preparing for Installation</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-for-installation/system-requirements-for-various-operating-systems.html">System requirements for various operating systems</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-for-installation/prerequisites-and-dependencies-eg-wsl-on-windows-podman-engine.html">Prerequisites and dependencies (e.g., WSL on Windows, Podman engine)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-for-installation/understanding-podman-machine-concept.html">Understanding Podman machine concept</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../preparing-for-installation/preparing-for-installation.html">Preparing for Installation</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-for-installation/system-requirements-for-various-operating-systems.html">System requirements for various operating systems</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-for-installation/prerequisites-and-dependencies-eg-wsl-on-windows-podman-engine.html">Prerequisites and dependencies (e.g., WSL on Windows, Podman engine)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-for-installation/understanding-podman-machine-concept.html">Understanding Podman machine concept</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/installing-podman-desktop-on-macos.html">Installing Podman Desktop on macOS</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/download-and-installation-process-via-installer.html">Download and installation process via installer</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/initial-setup-and-podman-machine-creation.html">Initial setup and Podman machine creation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/verifying-installation-and-basic-functionality.html">Verifying installation and basic functionality</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/installing-podman-desktop-on-macos.html">Installing Podman Desktop on macOS</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/download-and-installation-process-via-installer.html">Download and installation process via installer</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/initial-setup-and-podman-machine-creation.html">Initial setup and Podman machine creation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/verifying-installation-and-basic-functionality.html">Verifying installation and basic functionality</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="installing-podman-desktop-on-windows.html">Installing Podman Desktop on Windows</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="download-and-installation-process-via-installer.html">Download and installation process via installer</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="wsl-2-integration-and-configuration.html">WSL 2 integration and configuration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="initial-setup-and-podman-machine-creation.html">Initial setup and Podman machine creation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="verifying-installation-and-basic-functionality.html">Verifying installation and basic functionality</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="installing-podman-desktop-on-windows.html">Installing Podman Desktop on Windows</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="download-and-installation-process-via-installer.html">Download and installation process via installer</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="wsl-2-integration-and-configuration.html">WSL 2 integration and configuration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="initial-setup-and-podman-machine-creation.html">Initial setup and Podman machine creation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="verifying-installation-and-basic-functionality.html">Verifying installation and basic functionality</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/installing-podman-desktop-on-red-hat-enterprise-linux.html">Installing Podman Desktop on Red Hat Enterprise Linux</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/installation-steps-using-package-managers-eg-dnf.html">Installation steps using package managers (e.g., <code>dnf</code>)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/initial-setup-and-podman-machine-creation.html">Initial setup and Podman machine creation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/verifying-installation-and-basic-functionality.html">Verifying installation and basic functionality</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/installing-podman-desktop-on-red-hat-enterprise-linux.html">Installing Podman Desktop on Red Hat Enterprise Linux</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/installation-steps-using-package-managers-eg-dnf.html">Installation steps using package managers (e.g., <code>dnf</code>)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/initial-setup-and-podman-machine-creation.html">Initial setup and Podman machine creation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/verifying-installation-and-basic-functionality.html">Verifying installation and basic functionality</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/deploying-podman-desktop-in-air-gapped-environments.html">Deploying Podman Desktop in Air-Gapped Environments</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/challenges-and-considerations-for-air-gapped-deployments.html">Challenges and considerations for air-gapped deployments</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/gathering-necessary-installation-artifacts.html">Gathering necessary installation artifacts</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/step-by-step-offline-installation-procedure.html">Step-by-step offline installation procedure</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/post-installation-configuration-for-restricted-environments.html">Post-installation configuration for restricted environments</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/deploying-podman-desktop-in-air-gapped-environments.html">Deploying Podman Desktop in Air-Gapped Environments</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/challenges-and-considerations-for-air-gapped-deployments.html">Challenges and considerations for air-gapped deployments</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/gathering-necessary-installation-artifacts.html">Gathering necessary installation artifacts</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/step-by-step-offline-installation-procedure.html">Step-by-step offline installation procedure</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/post-installation-configuration-for-restricted-environments.html">Post-installation configuration for restricted environments</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/configuring-and-customizing-podman-desktop.html">Configuring and Customizing Podman Desktop</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/managing-container-engine-settings-memory-cpu-disk.html">Managing container engine settings (memory, CPU, disk)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/configuring-registries-and-image-pull-secrets.html">Configuring registries and image pull secrets</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/setting-up-network-proxies.html">Setting up network proxies</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/integrating-with-kubernetes-and-openshift-clusters.html">Integrating with Kubernetes and OpenShift clusters</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/exploring-and-managing-extensions.html">Exploring and managing extensions</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/configuring-and-customizing-podman-desktop.html">Configuring and Customizing Podman Desktop</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/managing-container-engine-settings-memory-cpu-disk.html">Managing container engine settings (memory, CPU, disk)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/configuring-registries-and-image-pull-secrets.html">Configuring registries and image pull secrets</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/setting-up-network-proxies.html">Setting up network proxies</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/integrating-with-kubernetes-and-openshift-clusters.html">Integrating with Kubernetes and OpenShift clusters</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/exploring-and-managing-extensions.html">Exploring and managing extensions</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/troubleshooting-podman-desktop-issues.html">Troubleshooting Podman Desktop Issues</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/common-installation-and-startup-problems.html">Common installation and startup problems</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/diagnosing-podman-machine-failures.html">Diagnosing Podman machine failures</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/resolving-image-pull-and-container-run-errors.html">Resolving image pull and container run errors</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/utilizing-logs-for-problem-identification.html">Utilizing logs for problem identification</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/best-practices-for-issue-prevention.html">Best practices for issue prevention</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/troubleshooting-podman-desktop-issues.html">Troubleshooting Podman Desktop Issues</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/common-installation-and-startup-problems.html">Common installation and startup problems</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/diagnosing-podman-machine-failures.html">Diagnosing Podman machine failures</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/resolving-image-pull-and-container-run-errors.html">Resolving image pull and container run errors</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/utilizing-logs-for-problem-identification.html">Utilizing logs for problem identification</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/best-practices-for-issue-prevention.html">Best practices for issue prevention</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../hands-on-exercises/hands-on-exercises.html">Hands-On Exercises</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-installing-podman-desktop-on-your-preferred-os.html">Lab: Installing Podman Desktop on your preferred OS</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-managing-podman-machines-and-container-engines.html">Lab: Managing Podman machines and container engines</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-deploying-and-interacting-with-a-container.html">Lab: Deploying and interacting with a container</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-configuring-a-private-registry-connection.html">Lab: Configuring a private registry connection</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-troubleshooting-a-simulated-podman-desktop-issue.html">Lab: Troubleshooting a simulated Podman Desktop issue</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../hands-on-exercises/hands-on-exercises.html">Hands-On Exercises</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-installing-podman-desktop-on-your-preferred-os.html">Lab: Installing Podman Desktop on your preferred OS</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-managing-podman-machines-and-container-engines.html">Lab: Managing Podman machines and container engines</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-deploying-and-interacting-with-a-container.html">Lab: Deploying and interacting with a container</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-configuring-a-private-registry-connection.html">Lab: Configuring a private registry connection</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-troubleshooting-a-simulated-podman-desktop-issue.html">Lab: Troubleshooting a simulated Podman Desktop issue</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../appendix/appendix.html">Appendix</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">Red Hat Build of Podman Desktop: Installation, Configuration, and Troubleshooting</span>
+    <span class="version">1.0.0</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <a class="title" href="../index.html">Red Hat Build of Podman Desktop: Installation, Configuration, and Troubleshooting</a>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">1.0.0</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">Red Hat Build of Podman Desktop: Installation, Configuration, and Troubleshooting</a></li>
+    <li><a href="installing-podman-desktop-on-windows.html">Installing Podman Desktop on Windows</a></li>
+    <li><a href="wsl-2-integration-and-configuration.html">WSL 2 integration and configuration</a></li>
+  </ul>
+</nav>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">WSL 2 integration and configuration</h1>
+<h1 id="_wsl_2_integration_and_configuration_for_podman_desktop" class="sect0"><a class="anchor" href="#_wsl_2_integration_and_configuration_for_podman_desktop"></a>WSL 2 Integration and Configuration for Podman Desktop</h1>
+<div class="paragraph">
+<p>This section details the critical role of Windows Subsystem for Linux 2 (WSL 2) in running Red Hat Build of Podman Desktop on Windows. We will cover why WSL 2 is essential, its underlying architecture, and how to prepare your Windows environment for seamless integration.</p>
+</div>
+<div class="sect1">
+<h2 id="_understanding_wsl_2_and_its_importance"><a class="anchor" href="#_understanding_wsl_2_and_its_importance"></a>Understanding WSL 2 and its Importance</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Windows Subsystem for Linux (WSL) allows developers to run a Linux environment directly on Windows, without the overhead of a traditional virtual machine or dual-boot setup. WSL 2 represents a significant architectural improvement over its predecessor, WSL 1.</p>
+</div>
+<div class="sect2">
+<h3 id="_why_wsl_2_is_essential_for_podman_desktop"><a class="anchor" href="#_why_wsl_2_is_essential_for_podman_desktop"></a>Why WSL 2 is Essential for Podman Desktop</h3>
+<div class="paragraph">
+<p>Podman Desktop leverages WSL 2 to provide a robust and performant Linux environment where the Podman engine and its associated container images can run natively. Here&#8217;s why WSL 2 is crucial:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Full Linux Kernel:</strong> WSL 2 includes a real Linux kernel, providing full system call compatibility. This is vital for containerization technologies like Podman, which rely on specific kernel features (e.g., cgroups, namespaces) that WSL 1 could not fully emulate.</p>
+</li>
+<li>
+<p><strong>Improved File System Performance:</strong> For Linux-based file systems, WSL 2 offers significantly faster I/O performance compared to WSL 1, especially when interacting with files stored within the Linux distribution itself. This directly impacts container build and runtime performance.</p>
+</li>
+<li>
+<p><strong>Networking Compatibility:</strong> WSL 2 provides better network compatibility, allowing containers to interact with the host network in a more predictable and robust manner.</p>
+</li>
+<li>
+<p><strong>Virtual Machine Technology:</strong> Unlike WSL 1 which used a translation layer, WSL 2 runs each Linux distribution as a lightweight utility virtual machine (VM). This VM is fully managed by Windows, consuming fewer resources than a traditional Hyper-V VM and integrating seamlessly with the Windows environment.</p>
+</li>
+<li>
+<p><strong>Podman Machine Host:</strong> When you create a Podman machine in Podman Desktop on Windows, it typically runs inside a dedicated minimal Linux distribution within WSL 2 (often a Fedora CoreOS variant). This provides a self-contained, isolated environment for your containers.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_wsl_1_vs_wsl_2_a_brief_comparison"><a class="anchor" href="#_wsl_1_vs_wsl_2_a_brief_comparison"></a>WSL 1 vs. WSL 2: A Brief Comparison</h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 40%;">
+<col style="width: 40%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Feature</th>
+<th class="tableblock halign-left valign-top">WSL 1</th>
+<th class="tableblock halign-left valign-top">WSL 2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Architecture</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Translation layer (no real Linux kernel)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Lightweight VM with real Linux kernel</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Performance</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Slower file I/O for Linux files</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Faster file I/O for Linux files</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">System Call Compatibility</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Limited, some applications not supported</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Full system call compatibility</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Networking</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Network Address Translation (NAT) with limitations</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Improved networking, better integration</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Requirements</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No virtualization required</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Requires hardware virtualization enabled</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Typical Use Case</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Running basic Linux command-line tools</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Running full-fledged Linux applications, Docker, Podman, Kubernetes</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+For Podman Desktop on Windows, <em>only</em> WSL 2 is supported and required due to its architectural advantages for container workloads.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_prerequisites_for_wsl_2"><a class="anchor" href="#_prerequisites_for_wsl_2"></a>Prerequisites for WSL 2</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Before proceeding with the installation of Podman Desktop on Windows, ensure your system meets the following prerequisites for WSL 2:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Operating System:</strong> Windows 10 version 1903 or higher, with Build 18362 or higher. For ARM64 systems, Windows 10 version 2004 or higher, with Build 19041 or higher. You can check your Windows version by typing <code>winver</code> in the Run dialog (<code>Win + R</code>).</p>
+</li>
+<li>
+<p><strong>Hardware Virtualization:</strong> Your computer&#8217;s BIOS/UEFI must have virtualization enabled (e.g., Intel VT-x or AMD-V). This is usually found in the CPU configuration settings of your BIOS. Without this, WSL 2 cannot run.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_hands_on_activity_configuring_wsl_2"><a class="anchor" href="#_hands_on_activity_configuring_wsl_2"></a>Hands-on Activity: Configuring WSL 2</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This activity guides you through enabling and configuring WSL 2 on your Windows system, preparing it for Podman Desktop.</p>
+</div>
+<div class="sect2">
+<h3 id="_step_1_enable_wsl_and_virtual_machine_platform_features"><a class="anchor" href="#_step_1_enable_wsl_and_virtual_machine_platform_features"></a>Step 1: Enable WSL and Virtual Machine Platform Features</h3>
+<div class="paragraph">
+<p>First, you need to enable the necessary Windows features that allow WSL 2 to function.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Open PowerShell as an Administrator.</p>
+</li>
+<li>
+<p>Run the following command to enable the "Windows Subsystem for Linux" feature:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-powershell hljs" data-lang="powershell">dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Run the following command to enable the "Virtual Machine Platform" feature, which is required by WSL 2:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-powershell hljs" data-lang="powershell">dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Restart your computer when prompted, or after enabling both features, to apply the changes.</p>
+</li>
+</ol>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If you are running Windows 11, the <code>wsl --install</code> command (introduced later) can often handle enabling these features automatically. However, explicitly enabling them ensures readiness.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_step_2_update_the_wsl_kernel"><a class="anchor" href="#_step_2_update_the_wsl_kernel"></a>Step 2: Update the WSL Kernel</h3>
+<div class="paragraph">
+<p>Ensure your WSL installation has the latest kernel.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Open PowerShell as an Administrator.</p>
+</li>
+<li>
+<p>Run the following command to update the WSL kernel:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-powershell hljs" data-lang="powershell">wsl --update</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Allow the update process to complete. You might see a message indicating the kernel is up to date, or that it&#8217;s downloading and installing a new version.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_step_3_set_wsl_2_as_the_default_version"><a class="anchor" href="#_step_3_set_wsl_2_as_the_default_version"></a>Step 3: Set WSL 2 as the Default Version</h3>
+<div class="paragraph">
+<p>This step ensures that any new Linux distributions installed (including the one Podman Desktop will create for its machine) will use the WSL 2 architecture by default.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Open PowerShell as an Administrator.</p>
+</li>
+<li>
+<p>Run the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-powershell hljs" data-lang="powershell">wsl --set-default-version 2</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>You should see a message confirming the operation was successful. If you encounter an error like "WSL 2 requires an update to its kernel component," ensure you completed Step 2 correctly and restarted if necessary.</p>
+</li>
+</ol>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+If you already have existing WSL 1 distributions and want to convert them to WSL 2, you can do so by running <code>wsl --set-version &lt;DistroName&gt; 2</code>. Replace <code>&lt;DistroName&gt;</code> with the actual name of your distribution (e.g., <code>Ubuntu</code>).
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_step_4_verify_wsl_installation_and_version"><a class="anchor" href="#_step_4_verify_wsl_installation_and_version"></a>Step 4: Verify WSL Installation and Version</h3>
+<div class="paragraph">
+<p>Finally, verify that WSL is correctly installed and configured to use version 2.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Open PowerShell or Command Prompt.</p>
+</li>
+<li>
+<p>Run the following command to list all installed WSL distributions and their versions:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-powershell hljs" data-lang="powershell">wsl --list --verbose</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>The output should look similar to this (you might not have any distributions yet, which is fine for now):</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-text hljs" data-lang="text">  NAME      STATE           VERSION
+* Ubuntu    Stopped         2</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Ensure that the <code>VERSION</code> column for any listed distributions (or for future distributions) shows <code>2</code>. If you don&#8217;t have any distributions, the output will simply show no running distributions, but the <code>wsl --set-default-version 2</code> command would have already set the default for new ones.</p>
+</div>
+</li>
+</ol>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+If you encounter issues during any of these steps, such as <code>Error: 0x80370102 The virtual machine could not be started because a required feature is not installed</code>, it typically indicates that hardware virtualization (Hyper-V or your BIOS settings for Intel VT-x/AMD-V) is not enabled or properly configured. Check your BIOS settings and ensure Hyper-V is not conflicting if you have other virtualization software.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>With WSL 2 successfully configured, your Windows environment is now ready for the Red Hat Build of Podman Desktop installation.#  WSL 2 integration and configuration</p>
+</div>
+</div>
+</div>
+</div>
+<h1 id="wsl2-integration-configuration" class="sect0"><a class="anchor" href="#wsl2-integration-configuration"></a>WSL 2 Integration and Configuration for Podman Desktop</h1>
+<div class="paragraph">
+<p>This section details the critical role of Windows Subsystem for Linux (WSL) 2 in running Red Hat Build of Podman Desktop on Windows. We will cover how to enable, configure, and prepare WSL 2 to ensure a smooth installation and operation of Podman Desktop.</p>
+</div>
+<div class="sect1">
+<h2 id="_understanding_wsl_2_for_podman_desktop"><a class="anchor" href="#_understanding_wsl_2_for_podman_desktop"></a>Understanding WSL 2 for Podman Desktop</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The Red Hat Build of Podman Desktop leverages the power of WSL 2 to provide a robust and Linux-native environment for running container engines like Podman. While Windows itself can run some container technologies, Podman Desktop primarily relies on a Linux-based virtual machine managed by WSL 2 to host the Podman engine and associated services. This architecture offers several key benefits:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Linux Kernel Performance:</strong> WSL 2 uses a true Linux kernel, offering full system call compatibility and significantly improved file system performance compared to WSL 1, which was an emulation layer. This is crucial for container workloads.</p>
+</li>
+<li>
+<p><strong>Isolation:</strong> Each WSL 2 distribution runs in its own lightweight virtual machine, providing better isolation for container processes.</p>
+</li>
+<li>
+<p><strong>Seamless Integration:</strong> WSL 2 integrates well with the Windows file system and network, allowing Podman Desktop to manage containers that interact with your Windows environment.</p>
+</li>
+<li>
+<p><strong>Podman Machine Host:</strong> The Podman machine, which is a lightweight Linux VM where the Podman engine runs, is typically created within a WSL 2 distribution. This provides the necessary Linux environment for Podman to operate.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Essentially, WSL 2 acts as the foundational layer on Windows, providing the Linux operating system environment required for Podman and other container tools to function optimally, bridging the gap between Windows and the Linux container world.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_preparing_wsl_2_for_podman_desktop"><a class="anchor" href="#_preparing_wsl_2_for_podman_desktop"></a>Preparing WSL 2 for Podman Desktop</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Before installing Podman Desktop, it&#8217;s essential to ensure WSL 2 is properly enabled and configured on your Windows system. This involves enabling the necessary Windows features, installing a Linux distribution, and confirming that it&#8217;s using WSL 2.</p>
+</div>
+<div class="sect2">
+<h3 id="_technical_explanation_wsl_2_prerequisites"><a class="anchor" href="#_technical_explanation_wsl_2_prerequisites"></a>Technical Explanation: WSL 2 Prerequisites</h3>
+<div class="paragraph">
+<p>To run WSL 2, your Windows system must meet certain requirements:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Windows Version:</strong></p>
+</li>
+<li>
+<p>For x64 systems: Version 1903 or higher, with Build 18362 or higher.</p>
+</li>
+<li>
+<p>For ARM64 systems: Version 2004 or higher, with Build 19041 or higher.</p>
+</li>
+<li>
+<p>You can check your Windows version by pressing <code>Win + R</code>, typing <code>winver</code>, and pressing Enter.</p>
+</li>
+<li>
+<p><strong>Virtual Machine Platform Feature:</strong> WSL 2 relies on Hyper-V virtualization. The "Virtual Machine Platform" optional feature must be enabled.</p>
+</li>
+<li>
+<p><strong>Windows Subsystem for Linux Feature:</strong> The core "Windows Subsystem for Linux" feature must be enabled.</p>
+</li>
+<li>
+<p><strong>WSL 2 Linux Kernel Update:</strong> The WSL 2 Linux kernel is distributed via Windows Update, but it sometimes requires a manual update package installation.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>It&#8217;s highly recommended to keep your Windows operating system up-to-date to ensure you have the latest WSL features and bug fixes.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_hands_on_activity_configuring_wsl_2_2"><a class="anchor" href="#_hands_on_activity_configuring_wsl_2_2"></a>Hands-On Activity: Configuring WSL 2</h3>
+<div class="paragraph">
+<p>This lab will guide you through the process of enabling and configuring WSL 2 on your Windows machine, preparing it for Podman Desktop installation.</p>
+</div>
+<div class="sect3">
+<h4 id="_prerequisites"><a class="anchor" href="#_prerequisites"></a>Prerequisites</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>A Windows 10 (version 1903+, build 18362+) or Windows 11 machine.</p>
+</li>
+<li>
+<p>Administrator privileges on your Windows machine.</p>
+</li>
+<li>
+<p>An active internet connection to download necessary components.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_procedure"><a class="anchor" href="#_procedure"></a>Procedure</h4>
+<div class="paragraph">
+<p>Follow these steps to enable and configure WSL 2:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Step 1: Enable Required Windows Features</strong></p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Open PowerShell as an Administrator. You can do this by searching for "PowerShell" in the Start menu, right-clicking "Windows PowerShell", and selecting "Run as administrator".</p>
+</li>
+<li>
+<p>Run the following commands to enable the "Windows Subsystem for Linux" and "Virtual Machine Platform" features:
+<code><code>powershell
+dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
+dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
+</code></code></p>
+</li>
+<li>
+<p>After executing these commands, you will likely be prompted to restart your computer. <strong>Restart your computer</strong> to apply these changes.</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p><strong>Step 2: Set WSL 2 as the Default Version</strong></p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>After your computer restarts, open PowerShell as an Administrator again.</p>
+</li>
+<li>
+<p>Run the following command to set WSL 2 as the default version for any new Linux distributions you install:
+<code><code>powershell
+wsl --set-default-version 2
+</code></code></p>
+</li>
+<li>
+<p>You might see a message indicating that the requested operation could not be completed because a virtualization feature is not enabled. In this case, ensure virtualization is enabled in your computer&#8217;s BIOS/UEFI settings. (This is specific to your hardware and typically involves entering BIOS/UEFI during startup and looking for settings like "Intel VT-x", "AMD-V", "Virtualization Technology", or "SVM Mode".)</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p><strong>Step 3: Install a Linux Distribution</strong></p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Open the Microsoft Store on your Windows machine.</p>
+</li>
+<li>
+<p>Search for a Linux distribution. Popular choices include:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Ubuntu</code> (Recommended for general use)</p>
+</li>
+<li>
+<p><code>Debian</code></p>
+</li>
+<li>
+<p><code>OpenSUSE</code></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Select your preferred distribution (e.g., "Ubuntu") and click the <strong>Get</strong> or <strong>Install</strong> button.</p>
+</li>
+<li>
+<p>Once the installation is complete, click <strong>Launch</strong> from the Microsoft Store, or find your distribution in the Start menu and open it.</p>
+</li>
+<li>
+<p>The first time you launch a new distribution, it will take a few minutes to complete the initial setup. You will then be prompted to create a username and password for your new Linux environment. Enter these details.</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p><strong>Step 4: Update the WSL Linux Kernel (if necessary)</strong></p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Although Windows Update typically handles this, it&#8217;s good practice to ensure you have the latest WSL 2 kernel.</p>
+</li>
+<li>
+<p>Visit the official Microsoft WSL documentation page for the latest WSL 2 Linux kernel update package: <a href="https://learn.microsoft.com/en-us/windows/wsl/install-manual#step-4---download-the-linux-kernel-update-package">WSL Kernel Update Package</a>.</p>
+</li>
+<li>
+<p>Download the <code>wsl_update_x64.msi</code> installer.</p>
+</li>
+<li>
+<p>Run the downloaded installer. It&#8217;s a simple "next, next, finish" process.</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p><strong>Step 5: Verify WSL 2 Configuration</strong></p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Open PowerShell or Command Prompt.</p>
+</li>
+<li>
+<p>Run the following command to list your installed WSL distributions and their versions:
+<code><code>powershell
+wsl --list --verbose
+</code></code>
+or its shorter alias:
+<code><code>powershell
+wsl -l -v
+</code></code></p>
+</li>
+<li>
+<p>You should see output similar to this:
+<code>`</code>
+  NAME            STATE           VERSION</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Ubuntu          Running         2
+  docker-desktop  Running         2
+<code>`
+Ensure that your installed Linux distribution (e.g., <code>Ubuntu</code>) shows <code>VERSION</code> as <code>2</code>. If it shows <code>1</code>, you can convert it by running:
+</code><code>powershell
+wsl --set-version &lt;DistributionName&gt; 2
+``</code>
+(Replace <code>&lt;DistributionName&gt;</code> with the actual name, e.g., <code>Ubuntu</code>). This conversion may take some time.</p>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>By successfully completing these steps, your Windows environment is now ready with a fully functional WSL 2 setup, providing the necessary Linux host for the Red Hat Build of Podman Desktop to install and operate its Podman engine.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="download-and-installation-process-via-installer.html">Download and installation process via installer</a></span>
+  <span class="next"><a href="initial-setup-and-podman-machine-creation.html">Initial setup and Podman machine creation</a></span>
+</nav>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <img src="../../../_/img/rhl-logo-red.png" height="40px" alt="Red Hat"  href="https://redhat.com" >
+</footer><script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

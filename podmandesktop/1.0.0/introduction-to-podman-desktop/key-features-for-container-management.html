@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Key features for container management :: Red Hat Build of Podman Desktop: Installation, Configuration, and Troubleshooting</title>
+    <link rel="prev" href="overview-of-podman-desktops-purpose-and-capabilities.html">
+    <link rel="next" href="benefits-of-using-red-hat-build-of-podman-desktop.html">
+    <meta name="generator" content="Antora 3.1.3">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+    <script>var uiRootPath = '../../../_'</script>
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://www.redhat.com" target="_blank"><img src="../../../_/img/redhat-logo.png" height="40px" alt="Red Hat"></a>
+      <a class="navbar-item" style="font-size: 24px; color: white" href="../../..">Red Hat Build of Podman Desktop: Installation, Configuration, and Troubleshooting</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="https://github.com/RedHatQuickCourses/REPLACEREPONAME/issues" target="_blank">Report Issues</a>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="podmandesktop" data-version="1.0.0">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html">Red Hat Build of Podman Desktop: Installation, Configuration, and Troubleshooting</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../index.html">Home</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../LABENV/index.html">Lab Environment</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="introduction-to-podman-desktop.html">Introduction to Podman Desktop</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="overview-of-podman-desktops-purpose-and-capabilities.html">Overview of Podman Desktop&#8217;s purpose and capabilities</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="key-features-for-container-management.html">Key features for container management</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="benefits-of-using-red-hat-build-of-podman-desktop.html">Benefits of using Red Hat Build of Podman Desktop</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="introduction-to-podman-desktop.html">Introduction to Podman Desktop</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="overview-of-podman-desktops-purpose-and-capabilities.html">Overview of Podman Desktop&#8217;s purpose and capabilities</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="key-features-for-container-management.html">Key features for container management</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="benefits-of-using-red-hat-build-of-podman-desktop.html">Benefits of using Red Hat Build of Podman Desktop</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../preparing-for-installation/preparing-for-installation.html">Preparing for Installation</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-for-installation/system-requirements-for-various-operating-systems.html">System requirements for various operating systems</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-for-installation/prerequisites-and-dependencies-eg-wsl-on-windows-podman-engine.html">Prerequisites and dependencies (e.g., WSL on Windows, Podman engine)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-for-installation/understanding-podman-machine-concept.html">Understanding Podman machine concept</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../preparing-for-installation/preparing-for-installation.html">Preparing for Installation</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-for-installation/system-requirements-for-various-operating-systems.html">System requirements for various operating systems</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-for-installation/prerequisites-and-dependencies-eg-wsl-on-windows-podman-engine.html">Prerequisites and dependencies (e.g., WSL on Windows, Podman engine)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-for-installation/understanding-podman-machine-concept.html">Understanding Podman machine concept</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/installing-podman-desktop-on-macos.html">Installing Podman Desktop on macOS</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/download-and-installation-process-via-installer.html">Download and installation process via installer</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/initial-setup-and-podman-machine-creation.html">Initial setup and Podman machine creation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/verifying-installation-and-basic-functionality.html">Verifying installation and basic functionality</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/installing-podman-desktop-on-macos.html">Installing Podman Desktop on macOS</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/download-and-installation-process-via-installer.html">Download and installation process via installer</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/initial-setup-and-podman-machine-creation.html">Initial setup and Podman machine creation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/verifying-installation-and-basic-functionality.html">Verifying installation and basic functionality</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/installing-podman-desktop-on-windows.html">Installing Podman Desktop on Windows</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/download-and-installation-process-via-installer.html">Download and installation process via installer</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/wsl-2-integration-and-configuration.html">WSL 2 integration and configuration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/initial-setup-and-podman-machine-creation.html">Initial setup and Podman machine creation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/verifying-installation-and-basic-functionality.html">Verifying installation and basic functionality</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/installing-podman-desktop-on-windows.html">Installing Podman Desktop on Windows</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/download-and-installation-process-via-installer.html">Download and installation process via installer</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/wsl-2-integration-and-configuration.html">WSL 2 integration and configuration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/initial-setup-and-podman-machine-creation.html">Initial setup and Podman machine creation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/verifying-installation-and-basic-functionality.html">Verifying installation and basic functionality</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/installing-podman-desktop-on-red-hat-enterprise-linux.html">Installing Podman Desktop on Red Hat Enterprise Linux</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/installation-steps-using-package-managers-eg-dnf.html">Installation steps using package managers (e.g., <code>dnf</code>)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/initial-setup-and-podman-machine-creation.html">Initial setup and Podman machine creation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/verifying-installation-and-basic-functionality.html">Verifying installation and basic functionality</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/installing-podman-desktop-on-red-hat-enterprise-linux.html">Installing Podman Desktop on Red Hat Enterprise Linux</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/installation-steps-using-package-managers-eg-dnf.html">Installation steps using package managers (e.g., <code>dnf</code>)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/initial-setup-and-podman-machine-creation.html">Initial setup and Podman machine creation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/verifying-installation-and-basic-functionality.html">Verifying installation and basic functionality</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/deploying-podman-desktop-in-air-gapped-environments.html">Deploying Podman Desktop in Air-Gapped Environments</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/challenges-and-considerations-for-air-gapped-deployments.html">Challenges and considerations for air-gapped deployments</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/gathering-necessary-installation-artifacts.html">Gathering necessary installation artifacts</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/step-by-step-offline-installation-procedure.html">Step-by-step offline installation procedure</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/post-installation-configuration-for-restricted-environments.html">Post-installation configuration for restricted environments</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/deploying-podman-desktop-in-air-gapped-environments.html">Deploying Podman Desktop in Air-Gapped Environments</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/challenges-and-considerations-for-air-gapped-deployments.html">Challenges and considerations for air-gapped deployments</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/gathering-necessary-installation-artifacts.html">Gathering necessary installation artifacts</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/step-by-step-offline-installation-procedure.html">Step-by-step offline installation procedure</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploying-podman-desktop-in-air-gapped-environments/post-installation-configuration-for-restricted-environments.html">Post-installation configuration for restricted environments</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/configuring-and-customizing-podman-desktop.html">Configuring and Customizing Podman Desktop</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/managing-container-engine-settings-memory-cpu-disk.html">Managing container engine settings (memory, CPU, disk)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/configuring-registries-and-image-pull-secrets.html">Configuring registries and image pull secrets</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/setting-up-network-proxies.html">Setting up network proxies</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/integrating-with-kubernetes-and-openshift-clusters.html">Integrating with Kubernetes and OpenShift clusters</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/exploring-and-managing-extensions.html">Exploring and managing extensions</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/configuring-and-customizing-podman-desktop.html">Configuring and Customizing Podman Desktop</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/managing-container-engine-settings-memory-cpu-disk.html">Managing container engine settings (memory, CPU, disk)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/configuring-registries-and-image-pull-secrets.html">Configuring registries and image pull secrets</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/setting-up-network-proxies.html">Setting up network proxies</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/integrating-with-kubernetes-and-openshift-clusters.html">Integrating with Kubernetes and OpenShift clusters</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/exploring-and-managing-extensions.html">Exploring and managing extensions</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/troubleshooting-podman-desktop-issues.html">Troubleshooting Podman Desktop Issues</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/common-installation-and-startup-problems.html">Common installation and startup problems</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/diagnosing-podman-machine-failures.html">Diagnosing Podman machine failures</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/resolving-image-pull-and-container-run-errors.html">Resolving image pull and container run errors</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/utilizing-logs-for-problem-identification.html">Utilizing logs for problem identification</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/best-practices-for-issue-prevention.html">Best practices for issue prevention</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/troubleshooting-podman-desktop-issues.html">Troubleshooting Podman Desktop Issues</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/common-installation-and-startup-problems.html">Common installation and startup problems</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/diagnosing-podman-machine-failures.html">Diagnosing Podman machine failures</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/resolving-image-pull-and-container-run-errors.html">Resolving image pull and container run errors</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/utilizing-logs-for-problem-identification.html">Utilizing logs for problem identification</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/best-practices-for-issue-prevention.html">Best practices for issue prevention</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../hands-on-exercises/hands-on-exercises.html">Hands-On Exercises</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-installing-podman-desktop-on-your-preferred-os.html">Lab: Installing Podman Desktop on your preferred OS</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-managing-podman-machines-and-container-engines.html">Lab: Managing Podman machines and container engines</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-deploying-and-interacting-with-a-container.html">Lab: Deploying and interacting with a container</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-configuring-a-private-registry-connection.html">Lab: Configuring a private registry connection</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-troubleshooting-a-simulated-podman-desktop-issue.html">Lab: Troubleshooting a simulated Podman Desktop issue</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../hands-on-exercises/hands-on-exercises.html">Hands-On Exercises</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-installing-podman-desktop-on-your-preferred-os.html">Lab: Installing Podman Desktop on your preferred OS</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-managing-podman-machines-and-container-engines.html">Lab: Managing Podman machines and container engines</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-deploying-and-interacting-with-a-container.html">Lab: Deploying and interacting with a container</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-configuring-a-private-registry-connection.html">Lab: Configuring a private registry connection</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-troubleshooting-a-simulated-podman-desktop-issue.html">Lab: Troubleshooting a simulated Podman Desktop issue</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../appendix/appendix.html">Appendix</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">Red Hat Build of Podman Desktop: Installation, Configuration, and Troubleshooting</span>
+    <span class="version">1.0.0</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <a class="title" href="../index.html">Red Hat Build of Podman Desktop: Installation, Configuration, and Troubleshooting</a>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">1.0.0</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">Red Hat Build of Podman Desktop: Installation, Configuration, and Troubleshooting</a></li>
+    <li><a href="introduction-to-podman-desktop.html">Introduction to Podman Desktop</a></li>
+    <li><a href="key-features-for-container-management.html">Key features for container management</a></li>
+  </ul>
+</nav>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Key features for container management</h1>
+<h1 id="key-features-container-management" class="sect0"><a class="anchor" href="#key-features-container-management"></a>Key Features for Container Management</h1>
+<div class="paragraph">
+<p>Podman Desktop serves as a powerful, user-friendly graphical interface (GUI) for managing containers, pods, images, and volumes, primarily powered by the Podman engine. It streamlines the entire container lifecycle, making complex operations accessible to developers and system administrators alike, regardless of their familiarity with command-line tools.</p>
+</div>
+<div class="paragraph">
+<p>Here&#8217;s a breakdown of the key features Podman Desktop provides for comprehensive container management:</p>
+</div>
+<div class="sect1">
+<h2 id="_comprehensive_container_lifecycle_management"><a class="anchor" href="#_comprehensive_container_lifecycle_management"></a>Comprehensive Container Lifecycle Management</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Podman Desktop offers a centralized dashboard to effortlessly manage the entire lifecycle of your containers. This includes:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Starting and Stopping Containers:</strong> Initiate and halt containers with a single click, providing immediate control over running applications.</p>
+</li>
+<li>
+<p><strong>Creating and Deleting Containers:</strong> Easily provision new containers from existing images and remove obsolete ones, reclaiming system resources.</p>
+</li>
+<li>
+<p><strong>Inspecting Container Details:</strong> Dive deep into container configurations, resource usage, exposed ports, mounted volumes, and environment variables. This feature is invaluable for debugging and understanding container behavior.</p>
+</li>
+<li>
+<p><strong>Viewing Logs:</strong> Access real-time and historical logs for any running container, essential for monitoring application health and diagnosing issues.</p>
+</li>
+<li>
+<p><strong>Executing Commands:</strong> Directly open a terminal within a running container to execute commands, facilitating debugging and configuration changes without leaving the GUI.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<div class="title">Illustrative Example: Inspecting a Container in Podman Desktop</div>
+<p>To quickly view a container&#8217;s details in Podman Desktop:
+.  Open Podman Desktop and ensure your Podman machine is running.
+.  In the left sidebar, navigate to the <strong>Containers</strong> view.
+.  Click on the name of any running or stopped container (if you don&#8217;t have one, don&#8217;t worry, we&#8217;ll create one in a later lab).
+.  Explore the various tabs (e.g., <strong>Summary</strong>, <strong>Logs</strong>, <strong>Inspect</strong>, <strong>Kube</strong>) to see detailed information about the container&#8217;s configuration, resource usage, and output.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_intuitive_image_management"><a class="anchor" href="#_intuitive_image_management"></a>Intuitive Image Management</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Images are the immutable, read-only templates that serve as the building blocks of containers. Podman Desktop provides robust tools for managing your container images:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Pulling Images:</strong> Effortlessly download images from public registries (like Docker Hub, Quay.io) or configured private registries directly through the GUI.</p>
+</li>
+<li>
+<p><strong>Building Images:</strong> Integrate with Dockerfiles to build custom images right from your local machine, simplifying the development workflow by abstracting complex command-line arguments.</p>
+</li>
+<li>
+<p><strong>Pushing Images:</strong> Upload your custom-built images to registries, making them available for others or for deployment in production environments.</p>
+</li>
+<li>
+<p><strong>Inspecting Image Layers and Metadata:</strong> Understand the composition of your images, view their history, and examine associated metadata to identify dependencies or potential optimizations.</p>
+</li>
+<li>
+<p><strong>Removing Images:</strong> Clean up unused or outdated images to save valuable disk space and reduce clutter.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_pod_management_capabilities"><a class="anchor" href="#_pod_management_capabilities"></a>Pod Management Capabilities</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Unique to Podman, a <strong>pod</strong> is a group of one or more containers that share resources, much like pods in Kubernetes. Podman Desktop extends its management capabilities to these pods:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Creating and Managing Pods:</strong> Define and orchestrate groups of containers that need to run together, ensuring they share the same network namespace and volumes, which is crucial for multi-service applications.</p>
+</li>
+<li>
+<p><strong>Viewing Pod Details:</strong> Gain insights into the containers running within a pod, their collective resource consumption, and networking configuration.</p>
+</li>
+<li>
+<p><strong>Starting/Stopping Pods:</strong> Control all containers within a pod simultaneously, simplifying the management of interdependent services.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_volume_and_network_management"><a class="anchor" href="#_volume_and_network_management"></a>Volume and Network Management</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Effective management of data persistence and inter-container communication is crucial for robust containerized applications. Podman Desktop simplifies these aspects:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Volume Management:</strong> Create, delete, and inspect volumes, which are persistent storage mechanisms for container data, ensuring data survives container restarts or deletions. This is vital for stateful applications like databases.</p>
+</li>
+<li>
+<p><strong>Network Configuration:</strong> View and manage container networks, allowing you to define custom networks for isolating or connecting containers and pods, thereby controlling communication flow and enhancing security.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_local_kubernetes_and_openshift_integration"><a class="anchor" href="#_local_kubernetes_and_openshift_integration"></a>Local Kubernetes and OpenShift Integration</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Podman Desktop is designed with Kubernetes-native concepts in mind and offers powerful integration features that bridge local development with cloud-native deployments:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Local Kubernetes Cluster Management:</strong> Seamlessly integrate with and manage local Kubernetes clusters (such as Kind, Minikube, or OpenShift Local). This allows developers to test their applications in a Kubernetes-like environment directly on their workstation without complex setups, ensuring consistency with production environments.</p>
+</li>
+<li>
+<p><strong>Kubernetes YAML Generation:</strong> Generate Kubernetes YAML files directly from running containers or pods. This streamlines the process of translating local development configurations into production-ready Kubernetes/OpenShift manifests.</p>
+</li>
+<li>
+<p><strong>Deployment to Clusters:</strong> Deploy and manage applications on connected remote Kubernetes or OpenShift clusters, providing a unified management experience from development to production.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_extensibility_through_extensions"><a class="anchor" href="#_extensibility_through_extensions"></a>Extensibility through Extensions</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Podman Desktop is built to be extensible, allowing users to enhance its functionality and integrate with a broader ecosystem of tools:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Browse and Install Extensions:</strong> Discover and install extensions from a marketplace that add new features, integrate with other tools (e.g., specific cloud providers, monitoring tools, specialized dashboards), or provide specialized dashboards.</p>
+</li>
+<li>
+<p><strong>Customizing Workflows:</strong> Extensions enable users to tailor Podman Desktop to their specific development workflows and organizational requirements, making it a highly adaptable tool.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>These features collectively position Podman Desktop as an indispensable tool for anyone working with containers, providing a powerful, intuitive graphical user experience that complements the command line.</p>
+</div>
+<div class="paragraph">
+<div class="title">Lab Reference</div>
+<p>The concepts discussed here will be reinforced through hands-on activities in the subsequent sections, particularly in "Lab: Deploying and interacting with a container" and "Lab: Managing Podman machines and container engines," where you will put these features into practice.#  Key features for container management</p>
+</div>
+<div class="paragraph">
+<p>This module outlines the key features for container management within Red Hat Build of Podman Desktop, providing a foundation for understanding its capabilities before diving into installation and hands-on activities.</p>
+</div>
+</div>
+</div>
+<h1 id="_introduction_to_podman_desktop" class="sect0 page"><a class="anchor" href="#_introduction_to_podman_desktop"></a>Introduction to Podman Desktop</h1>
+<div class="sect1">
+<h2 id="_key_features_for_container_management"><a class="anchor" href="#_key_features_for_container_management"></a>Key Features for Container Management</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Red Hat Build of Podman Desktop provides a comprehensive graphical user interface (GUI) designed to simplify the daily tasks associated with managing containers, images, and container orchestrators. It serves as a unified control plane, abstracting the complexities of various container engine backends, primarily the Podman engine, but also compatible engines like Docker. This section details the core functionalities that empower developers and operators to efficiently manage their containerized applications.</p>
+</div>
+<div class="sect2">
+<h3 id="_container_lifecycle_management"><a class="anchor" href="#_container_lifecycle_management"></a>Container Lifecycle Management</h3>
+<div class="paragraph">
+<p>Podman Desktop offers intuitive controls for the entire lifecycle of individual containers, making complex command-line operations accessible through a user-friendly interface.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Create and Run Containers:</strong> Easily initiate new containers from existing images. The UI guides you through configuring essential parameters such as port mappings, environment variables, volume mounts for persistent storage, and network settings. This streamlines the deployment of applications from development to testing.</p>
+</li>
+<li>
+<p><strong>Start, Stop, Pause, and Restart:</strong> Control the operational state of your running containers with a single click. This flexibility is crucial for development workflows, testing, and resource management.</p>
+</li>
+<li>
+<p><strong>Inspect Container Details:</strong> Access a wealth of information about a container, including its configuration, allocated resources (CPU, memory), network connectivity, exposed ports, and mount points. This detailed view is invaluable for debugging, performance analysis, and ensuring correct container behavior.</p>
+</li>
+<li>
+<p><strong>Exec into Containers:</strong> Gain direct shell access to a running container&#8217;s environment from within the Podman Desktop interface. This feature is vital for troubleshooting inside the container, exploring its file system, or executing specific commands without leaving the GUI.</p>
+</li>
+<li>
+<p><strong>View Logs:</strong> Monitor application output and diagnose issues by accessing real-time and historical logs generated by your containers. This centralized logging capability simplifies debugging and operational oversight.</p>
+</li>
+<li>
+<p><strong>Delete Containers:</strong> Efficiently remove containers and their associated non-persistent resources when they are no longer needed. This helps maintain a clean and organized development environment and reclaims system resources.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_image_management"><a class="anchor" href="#_image_management"></a>Image Management</h3>
+<div class="paragraph">
+<p>Container images are the immutable blueprints from which containers are created. Podman Desktop provides a robust set of tools for managing these critical artifacts.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Pull Images:</strong> Download container images from various public and private container registries (e.g., Quay.io, Docker Hub, custom enterprise registries) directly to your local machine. This is the first step in deploying most containerized applications.</p>
+</li>
+<li>
+<p><strong>Build Images:</strong> Construct custom container images from <code>Containerfile</code> or <code>Dockerfile</code> definitions. Podman Desktop integrates a build experience that simplifies the process of creating reproducible application environments tailored to your specific needs.</p>
+</li>
+<li>
+<p><strong>Push Images:</strong> Upload your custom-built images to public or private registries. This enables sharing images with team members, deploying them to production, or backing them up.</p>
+</li>
+<li>
+<p><strong>Inspect Image Layers:</strong> Examine the individual layers that compose an image. This capability is crucial for understanding an image&#8217;s size, its dependencies, and potentially identifying security vulnerabilities or opportunities for optimization.</p>
+</li>
+<li>
+<p><strong>Delete Images:</strong> Remove unused or outdated images from your local storage to free up disk space, which is particularly useful in development environments where many experimental images can accumulate.</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+All image operations within Podman Desktop seamlessly interact with the underlying container engine (e.g., Podman CLI), providing a visual abstraction over commands like <code>podman pull</code>, <code>podman build</code>, and <code>podman push</code>.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_volume_and_network_management_2"><a class="anchor" href="#_volume_and_network_management_2"></a>Volume and Network Management</h3>
+<div class="paragraph">
+<p>Effective management of data persistence and inter-container communication is fundamental to robust containerized applications.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Volume Management:</strong> Podman Desktop allows you to view, create, and delete volumes. Volumes are essential for persistent storage of container data, ensuring that critical information survives container restarts or deletions. The GUI simplifies the process of attaching these volumes to containers during their creation or modification.</p>
+</li>
+<li>
+<p><strong>Network Management:</strong> While detailed network creation is often handled by the underlying engine&#8217;s CLI or configuration files, Podman Desktop provides visibility into container network settings. You can inspect how containers are connected to various networks, understanding their IP addresses and communication pathways.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_podman_machine_management_for_macos_and_windows"><a class="anchor" href="#_podman_machine_management_for_macos_and_windows"></a>Podman Machine Management (for macOS and Windows)</h3>
+<div class="paragraph">
+<p>For users on macOS and Windows, Podman Desktop leverages the concept of a "Podman machine." This is a lightweight Linux virtual machine that hosts the actual Podman engine, providing a consistent Linux-based container environment.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Create and Delete Machines:</strong> Easily provision and tear down Podman machines. This simplifies the initial setup of a functional container environment on non-Linux operating systems, abstracting the complexities of virtualization.</p>
+</li>
+<li>
+<p><strong>Start and Stop Machines:</strong> Control the operational state of your Podman machines. Stopping a machine conserves system resources when the container engine is not actively in use, while starting it prepares your environment for container operations.</p>
+</li>
+<li>
+<p><strong>Machine Configuration:</strong> Configure critical resources for your Podman machine, such as allocated CPU cores, memory, and disk size. This allows you to optimize the performance of your container workloads based on your system&#8217;s capabilities and application requirements.</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+For macOS and Windows users, understanding and managing the Podman machine is paramount, as all container and image operations are executed within this virtualized Linux environment.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_registry_configuration"><a class="anchor" href="#_registry_configuration"></a>Registry Configuration</h3>
+<div class="paragraph">
+<p>Accessing and managing container images from various sources, including secure private registries, is a common enterprise requirement.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Add and Configure Registries:</strong> Podman Desktop provides an intuitive interface to add connections to both public and private container registries. You can configure authentication credentials (e.g., username/password, authentication tokens, pull secrets) directly within the GUI, eliminating the need for manual configuration of <code>auth.json</code> files or repetitive <code>podman login</code> commands.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_kubernetes_and_openshift_integration"><a class="anchor" href="#_kubernetes_and_openshift_integration"></a>Kubernetes and OpenShift Integration</h3>
+<div class="paragraph">
+<p>Beyond managing individual containers, Podman Desktop extends its utility to facilitate interaction with container orchestration platforms, specifically Kubernetes and Red Hat OpenShift.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Kubernetes Context Management:</strong> View and seamlessly switch between different Kubernetes contexts. This enables developers to interact with multiple development, staging, or production clusters from a single, familiar interface.</p>
+</li>
+<li>
+<p><strong>Deploy to Kubernetes/OpenShift:</strong> Simplify the transition from local development to orchestrated environments. Podman Desktop can generate Kubernetes YAML manifests from existing Podman pods or containers, and then deploy them directly to a connected Kubernetes or OpenShift cluster.</p>
+</li>
+<li>
+<p><strong>View Cluster Resources:</strong> Gain basic visibility into your orchestrated applications by inspecting core Kubernetes resources (e.g., Pods, Deployments) within your connected clusters.</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+While Podman Desktop offers powerful integration capabilities, it is designed to complement rather than replace a full-fledged Kubernetes management console. Its primary focus is on enabling developers to interact with and deploy to Kubernetes from their local development environment.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_extensions_and_customization"><a class="anchor" href="#_extensions_and_customization"></a>Extensions and Customization</h3>
+<div class="paragraph">
+<p>Podman Desktop is built with extensibility in mind, allowing users to enhance its functionality to suit specific workflows and integrate with other tools.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Discover and Install Extensions:</strong> Browse and install a variety of extensions from an integrated marketplace. These extensions can add new features, provide specialized views for particular workloads (e.g., Kind for local Kubernetes clusters, OpenShift Local integration), or integrate with other development tools.</p>
+</li>
+<li>
+<p><strong>Customize Settings:</strong> Personalize your user experience by adjusting various application settings, including themes, notification preferences, default resource allocations, and startup behaviors.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="overview-of-podman-desktops-purpose-and-capabilities.html">Overview of Podman Desktop&#8217;s purpose and capabilities</a></span>
+  <span class="next"><a href="benefits-of-using-red-hat-build-of-podman-desktop.html">Benefits of using Red Hat Build of Podman Desktop</a></span>
+</nav>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <img src="../../../_/img/rhl-logo-red.png" height="40px" alt="Red Hat"  href="https://redhat.com" >
+</footer><script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

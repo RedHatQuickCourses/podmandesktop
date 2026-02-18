@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Post-installation configuration for restricted environments :: Red Hat Build of Podman Desktop: Installation, Configuration, and Troubleshooting</title>
+    <link rel="prev" href="step-by-step-offline-installation-procedure.html">
+    <link rel="next" href="deploying-podman-desktop-in-air-gapped-environments.html">
+    <meta name="generator" content="Antora 3.1.3">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+    <script>var uiRootPath = '../../../_'</script>
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://www.redhat.com" target="_blank"><img src="../../../_/img/redhat-logo.png" height="40px" alt="Red Hat"></a>
+      <a class="navbar-item" style="font-size: 24px; color: white" href="../../..">Red Hat Build of Podman Desktop: Installation, Configuration, and Troubleshooting</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="https://github.com/RedHatQuickCourses/REPLACEREPONAME/issues" target="_blank">Report Issues</a>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="podmandesktop" data-version="1.0.0">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html">Red Hat Build of Podman Desktop: Installation, Configuration, and Troubleshooting</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../index.html">Home</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../LABENV/index.html">Lab Environment</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../introduction-to-podman-desktop/introduction-to-podman-desktop.html">Introduction to Podman Desktop</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-podman-desktop/overview-of-podman-desktops-purpose-and-capabilities.html">Overview of Podman Desktop&#8217;s purpose and capabilities</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-podman-desktop/key-features-for-container-management.html">Key features for container management</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-podman-desktop/benefits-of-using-red-hat-build-of-podman-desktop.html">Benefits of using Red Hat Build of Podman Desktop</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../introduction-to-podman-desktop/introduction-to-podman-desktop.html">Introduction to Podman Desktop</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-podman-desktop/overview-of-podman-desktops-purpose-and-capabilities.html">Overview of Podman Desktop&#8217;s purpose and capabilities</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-podman-desktop/key-features-for-container-management.html">Key features for container management</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-podman-desktop/benefits-of-using-red-hat-build-of-podman-desktop.html">Benefits of using Red Hat Build of Podman Desktop</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../preparing-for-installation/preparing-for-installation.html">Preparing for Installation</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-for-installation/system-requirements-for-various-operating-systems.html">System requirements for various operating systems</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-for-installation/prerequisites-and-dependencies-eg-wsl-on-windows-podman-engine.html">Prerequisites and dependencies (e.g., WSL on Windows, Podman engine)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-for-installation/understanding-podman-machine-concept.html">Understanding Podman machine concept</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../preparing-for-installation/preparing-for-installation.html">Preparing for Installation</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-for-installation/system-requirements-for-various-operating-systems.html">System requirements for various operating systems</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-for-installation/prerequisites-and-dependencies-eg-wsl-on-windows-podman-engine.html">Prerequisites and dependencies (e.g., WSL on Windows, Podman engine)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-for-installation/understanding-podman-machine-concept.html">Understanding Podman machine concept</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/installing-podman-desktop-on-macos.html">Installing Podman Desktop on macOS</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/download-and-installation-process-via-installer.html">Download and installation process via installer</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/initial-setup-and-podman-machine-creation.html">Initial setup and Podman machine creation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/verifying-installation-and-basic-functionality.html">Verifying installation and basic functionality</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/installing-podman-desktop-on-macos.html">Installing Podman Desktop on macOS</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/download-and-installation-process-via-installer.html">Download and installation process via installer</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/initial-setup-and-podman-machine-creation.html">Initial setup and Podman machine creation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-macos/verifying-installation-and-basic-functionality.html">Verifying installation and basic functionality</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/installing-podman-desktop-on-windows.html">Installing Podman Desktop on Windows</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/download-and-installation-process-via-installer.html">Download and installation process via installer</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/wsl-2-integration-and-configuration.html">WSL 2 integration and configuration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/initial-setup-and-podman-machine-creation.html">Initial setup and Podman machine creation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/verifying-installation-and-basic-functionality.html">Verifying installation and basic functionality</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/installing-podman-desktop-on-windows.html">Installing Podman Desktop on Windows</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/download-and-installation-process-via-installer.html">Download and installation process via installer</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/wsl-2-integration-and-configuration.html">WSL 2 integration and configuration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/initial-setup-and-podman-machine-creation.html">Initial setup and Podman machine creation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-windows/verifying-installation-and-basic-functionality.html">Verifying installation and basic functionality</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/installing-podman-desktop-on-red-hat-enterprise-linux.html">Installing Podman Desktop on Red Hat Enterprise Linux</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/installation-steps-using-package-managers-eg-dnf.html">Installation steps using package managers (e.g., <code>dnf</code>)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/initial-setup-and-podman-machine-creation.html">Initial setup and Podman machine creation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/verifying-installation-and-basic-functionality.html">Verifying installation and basic functionality</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/installing-podman-desktop-on-red-hat-enterprise-linux.html">Installing Podman Desktop on Red Hat Enterprise Linux</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/installation-steps-using-package-managers-eg-dnf.html">Installation steps using package managers (e.g., <code>dnf</code>)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/initial-setup-and-podman-machine-creation.html">Initial setup and Podman machine creation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../installing-podman-desktop-on-red-hat-enterprise-linux/verifying-installation-and-basic-functionality.html">Verifying installation and basic functionality</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="deploying-podman-desktop-in-air-gapped-environments.html">Deploying Podman Desktop in Air-Gapped Environments</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="challenges-and-considerations-for-air-gapped-deployments.html">Challenges and considerations for air-gapped deployments</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="gathering-necessary-installation-artifacts.html">Gathering necessary installation artifacts</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="step-by-step-offline-installation-procedure.html">Step-by-step offline installation procedure</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="post-installation-configuration-for-restricted-environments.html">Post-installation configuration for restricted environments</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="deploying-podman-desktop-in-air-gapped-environments.html">Deploying Podman Desktop in Air-Gapped Environments</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="challenges-and-considerations-for-air-gapped-deployments.html">Challenges and considerations for air-gapped deployments</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="gathering-necessary-installation-artifacts.html">Gathering necessary installation artifacts</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="step-by-step-offline-installation-procedure.html">Step-by-step offline installation procedure</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="post-installation-configuration-for-restricted-environments.html">Post-installation configuration for restricted environments</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/configuring-and-customizing-podman-desktop.html">Configuring and Customizing Podman Desktop</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/managing-container-engine-settings-memory-cpu-disk.html">Managing container engine settings (memory, CPU, disk)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/configuring-registries-and-image-pull-secrets.html">Configuring registries and image pull secrets</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/setting-up-network-proxies.html">Setting up network proxies</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/integrating-with-kubernetes-and-openshift-clusters.html">Integrating with Kubernetes and OpenShift clusters</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/exploring-and-managing-extensions.html">Exploring and managing extensions</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/configuring-and-customizing-podman-desktop.html">Configuring and Customizing Podman Desktop</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/managing-container-engine-settings-memory-cpu-disk.html">Managing container engine settings (memory, CPU, disk)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/configuring-registries-and-image-pull-secrets.html">Configuring registries and image pull secrets</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/setting-up-network-proxies.html">Setting up network proxies</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/integrating-with-kubernetes-and-openshift-clusters.html">Integrating with Kubernetes and OpenShift clusters</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../configuring-and-customizing-podman-desktop/exploring-and-managing-extensions.html">Exploring and managing extensions</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/troubleshooting-podman-desktop-issues.html">Troubleshooting Podman Desktop Issues</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/common-installation-and-startup-problems.html">Common installation and startup problems</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/diagnosing-podman-machine-failures.html">Diagnosing Podman machine failures</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/resolving-image-pull-and-container-run-errors.html">Resolving image pull and container run errors</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/utilizing-logs-for-problem-identification.html">Utilizing logs for problem identification</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/best-practices-for-issue-prevention.html">Best practices for issue prevention</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/troubleshooting-podman-desktop-issues.html">Troubleshooting Podman Desktop Issues</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/common-installation-and-startup-problems.html">Common installation and startup problems</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/diagnosing-podman-machine-failures.html">Diagnosing Podman machine failures</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/resolving-image-pull-and-container-run-errors.html">Resolving image pull and container run errors</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/utilizing-logs-for-problem-identification.html">Utilizing logs for problem identification</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../troubleshooting-podman-desktop-issues/best-practices-for-issue-prevention.html">Best practices for issue prevention</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../hands-on-exercises/hands-on-exercises.html">Hands-On Exercises</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-installing-podman-desktop-on-your-preferred-os.html">Lab: Installing Podman Desktop on your preferred OS</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-managing-podman-machines-and-container-engines.html">Lab: Managing Podman machines and container engines</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-deploying-and-interacting-with-a-container.html">Lab: Deploying and interacting with a container</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-configuring-a-private-registry-connection.html">Lab: Configuring a private registry connection</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-troubleshooting-a-simulated-podman-desktop-issue.html">Lab: Troubleshooting a simulated Podman Desktop issue</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../hands-on-exercises/hands-on-exercises.html">Hands-On Exercises</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-installing-podman-desktop-on-your-preferred-os.html">Lab: Installing Podman Desktop on your preferred OS</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-managing-podman-machines-and-container-engines.html">Lab: Managing Podman machines and container engines</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-deploying-and-interacting-with-a-container.html">Lab: Deploying and interacting with a container</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-configuring-a-private-registry-connection.html">Lab: Configuring a private registry connection</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-exercises/lab-troubleshooting-a-simulated-podman-desktop-issue.html">Lab: Troubleshooting a simulated Podman Desktop issue</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../appendix/appendix.html">Appendix</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">Red Hat Build of Podman Desktop: Installation, Configuration, and Troubleshooting</span>
+    <span class="version">1.0.0</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <a class="title" href="../index.html">Red Hat Build of Podman Desktop: Installation, Configuration, and Troubleshooting</a>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">1.0.0</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">Red Hat Build of Podman Desktop: Installation, Configuration, and Troubleshooting</a></li>
+    <li><a href="deploying-podman-desktop-in-air-gapped-environments.html">Deploying Podman Desktop in Air-Gapped Environments</a></li>
+    <li><a href="post-installation-configuration-for-restricted-environments.html">Post-installation configuration for restricted environments</a></li>
+  </ul>
+</nav>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Post-installation configuration for restricted environments</h1>
+<div class="sect1">
+<h2 id="_post_installation_configuration_for_restricted_environments"><a class="anchor" href="#_post_installation_configuration_for_restricted_environments"></a>Post-installation Configuration for Restricted Environments</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>After successfully deploying Red Hat Build of Podman Desktop in an air-gapped or restricted environment, the default configurations often need adjustments to align with the stringent security and network policies of such setups. This section focuses on the essential post-installation steps required to ensure Podman Desktop can effectively manage containers, interact with internal resources, and remain operational without direct internet access.</p>
+</div>
+<div class="sect2">
+<h3 id="_understanding_configuration_challenges_in_restricted_environments"><a class="anchor" href="#_understanding_configuration_challenges_in_restricted_environments"></a>Understanding Configuration Challenges in Restricted Environments</h3>
+<div class="paragraph">
+<p>In an air-gapped or highly restricted network, several factors necessitate specialized configuration:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>No Direct Internet Access:</strong> Podman Desktop, by default, expects to pull images from public registries like Docker Hub or Quay.io. In a restricted environment, this is not possible, requiring redirection to internal or mirrored registries.</p>
+</li>
+<li>
+<p><strong>Internal Registries:</strong> Organizations often operate private container image registries to host approved images and maintain control over software supply chains. Podman Desktop must be configured to recognize and utilize these registries.</p>
+</li>
+<li>
+<p><strong>Proxy Requirements (Conditional):</strong> While air-gapped environments typically lack external connectivity, some <strong>restricted</strong> environments might allow limited external communication through a carefully controlled proxy server. Podman Desktop needs to be configured to use this proxy for any allowed external communication.</p>
+</li>
+<li>
+<p><strong>Certificate Management:</strong> Internal registries or services often use custom Certificate Authorities (CAs). Podman Desktop, or rather the underlying Podman engine, needs to trust these certificates to establish secure connections.</p>
+</li>
+<li>
+<p><strong>Software Updates and Extensions:</strong> Automatic updates and fetching extensions from public sources are generally not possible. A strategy for manual or internal distribution of updates and extensions must be in place.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_key_configuration_areas"><a class="anchor" href="#_key_configuration_areas"></a>Key Configuration Areas</h3>
+<div class="sect3">
+<h4 id="_1_configuring_container_registries"><a class="anchor" href="#_1_configuring_container_registries"></a>1. Configuring Container Registries</h4>
+<div class="paragraph">
+<p>The most critical post-installation step in a restricted environment is configuring Podman Desktop to use internal container image registries instead of public ones. This involves two main aspects: adding the registry and, if necessary, configuring it as "insecure."</p>
+</div>
+<div class="sect4">
+<h5 id="_detailed_technical_explanation"><a class="anchor" href="#_detailed_technical_explanation"></a>Detailed Technical Explanation</h5>
+<div class="paragraph">
+<p>Podman Desktop leverages the underlying Podman engine for all container operations, including image pulls. The <code>registries.conf</code> file (typically located at <code>/etc/containers/registries.conf</code> on Linux, or within the Podman machine&#8217;s filesystem for Windows/macOS) dictates which registries Podman can access and in what order. Podman Desktop provides a user-friendly interface to manage these configurations, simplifying the direct manipulation of configuration files.</p>
+</div>
+<div class="paragraph">
+<p>When Podman tries to pull an image, it searches the configured registries. If the image name doesn&#8217;t specify a full registry path (e.g., <code>nginx</code> instead of <code>quay.io/nginx</code>), Podman will prepend the configured search registries in order until it finds the image. For air-gapped environments, you typically want to remove or de-prioritize public registries and add your internal registry.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Private Registries:</strong> These are internal servers hosting container images. They can be secure (using HTTPS with trusted certificates) or insecure (using HTTP or untrusted HTTPS certificates).</p>
+</li>
+<li>
+<p><strong>Insecure Registries:</strong> A registry is considered "insecure" if it communicates over HTTP (port 80) or uses HTTPS (port 443) with an SSL/TLS certificate that is not trusted by the system&#8217;s root CAs. While using insecure registries is generally discouraged in production for security reasons, it is sometimes a necessity in tightly controlled internal environments where certificate management is complex, or for development purposes. Podman needs to be explicitly told to trust an insecure registry.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_hands_on_activity_configuring_and_testing_a_private_registry"><a class="anchor" href="#_hands_on_activity_configuring_and_testing_a_private_registry"></a>Hands-on Activity: Configuring and Testing a Private Registry</h5>
+<div class="paragraph">
+<p>This lab simulates adding an internal registry and, optionally, configuring it as insecure, then pulling an image.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+For this lab, you might not have a live internal registry. You can either use a publicly accessible insecure registry for demonstration purposes (e.g., <code><a href="http://registry.example.com" class="bare">http://registry.example.com</a></code> if one is available for testing), or simply follow the steps to understand the configuration process. If using a real internal registry, ensure you have its address and any necessary credentials.
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+If your internal registry uses HTTPS with a custom CA, you&#8217;ll need to ensure the CA certificate is trusted by your Podman machine. This typically involves placing the <code>.crt</code> file in <code>/etc/pki/ca-trust/source/anchors/</code> on Linux-based Podman machines and running <code>update-ca-certificates</code>. For Windows/macOS, this usually means adding it to the host OS trust store. This lab focuses on the Podman Desktop UI steps.
+</td>
+</tr>
+</table>
+</div>
+<div class="ulist">
+<div class="title">Open Podman Desktop:</div>
+<ul>
+<li>
+<p>Launch Red Hat Build of Podman Desktop.</p>
+</li>
+</ul>
+</div>
+<div class="ulist">
+<div class="title">Access Settings:</div>
+<ul>
+<li>
+<p>In the Podman Desktop interface, navigate to the <strong>Settings</strong> icon (gear icon) in the bottom-left corner.</p>
+</li>
+</ul>
+</div>
+<div class="ulist">
+<div class="title">Go to <code>Registries</code> settings:</div>
+<ul>
+<li>
+<p>From the Settings menu, select <strong>Registries</strong>.</p>
+</li>
+</ul>
+</div>
+<div class="ulist">
+<div class="title">Add a new Registry:</div>
+<ul>
+<li>
+<p>Click the btn:[Add Registry] button.</p>
+</li>
+<li>
+<p>In the <code>Registry address</code> field, enter the full address of your internal registry.</p>
+</li>
+<li>
+<p>Example (secure): <code>registry.mycorp.internal:5000</code></p>
+</li>
+<li>
+<p>Example (insecure): <code><a href="http://insecure-registry.mycorp.internal:5000" class="bare">http://insecure-registry.mycorp.internal:5000</a></code></p>
+</li>
+<li>
+<p>If your registry requires authentication, enable the <code>Requires authentication</code> checkbox and provide the <code>Username</code> and <code>Password</code>.</p>
+</li>
+<li>
+<p>Click btn:[Add Registry].</p>
+</li>
+</ul>
+</div>
+<div class="ulist">
+<div class="title">Configure as Insecure (if applicable):</div>
+<ul>
+<li>
+<p>If your registry is HTTP-only or uses an untrusted HTTPS certificate, you need to mark it as insecure.</p>
+</li>
+<li>
+<p>In the <strong>Registries</strong> list, locate the registry you just added.</p>
+</li>
+<li>
+<p>Toggle the <code>Insecure</code> switch to <code>On</code> for that specific registry.</p>
+</li>
+<li>
+<p>Podman Desktop will prompt you to restart the Podman engine for changes to take effect. Click btn:[Restart Engine].</p>
+</li>
+</ul>
+</div>
+<div class="ulist">
+<div class="title">Verify Registry Configuration:</div>
+<ul>
+<li>
+<p>Open a terminal in Podman Desktop (or your system&#8217;s terminal after <code>podman-remote login</code> if using <code>podman-remote</code>).</p>
+</li>
+<li>
+<p>Run the command to list configured registries:
+[source,bash]
+----
+podman info --format "{{.Store.Registries}}"
+----
+You should see your newly added registry in the output.</p>
+</li>
+<li>
+<p>Alternatively, inspect the <code>registries.conf</code> inside your Podman machine. For a Linux Podman machine, you can usually <code>ssh</code> into it or use <code>podman machine ssh</code> and check <code>/etc/containers/registries.conf</code>.</p>
+</li>
+</ul>
+</div>
+<div class="ulist">
+<div class="title">Pull an Image from the Internal Registry:</div>
+<ul>
+<li>
+<p>To test, try to pull a simple image that you know exists on your internal registry.</p>
+</li>
+<li>
+<p>Go to the <strong>Images</strong> section in Podman Desktop.</p>
+</li>
+<li>
+<p>Click btn:[Pull an image].</p>
+</li>
+<li>
+<p>Enter the full path to an image on your internal registry.</p>
+</li>
+<li>
+<p>Example: <code>registry.mycorp.internal:5000/my-app/nginx:latest</code></p>
+</li>
+<li>
+<p>Click btn:[Pull].</p>
+</li>
+<li>
+<p>Observe the output in the console. If successful, the image will appear in your <strong>Images</strong> list.</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+If you encounter <code>x509: certificate signed by unknown authority</code> errors for an HTTPS registry, it indicates a certificate trust issue. You&#8217;ll need to add your organization&#8217;s CA certificate to the Podman machine&#8217;s trust store. Refer to your organization&#8217;s documentation for details on obtaining and deploying these certificates.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_2_setting_up_network_proxies_conditional"><a class="anchor" href="#_2_setting_up_network_proxies_conditional"></a>2. Setting Up Network Proxies (Conditional)</h4>
+<div class="paragraph">
+<p>If your restricted environment allows outbound network traffic only through a proxy server, Podman Desktop and the underlying Podman engine must be configured to use it. This is typically done if you need to pull images from a <strong>third-party mirrored registry</strong> that still requires reaching out to a public endpoint via proxy, or for updates if a limited proxy path exists.</p>
+</div>
+<div class="sect4">
+<h5 id="_detailed_technical_explanation_2"><a class="anchor" href="#_detailed_technical_explanation_2"></a>Detailed Technical Explanation</h5>
+<div class="paragraph">
+<p>Podman Desktop and the Podman engine can honor proxy settings. These settings typically include <code>HTTP_PROXY</code>, <code>HTTPS_PROXY</code>, and <code>NO_PROXY</code> environment variables.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>HTTP_PROXY</code>: For HTTP connections.</p>
+</li>
+<li>
+<p><code>HTTPS_PROXY</code>: For HTTPS connections.</p>
+</li>
+<li>
+<p><code>NO_PROXY</code>: A comma-separated list of hostnames, IP addresses, or CIDR blocks that should bypass the proxy. This is crucial for internal network access where you don&#8217;t want traffic routed through the proxy (e.g., your internal registries).</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>When you configure proxy settings in Podman Desktop, these settings are propagated to the Podman machine and container engine, ensuring that any external network requests made by Podman or containers use the specified proxy.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_hands_on_activity_configuring_proxy_settings"><a class="anchor" href="#_hands_on_activity_configuring_proxy_settings"></a>Hands-on Activity: Configuring Proxy Settings</h5>
+<div class="ulist">
+<div class="title">Open Podman Desktop:</div>
+<ul>
+<li>
+<p>Launch Red Hat Build of Podman Desktop.</p>
+</li>
+</ul>
+</div>
+<div class="ulist">
+<div class="title">Access Settings:</div>
+<ul>
+<li>
+<p>Navigate to the <strong>Settings</strong> icon (gear icon) in the bottom-left corner.</p>
+</li>
+</ul>
+</div>
+<div class="ulist">
+<div class="title">Go to <code>Proxy</code> settings:</div>
+<ul>
+<li>
+<p>From the Settings menu, select <strong>Proxy</strong>.</p>
+</li>
+</ul>
+</div>
+<div class="ulist">
+<div class="title">Configure Proxy Details:</div>
+<ul>
+<li>
+<p>Enable the <code>Use proxy</code> checkbox.</p>
+</li>
+<li>
+<p>In the <code>HTTP proxy</code> field, enter the address of your HTTP proxy server (e.g., <code><a href="http://proxy.mycorp.internal:8080" class="bare">http://proxy.mycorp.internal:8080</a></code>).</p>
+</li>
+<li>
+<p>In the <code>HTTPS proxy</code> field, enter the address of your HTTPS proxy server (e.g., <code><a href="http://proxy.mycorp.internal:8080" class="bare">http://proxy.mycorp.internal:8080</a></code>).</p>
+</li>
+<li>
+<p>In the <code>No proxy</code> field, enter a comma-separated list of hosts or domains that should bypass the proxy. This <strong>must</strong> include your internal registry addresses and any other internal network ranges.</p>
+</li>
+<li>
+<p>Example: <code>localhost,127.0.0.1,registry.mycorp.internal,*.mycorp.internal,10.0.0.0/8</code></p>
+</li>
+<li>
+<p>If your proxy requires authentication, enable <code>Requires authentication</code> and provide the <code>Username</code> and <code>Password</code>.</p>
+</li>
+<li>
+<p>Click btn:[Apply] or btn:[Save].</p>
+</li>
+</ul>
+</div>
+<div class="ulist">
+<div class="title">Restart Podman Engine:</div>
+<ul>
+<li>
+<p>Podman Desktop will likely prompt you to restart the Podman engine for the proxy changes to take effect. Click btn:[Restart Engine].</p>
+</li>
+</ul>
+</div>
+<div class="ulist">
+<div class="title">Verify Proxy Configuration (Optional):</div>
+<ul>
+<li>
+<p>This step is harder to do interactively without a live proxy and external connection. However, you can verify if the environment variables are set within the Podman machine.</p>
+</li>
+<li>
+<p>Open a terminal in Podman Desktop or use <code>podman machine ssh</code> to access your Podman machine.</p>
+</li>
+<li>
+<p>Run <code>env | grep -i proxy</code> to check if the <code>HTTP_PROXY</code>, <code>HTTPS_PROXY</code>, and <code>NO_PROXY</code> environment variables are correctly set within the machine&#8217;s environment.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_3_managing_updates_and_extensions_in_restricted_environments"><a class="anchor" href="#_3_managing_updates_and_extensions_in_restricted_environments"></a>3. Managing Updates and Extensions in Restricted Environments</h4>
+<div class="paragraph">
+<p>In air-gapped environments, automatic updates for Podman Desktop itself and its extensions are not possible.</p>
+</div>
+<div class="sect4">
+<h5 id="_detailed_technical_explanation_3"><a class="anchor" href="#_detailed_technical_explanation_3"></a>Detailed Technical Explanation</h5>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Podman Desktop Updates:</strong> New versions of Podman Desktop (or Red Hat Build of Podman Desktop) must be manually downloaded from a trusted internal source (e.g., an internal software repository mirroring Red Hat downloads) and then installed following the offline installation procedures.</p>
+</li>
+<li>
+<p><strong>Extensions:</strong> Podman Desktop extensions (e.g., for Kubernetes, OpenShift, Pods, or specific development tools) are typically downloaded from online marketplaces. In a restricted environment, these extensions need to be acquired externally, scanned for security, and then distributed internally as <code>.tar.gz</code> files. Podman Desktop allows installing extensions from a local file.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_expert_insights_troubleshooting"><a class="anchor" href="#_expert_insights_troubleshooting"></a>Expert Insights &amp; Troubleshooting</h5>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Offline Extension Installation:</strong> To install an extension offline, obtain the <code>.tar.gz</code> extension file. In Podman Desktop, go to <strong>Extensions</strong> in Settings, then click btn:[Install an extension from a file] and select the downloaded <code>.tar.gz</code>.</p>
+</li>
+<li>
+<p><strong>Version Compatibility:</strong> Always ensure that downloaded updates and extensions are compatible with your existing Podman Desktop and Podman engine versions to avoid conflicts.</p>
+</li>
+<li>
+<p><strong>Consistency:</strong> Maintain a consistent approach for distributing updates and extensions across all installations in your restricted environment.</p>
+</li>
+<li>
+<p><strong>Security Scans:</strong> Before deploying any downloaded software or extensions, ensure they undergo thorough security scanning according to your organization&#8217;s policies.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>By diligently configuring registries, proxies (if applicable), and managing updates and extensions through controlled internal channels, Red Hat Build of Podman Desktop can be fully operational and secure within even the most stringent restricted environments.#  Post-installation configuration for restricted environments</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<h1 id="_post_installation_configuration_for_restricted_environments_2" class="sect0"><a class="anchor" href="#_post_installation_configuration_for_restricted_environments_2"></a>Post-installation Configuration for Restricted Environments</h1>
+<div class="paragraph">
+<p>While Red Hat Build of Podman Desktop simplifies container management, deploying and configuring it in restricted, air-gapped environments presents unique challenges. After the initial offline installation procedure, specific post-installation configurations are crucial to ensure Podman Desktop and its underlying Podman engine can function correctly within your isolated network. These configurations primarily revolve around enabling access to internal resources, such as private container registries, and managing network communication.</p>
+</div>
+<div class="sect1">
+<h2 id="_understanding_the_challenges_in_restricted_environments"><a class="anchor" href="#_understanding_the_challenges_in_restricted_environments"></a>Understanding the Challenges in Restricted Environments</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In an air-gapped or highly restricted network, Podman Desktop lacks direct access to public resources like <code>registry.access.redhat.com</code>, <code>docker.io</code>, or <code>quay.io</code>. This impacts several key areas of operation:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Image Pulls:</strong> Containers cannot pull images directly from public registries. All necessary images must be sourced from an internal, private registry.</p>
+</li>
+<li>
+<p><strong>Extension Updates/Downloads:</strong> Podman Desktop extensions typically require internet access to install or update. Offline management of extensions requires a different approach, often involving manual transfers and installation if supported by the extension&#8217;s design.</p>
+</li>
+<li>
+<p><strong>Software Updates:</strong> Keeping Podman Desktop and the Podman engine up-to-date becomes a manual process, requiring offline transfer of update packages.</p>
+</li>
+<li>
+<p><strong>Certificate Trust:</strong> Internal services (like private registries, internal API endpoints, or authentication systems) often use TLS/SSL certificates issued by internal Certificate Authorities (CAs). These certificates are not inherently trusted by the system or the Podman machine, leading to connection errors unless explicitly configured.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The following sections detail how to configure Podman Desktop to operate effectively under these constraints, focusing on the most critical post-installation adjustments.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_1_configuring_private_container_registries"><a class="anchor" href="#_1_configuring_private_container_registries"></a>1. Configuring Private Container Registries</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>For an air-gapped environment, using a local or internal private container registry is mandatory. This registry will host all container images required by your applications. Podman Desktop needs to be configured to trust and communicate with this internal registry.</p>
+</div>
+<div class="sect2">
+<h3 id="_technical_explanation"><a class="anchor" href="#_technical_explanation"></a>Technical Explanation</h3>
+<div class="paragraph">
+<p>Podman Desktop, through its underlying Podman engine, uses a configuration file (<code>/etc/containers/registries.conf</code> or <code>~/.config/containers/registries.conf</code> on the Podman machine) to manage registry access. This file specifies:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>unqualified-search-registries</code>: A list of registries to search when an image name is not fully qualified (e.g., <code>nginx</code> instead of <code>myregistry.local/nginx</code>). In a restricted environment, this should point to your internal registry.</p>
+</li>
+<li>
+<p><code><a id="registry"></a></code> blocks: Define specific registry properties, including <code>location</code> (the registry hostname), <code>insecure</code> (if HTTP is used or if self-signed certificates are not trusted without proper CA configuration), and <code>blocked</code> (to prevent access to public registries, which is often a security best practice in air-gapped setups).</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>When adding an insecure registry (e.g., for development or testing within a trusted air-gapped network), you&#8217;re instructing Podman to bypass TLS/SSL certificate verification for that specific endpoint. While this can simplify initial setup in controlled environments, it&#8217;s generally recommended to configure proper TLS/SSL with trusted certificates where possible, even for internal registries.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_hands_on_activity_adding_a_private_registry"><a class="anchor" href="#_hands_on_activity_adding_a_private_registry"></a>Hands-On Activity: Adding a Private Registry</h3>
+<div class="paragraph">
+<p>This lab demonstrates how to add a private registry to Podman Desktop. For simplicity in a lab setting, we will configure an insecure registry, though a secure registry with custom CA certificates is preferred for production air-gapped environments.</p>
+</div>
+<div class="ulist">
+<div class="title">Prerequisites:</div>
+<ul>
+<li>
+<p>A running Podman Desktop instance installed in your restricted environment.</p>
+</li>
+<li>
+<p>Access to an internal, private container registry (e.g., <code>myregistry.local:5000</code>).</p>
+</li>
+<li>
+<p>(Optional, for testing) If you don&#8217;t have an internal registry available, you can simulate an insecure one <strong>on your host machine</strong> by running:
+<code><code>bash
+podman run -d -p 5000:5000 --name registry registry:2
+</code></code>
+This allows you to use <code>localhost:5000</code> as your "internal" registry location for the Podman machine to access.</p>
+</li>
+</ul>
+</div>
+<div class="olist arabic">
+<div class="title">Steps to Add the Registry:</div>
+<ol class="arabic">
+<li>
+<p>Open Red Hat Build of Podman Desktop.</p>
+</li>
+<li>
+<p>Navigate to the <code>Settings</code> icon (gear icon) in the bottom-left corner of the Podman Desktop window.</p>
+</li>
+<li>
+<p>In the Settings sidebar, select <code>Registries</code>.</p>
+</li>
+<li>
+<p>Click the <code>Add registry</code> button.</p>
+</li>
+<li>
+<p>In the <code>Add Registry</code> dialog:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>For <code>Registry hostname</code>, enter the address of your internal registry (e.g., <code>myregistry.local:5000</code> or <code>localhost:5000</code> if you simulated one).</p>
+</li>
+<li>
+<p>If your registry requires authentication, enter the <code>Username</code> and <code>Password</code>. For the simulated insecure lab registry, these might not be necessary.</p>
+</li>
+<li>
+<p>Check the <code>Insecure registry</code> checkbox <strong>only if your registry is using HTTP or a self-signed certificate not yet trusted by the Podman machine</strong>. In production, prefer to configure custom CAs instead of marking as insecure.</p>
+</li>
+<li>
+<p>Click <code>Add Registry</code>.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Verify that your private registry is now listed under <code>Configured Registries</code>.</p>
+</li>
+</ol>
+</div>
+<div class="olist arabic">
+<div class="title">Test the Registry Configuration:</div>
+<ol class="arabic">
+<li>
+<p>Open the <code>Terminal</code> within Podman Desktop (or connect to your Podman machine via <code>podman machine ssh</code>).</p>
+</li>
+<li>
+<p>Attempt to pull an image from your newly configured private registry. For example, if you pushed an <code>hello-world</code> image to your registry or want to test with the simulated local registry:
+<code><code>bash
+podman pull myregistry.local:5000/hello-world
+</code></code>
+or for the simulated local registry:
+<code><code>bash
+podman pull localhost:5000/hello-world
+</code></code></p>
+</li>
+<li>
+<p>If the image pull is successful, Podman Desktop is now configured to access your private registry.</p>
+</li>
+</ol>
+</div>
+<div id="expert-tip-insecure-registries" class="paragraph">
+<div class="title">Expert Tip: Insecure Registries</div>
+<p>In production environments, avoid using insecure registries (<code>--insecure-registry</code>) unless absolutely necessary and within a highly controlled, trusted network segment. Always strive to use TLS/SSL with certificates signed by a trusted Certificate Authority, even if it&#8217;s an internal corporate CA. Proper certificate management enhances security and prevents man-in-the-middle attacks.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_2_configuring_proxy_settings"><a class="anchor" href="#_2_configuring_proxy_settings"></a>2. Configuring Proxy Settings</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>If your restricted environment allows outbound network traffic only through a proxy server (e.g., to access certain internal services or a highly controlled internet gateway), Podman Desktop and its underlying Podman machine must be configured to use this proxy for any relevant network communication.</p>
+</div>
+<div class="sect2">
+<h3 id="_technical_explanation_2"><a class="anchor" href="#_technical_explanation_2"></a>Technical Explanation</h3>
+<div class="paragraph">
+<p>Proxy settings are typically configured via standard environment variables: <code>HTTP_PROXY</code>, <code>HTTPS_PROXY</code>, and <code>NO_PROXY</code>.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>HTTP_PROXY</code>: Specifies the proxy server for HTTP connections (e.g., <code><a href="http://proxy.example.com:8080" class="bare">http://proxy.example.com:8080</a></code>).</p>
+</li>
+<li>
+<p><code>HTTPS_PROXY</code>: Specifies the proxy server for HTTPS connections (e.g., <code><a href="https://proxy.example.com:8080" class="bare">https://proxy.example.com:8080</a></code>). This is often the same address as <code>HTTP_PROXY</code>.</p>
+</li>
+<li>
+<p><code>NO_PROXY</code>: A comma-separated list of hostnames, IP addresses, or CIDR ranges that should <strong>not</strong> go through the proxy. This is critically important for internal resources (like your private registry) that should be accessed directly without proxying.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>For Podman Desktop, these environment variables need to be set specifically for the Podman machine, as it is a separate virtualized environment. Setting them on your host machine will not automatically apply them to the Podman machine. Podman Desktop provides a dedicated interface to configure these settings for the Podman machine.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_hands_on_activity_setting_proxy_for_the_podman_machine"><a class="anchor" href="#_hands_on_activity_setting_proxy_for_the_podman_machine"></a>Hands-On Activity: Setting Proxy for the Podman Machine</h3>
+<div class="paragraph">
+<p>This lab shows how to configure proxy settings for your Podman machine via Podman Desktop.</p>
+</div>
+<div class="ulist">
+<div class="title">Prerequisites:</div>
+<ul>
+<li>
+<p>A running Podman Desktop instance.</p>
+</li>
+<li>
+<p>Details of your corporate HTTP/HTTPS proxy server (e.g., <code><a href="http://proxy.example.com:8080" class="bare">http://proxy.example.com:8080</a></code>).</p>
+</li>
+<li>
+<p>A comprehensive list of internal domains/IPs that should bypass the proxy (e.g., <code>localhost,127.0.0.1,.mycompany.local,10.0.0.0/8,myregistry.local</code>).</p>
+</li>
+</ul>
+</div>
+<div class="olist arabic">
+<div class="title">Steps:</div>
+<ol class="arabic">
+<li>
+<p>Open Red Hat Build of Podman Desktop.</p>
+</li>
+<li>
+<p>Navigate to the <code>Settings</code> icon (gear icon) in the bottom-left corner.</p>
+</li>
+<li>
+<p>In the Settings sidebar, select <code>Proxy</code>.</p>
+</li>
+<li>
+<p>In the <code>HTTP Proxy</code> field, enter your HTTP proxy address. If your proxy requires authentication, include the username and password (e.g., <code><a href="http://username:password@proxy.example.com:8080" class="bare">http://username:password@proxy.example.com:8080</a></code>).</p>
+</li>
+<li>
+<p>In the <code>HTTPS Proxy</code> field, enter your HTTPS proxy address. This might be the same as your HTTP proxy, but ensure to use <code>https://</code> if it&#8217;s an HTTPS proxy.</p>
+</li>
+<li>
+<p>In the <code>No Proxy</code> field, enter a comma-separated list of hosts, IP addresses, or CIDR ranges that should be excluded from proxying. This is vital for direct access to your internal registry and other local services (e.g., <code>localhost,127.0.0.1,.mycompany.local,10.0.0.0/8,myregistry.local</code>).</p>
+</li>
+<li>
+<p>Click <code>Apply</code>.</p>
+</li>
+<li>
+<p><strong>Restart the Podman machine</strong>: For proxy settings to take full effect, you <strong>must</strong> restart the Podman machine. You can do this from the Podman Desktop <code>Dashboard</code> by stopping and then starting your default Podman machine, or by navigating to <code>Settings</code> &#8594; <code>Resources</code> and restarting the machine there.</p>
+</li>
+</ol>
+</div>
+<div class="olist arabic">
+<div class="title">Test the Proxy Configuration:</div>
+<ol class="arabic">
+<li>
+<p>After the Podman machine restarts, try to perform an operation that would typically require proxy access (e.g., attempt to pull an image from a public registry if your air-gapped setup has <strong>some</strong> restricted outbound internet access through the proxy, or access an internal web service that is <strong>only</strong> reachable via the corporate proxy).</p>
+</li>
+<li>
+<p>Verify that internal services listed in <code>No Proxy</code> are still accessible directly without issues.</p>
+</li>
+</ol>
+</div>
+<div id="expert-tip-wsl-proxy" class="paragraph">
+<div class="title">Expert Tip: Proxy Settings for WSL2 on Windows</div>
+<p>When running Podman Desktop with WSL2 on Windows, it&#8217;s important to understand that proxy settings configured within Podman Desktop apply directly to the <strong>Podman machine</strong> (which runs as a WSL2 distribution). Your Windows host&#8217;s proxy settings are separate. Ensure consistency or configure specifically for the WSL2 environment as needed. For the <code>no_proxy</code> list, make sure to include the IP ranges or hostnames of any services running on your Windows host that the Podman machine might need to communicate with directly.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_3_managing_custom_certificate_authorities_cas"><a class="anchor" href="#_3_managing_custom_certificate_authorities_cas"></a>3. Managing Custom Certificate Authorities (CAs)</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In restricted environments, internal services like private registries, enterprise authentication systems, or internal APIs often use TLS/SSL certificates issued by a private or corporate Certificate Authority (CA). For Podman Desktop and the Podman engine to trust these services, the custom CA certificates must be installed on the Podman machine.</p>
+</div>
+<div class="sect2">
+<h3 id="_technical_explanation_3"><a class="anchor" href="#_technical_explanation_3"></a>Technical Explanation</h3>
+<div class="paragraph">
+<p>Linux systems manage trusted CA certificates in specific directories (e.g., <code>/etc/pki/ca-trust/source/anchors/</code> on Red Hat-based systems like the Podman machine, or <code>/usr/local/share/ca-certificates/</code> on Debian-based systems). When a custom CA certificate (in PEM format) is placed in one of these locations and the system&#8217;s CA trust store is updated, applications (like Podman) will automatically trust certificates signed by that CA. This eliminates TLS handshake errors when communicating with internal services.</p>
+</div>
+<div class="paragraph">
+<p>For Podman Desktop&#8217;s Podman machine, this involves:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Obtaining the PEM-encoded public key certificate file for your internal CA (e.g., <code>my-internal-ca.pem</code>).</p>
+</li>
+<li>
+<p>Copying this certificate file from your host system to a specific, trusted directory within the Podman machine.</p>
+</li>
+<li>
+<p>Updating the CA trust store on the Podman machine to incorporate the new certificate.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_hands_on_activity_adding_a_custom_ca_certificate"><a class="anchor" href="#_hands_on_activity_adding_a_custom_ca_certificate"></a>Hands-On Activity: Adding a Custom CA Certificate</h3>
+<div class="paragraph">
+<p>This lab demonstrates how to add a custom CA certificate to your Podman machine, enabling trust for your internal services.</p>
+</div>
+<div class="ulist">
+<div class="title">Prerequisites:</div>
+<ul>
+<li>
+<p>A running Podman Desktop instance.</p>
+</li>
+<li>
+<p>The PEM-encoded public certificate of your internal CA (e.g., <code>my-internal-ca.pem</code>). This file should be readily accessible on your host machine.</p>
+</li>
+<li>
+<p>An internal service (e.g., a private registry, an internal API) that uses a certificate signed by this CA, for testing purposes.</p>
+</li>
+</ul>
+</div>
+<div class="olist arabic">
+<div class="title">Steps:</div>
+<ol class="arabic">
+<li>
+<p><strong>Copy the CA certificate to the Podman machine:</strong></p>
+</li>
+<li>
+<p>Ensure your Podman machine is running.</p>
+</li>
+<li>
+<p>Use the <code>podman cp</code> command to copy the certificate file from your host to the Podman machine. Replace <code>/path/to/my-internal-ca.pem</code> with the actual path to your certificate file on your host.
+<code><code>bash
+podman cp /path/to/my-internal-ca.pem podman-machine-default:/etc/pki/ca-trust/source/anchors/
+</code></code>
+(Note: <code>podman-machine-default</code> is the default name for your Podman machine. Adjust this if you have given your machine a different name.)</p>
+</li>
+<li>
+<p><strong>Connect to the Podman machine:</strong></p>
+</li>
+<li>
+<p>Open the <code>Terminal</code> within Podman Desktop, or connect to your Podman machine using <code>podman machine ssh</code>.</p>
+</li>
+<li>
+<p><strong>Update the CA trust store:</strong></p>
+</li>
+<li>
+<p>Once you are inside the Podman machine&#8217;s terminal, execute the following command to update the system&#8217;s CA trust store:
+<code><code>bash
+sudo update-ca-trust extract
+</code></code>
+This command processes the certificates in <code>/etc/pki/ca-trust/source/anchors/</code> and rebuilds the system-wide trust store, making your custom CA trusted.</p>
+</li>
+<li>
+<p><strong>Verify the certificate is trusted:</strong></p>
+</li>
+<li>
+<p>Attempt to access an internal service that uses this CA-signed certificate. For example, if your internal registry is configured with HTTPS and uses this CA:
+<code><code>bash
+curl --verbose <a href="https://myregistry.local:5000/v2/" class="bare">https://myregistry.local:5000/v2/</a>
+</code></code>
+You should observe a successful TLS handshake without certificate errors.</p>
+</li>
+<li>
+<p>Attempt to pull an image from your internal registry that is configured with HTTPS and requires this CA:
+<code><code>bash
+podman pull myregistry.local:5000/my-secure-image:latest
+</code></code>
+This command should now succeed, indicating that the custom CA certificate is properly trusted by the Podman machine.</p>
+</li>
+</ol>
+</div>
+<div id="expert-tip-wsl-ca" class="paragraph">
+<div class="title">Expert Tip: Custom CAs with WSL2</div>
+<p>When using Podman Desktop with WSL2 on Windows, the <code>podman cp</code> command (or <code>wsl cp</code>) is essential for transferring certificates into the WSL2-based Podman machine. Remember that Windows' own CA trust store is separate from the Linux environment within WSL2. Therefore, simply installing the CA on your Windows host is not sufficient for the Podman machine.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_summary_of_post_installation_configuration"><a class="anchor" href="#_summary_of_post_installation_configuration"></a>Summary of Post-installation Configuration</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Successfully operating Red Hat Build of Podman Desktop in a restricted environment requires careful attention to how it interacts with your internal network and services. By meticulously configuring private registries, setting appropriate proxy rules, and managing custom CA certificates, you can ensure your container workflows remain secure and functional, even without direct internet access. These foundational steps are crucial for deploying and managing applications effectively within highly controlled, air-gapped infrastructures.</p>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="step-by-step-offline-installation-procedure.html">Step-by-step offline installation procedure</a></span>
+  <span class="next"><a href="deploying-podman-desktop-in-air-gapped-environments.html">Deploying Podman Desktop in Air-Gapped Environments</a></span>
+</nav>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <img src="../../../_/img/rhl-logo-red.png" height="40px" alt="Red Hat"  href="https://redhat.com" >
+</footer><script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>
