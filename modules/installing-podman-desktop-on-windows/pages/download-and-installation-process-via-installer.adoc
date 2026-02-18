@@ -1,0 +1,201 @@
+#  Download and installation process via installer
+
+= Download and Installation Process via Installer
+
+This section guides you through the process of downloading and installing Red Hat Build of Podman Desktop using its dedicated installer for macOS and Windows operating systems. The installer simplifies the setup, including the initial configuration of the Podman engine and the creation of a Podman machine, which is essential for running containers.
+
+== Installing Podman Desktop on macOS
+
+On macOS, Podman Desktop is typically installed using a Disk Image (`.dmg`) file. This method provides a straightforward graphical installation experience, integrating Podman Desktop seamlessly into your applications.
+
+=== Technical Explanation
+
+The installation process for Podman Desktop on macOS involves downloading a `.dmg` file, which is a disk image containing the application. When mounted, this disk image typically presents an interface allowing you to drag the Podman Desktop application icon into your Applications folder. This action copies the application executable and its associated resources to your system.
+
+Upon the first launch of Podman Desktop, it performs initial setup tasks. A crucial step here is the creation of a "Podman machine." Since Podman Desktop provides a graphical interface for managing containers, it needs a backend container engine. On macOS, Podman runs its Linux-based engine inside a lightweight virtual machine. The installer or the first-launch wizard will guide you through creating this Podman machine, which involves downloading and configuring a minimal Linux distribution VM (often based on Fedora CoreOS or a similar lightweight image). This VM is where your containers will actually run, managed by the Podman engine.
+
+=== Hands-on Activity: Installing Podman Desktop on macOS
+
+Follow these steps to download and install Podman Desktop on your macOS system.
+
+. Navigate to the official Red Hat Build of Podman Desktop download page. You can usually find this by searching for "Podman Desktop download" or visiting `https://podman-desktop.io/downloads`.
+. Locate the download link for macOS and click it to download the `.dmg` installer file.
++
+[NOTE]
+The file name will typically be something like `podman-desktop-*-mac.dmg`.
+
+. Once the download is complete, open the downloaded `.dmg` file.
++
+This will mount the disk image and open a new Finder window, usually showing the Podman Desktop application icon and a shortcut to your Applications folder.
+
+. Drag the `Podman Desktop.app` icon into the `Applications` folder shortcut displayed in the window.
++
+This action copies the application to your Applications directory.
+
+. Eject the Podman Desktop disk image from your Finder sidebar or desktop by dragging its icon to the Trash (which will change to an eject symbol).
+. Open your Applications folder and double-click the `Podman Desktop` icon to launch the application.
+. Upon its first launch, Podman Desktop will guide you through an initial setup wizard. This wizard will typically:
+    *   Detect if a Podman engine is present.
+    *   Prompt you to create a new Podman machine if one doesn't exist. Click through the prompts to accept the default settings for the Podman machine (e.g., CPU, memory, disk size).
+    *   Download the necessary files for the Podman machine and start it.
++
+[TIP]
+Ensure you have an active internet connection during this initial setup as it needs to download VM images.
+
+. Once the Podman machine is successfully created and started, the Podman Desktop dashboard will appear, indicating that the installation and initial setup are complete.
+
+== Installing Podman Desktop on Windows
+
+Installing Podman Desktop on Windows typically involves using an executable installer (`.exe`) package. This installer automates the process, including checks for prerequisites like Windows Subsystem for Linux (WSL 2) and the setup of the Podman machine.
+
+=== Technical Explanation
+
+The Windows installer for Podman Desktop (`.exe` file) is a self-contained package that guides you through the installation steps. When you run the installer, it performs several critical functions:
+
+*   **File Extraction**: It extracts the necessary application files to your system, usually within the `Program Files` directory.
+*   **System Integration**: It creates shortcuts in your Start Menu and handles system-level configurations.
+*   **Prerequisite Checks**: The installer will often check for or guide you through setting up essential prerequisites. For Windows, the most critical prerequisite is *Windows Subsystem for Linux 2 (WSL 2)*. Podman Desktop relies on WSL 2 to run a lightweight Linux virtual machine where the Podman engine operates. If WSL 2 is not enabled or properly configured, the installer might prompt you to enable it or provide instructions.
+*   **Podman Machine Creation**: Similar to macOS, upon the first launch, or sometimes integrated into the installer's final steps, Podman Desktop will assist you in creating a "Podman machine." This machine is a dedicated WSL 2 distribution that hosts the Podman engine, providing the necessary Linux environment for running containers. The wizard will configure the VM's resources (CPU, memory, disk).
+
+=== Hands-on Activity: Installing Podman Desktop on Windows
+
+Follow these steps to download and install Podman Desktop on your Windows system.
+
+. Navigate to the official Red Hat Build of Podman Desktop download page. You can find this by searching for "Podman Desktop download" or visiting `https://podman-desktop.io/downloads`.
+. Locate the download link for Windows and click it to download the `.exe` installer file.
++
+[NOTE]
+The file name will typically be something like `podman-desktop-*-setup.exe`.
+
+. Once the download is complete, locate the `podman-desktop-*-setup.exe` file and double-click it to run the installer.
++
+If prompted by User Account Control (UAC), click `Yes` to allow the installer to make changes to your device.
+
+. Follow the instructions in the Podman Desktop Setup Wizard:
+    *   Read and accept the End-User License Agreement.
+    *   Choose the installation location (the default is usually fine).
+    *   Select whether to install for all users or just the current user.
+    *   Click `Install` to begin the installation process.
+    *   The installer will copy files and configure the application.
+
+. During or after the installation, the wizard might prompt you regarding *Windows Subsystem for Linux 2 (WSL 2)*.
+    *   If WSL 2 is not installed or enabled, the wizard may offer to install it or provide instructions. Follow these prompts or refer to the "Preparing for Installation" section for manual WSL 2 setup if needed.
+    *   Restart your computer if prompted to complete the WSL 2 installation.
+
+. Once the installation is complete, ensure the "Run Podman Desktop" checkbox is selected (if available) and click `Finish`.
+    *   If Podman Desktop doesn't launch automatically, find it in your Start Menu and launch it manually.
+
+. Upon its first launch, Podman Desktop will guide you through an initial setup wizard. This wizard will typically:
+    *   Detect if a Podman engine is present.
+    *   Prompt you to create a new Podman machine if one doesn't exist. Click through the prompts to accept the default settings for the Podman machine (e.g., CPU, memory, disk size).
+    *   Download the necessary files for the Podman machine and start it within WSL 2.
++
+[TIP]
+Ensure you have an active internet connection during this initial setup as it needs to download VM images for WSL 2.
+
+. Once the Podman machine is successfully created and started, the Podman Desktop dashboard will appear, indicating that the installation and initial setup are complete.#  Download and installation process via installer
+
+= Downloading and Installing Red Hat Build of Podman Desktop via Installer
+
+This section guides you through the process of downloading and installing Red Hat Build of Podman Desktop using platform-specific installers for macOS and Windows. This method provides a streamlined experience, packaging all necessary components for a quick setup.
+
+== Understanding the Installer-Based Installation
+
+Installing software via an installer is a common and user-friendly method, especially for graphical applications. An installer typically performs several key functions:
+
+*   **Bundles Components**: It packages the main application executable along with any required libraries, dependencies, and configuration files.
+*   **Automates Setup**: It handles tasks such as copying files to appropriate directories, creating application shortcuts, and registering necessary system components.
+*   **User Interface**: It provides a graphical wizard to guide users through the installation process, often allowing for customization of installation paths or features.
+
+For Red Hat Build of Podman Desktop, the installers are designed to simplify the initial deployment, ensuring that the application integrates correctly with your operating system and underlying container engine infrastructure.
+
+=== Download Locations
+
+To begin, you will need to download the appropriate installer for your operating system.
+
+. Navigate to the official download page for Red Hat Build of Podman Desktop.
++
+*Link:https://podman-desktop.io/downloads[*Podman Desktop Downloads*]*
+. Select the installer package corresponding to your operating system:
+    *   For macOS: A `.dmg` (Disk Image) file.
+    *   For Windows: An `.exe` (Executable) file.
+
+[[macOS-installer]]
+== Installing Podman Desktop on macOS
+
+The macOS installer for Podman Desktop leverages the standard `.dmg` package format, providing a straightforward drag-and-drop installation experience. This process places the application within your Applications folder, making it readily accessible.
+
+=== Technical Explanation
+
+On macOS, applications are commonly distributed as `.dmg` files. When you open a `.dmg` file, it mounts a virtual disk image that typically contains the application bundle (`.app`) and a shortcut to the Applications folder. The installation process involves dragging the application bundle into the Applications folder. This action copies the application and its associated resources to a standard location, making it discoverable by macOS and available to all users. Podman Desktop on macOS also manages a dedicated Podman machine, a lightweight virtual machine that hosts the actual Podman engine, ensuring container isolation and consistent behavior. The initial launch after installation will guide you through setting this up.
+
+=== Hands-On Activity: Installing on macOS
+
+Follow these steps to download and install Red Hat Build of Podman Desktop on your macOS system.
+
+.Download the installer
+*   Open your web browser and navigate to the official Podman Desktop download page: link:https://podman-desktop.io/downloads[podman-desktop.io/downloads].
+*   Locate the download section for macOS and click the "Download for macOS" button to download the `.dmg` file.
++
+----
+# Example command (do not execute, use browser)
+curl -O https://github.com/containers/podman-desktop/releases/download/<version>/podman-desktop-<version>.dmg
+----
+.Mount the disk image
+*   Once the download is complete, open the downloaded `.dmg` file. This action will mount the disk image and open a new Finder window displaying its contents.
++
+image::macOS_dmg_mount.png[alt="Screenshot of Podman Desktop DMG mounted on macOS", width=600]
+.Install the application
+*   In the Finder window, drag the "Podman Desktop.app" icon into the "Applications" folder shortcut.
++
+image::macOS_install_drag_drop.png[alt="Screenshot of dragging Podman Desktop app to Applications folder on macOS", width=600]
+*   Close the Finder window and unmount the `.dmg` volume by dragging it to the Trash or by right-clicking on it in the Finder sidebar and selecting "Eject".
+.Launch Podman Desktop
+*   Open your "Applications" folder and double-click the "Podman Desktop" icon to launch the application.
+*   The first launch might prompt you about the application being downloaded from the internet. Click "Open" to proceed.
++
+[NOTE]
+The initial launch will also guide you through the setup of your Podman machine, which is essential for running containers. This process is covered in detail in the xref:installing-podman-desktop-macos.adoc#initial-setup[Initial Setup and Podman Machine Creation] section.
+
+[[windows-installer]]
+== Installing Podman Desktop on Windows
+
+For Windows, Red Hat Build of Podman Desktop provides an `.exe` installer that guides you through the setup process. A critical component for containerization on Windows is the Windows Subsystem for Linux (WSL 2), which Podman Desktop integrates with seamlessly.
+
+=== Technical Explanation
+
+The Windows installer for Podman Desktop is an executable (`.exe`) that automates the installation of the application, typically placing it in the `Program Files` directory. On Windows, Podman Desktop leverages WSL 2 (Windows Subsystem for Linux version 2) to run the Podman engine in a lightweight Linux virtual machine. This integration provides a full Linux kernel environment, ensuring compatibility and performance for container workloads. The installer for Podman Desktop will often check for WSL 2 prerequisites and may even offer to install or upgrade it if needed. The core application runs natively on Windows, providing a graphical user interface, while the heavy lifting of container execution happens within the WSL 2 environment.
+
+=== Hands-On Activity: Installing on Windows
+
+Follow these steps to download and install Red Hat Build of Podman Desktop on your Windows system.
+
+.Download the installer
+*   Open your web browser and navigate to the official Podman Desktop download page: link:https://podman-desktop.io/downloads[podman-desktop.io/downloads].
+*   Locate the download section for Windows and click the "Download for Windows" button to download the `.exe` file.
++
+----
+# Example command (do not execute, use browser)
+curl -O https://github.com/containers/podman-desktop/releases/download/<version>/podman-desktop-setup-<version>.exe
+----
+.Run the installer
+*   Once the download is complete, locate the downloaded `.exe` file (e.g., `podman-desktop-setup-<version>.exe`) and double-click it to start the installation wizard.
+*   If prompted by User Account Control (UAC), click "Yes" to allow the installer to make changes to your device.
+.Follow the installation wizard
+*   The Podman Desktop Setup wizard will appear.
+*   Review the license agreement and click "I Agree".
+*   Choose whether to install for "Anyone who uses this computer" (recommended) or "Only for me" and click "Next".
+*   Select the installation directory. The default location is usually acceptable (`C:\Program Files\Podman Desktop`). Click "Install".
++
+image::windows_installer_progress.png[alt="Screenshot of Podman Desktop Windows installer progress", width=600]
+*   The installer will copy files and configure the application. This process may take a few moments.
+*   Once the installation is complete, ensure "Run Podman Desktop" is checked and click "Finish".
++
+[IMPORTANT]
+If WSL 2 is not installed or requires an update, the Podman Desktop installer or the application itself upon first launch will guide you through the necessary steps. This is a critical prerequisite for Podman Desktop to function correctly on Windows. Refer to the xref:installing-podman-desktop-windows.adoc#wsl2-integration[WSL 2 Integration and Configuration] section for more details.
+.Launch Podman Desktop
+*   Podman Desktop will launch automatically if you left the "Run Podman Desktop" option checked.
+*   Alternatively, you can launch it from your Start Menu by searching for "Podman Desktop".
++
+[NOTE]
+Upon its initial launch, Podman Desktop will perform essential setup, including checking for or configuring the Podman engine within WSL 2 and creating a default Podman machine. This crucial post-installation setup is detailed in the xref:installing-podman-desktop-windows.adoc#initial-setup[Initial Setup and Podman Machine Creation] section.

@@ -1,0 +1,8 @@
+* xref:installing-podman-desktop-on-macos.adoc[]
+** xref:download-and-installation-process-via-installer.adoc[]
+** xref:initial-setup-and-podman-machine-creation.adoc[]
+** xref:verifying-installation-and-basic-functionality.adoc[]
+* xref:installing-podman-desktop-on-macos.adoc[]
+** xref:download-and-installation-process-via-installer.adoc[]
+** xref:initial-setup-and-podman-machine-creation.adoc[]
+** xref:verifying-installation-and-basic-functionality.adoc[]

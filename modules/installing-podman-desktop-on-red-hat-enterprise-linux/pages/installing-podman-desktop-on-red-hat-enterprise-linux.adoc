@@ -1,0 +1,19 @@
+#  Installing Podman Desktop on Red Hat Enterprise Linux
+
+== Installing Podman Desktop on Red Hat Enterprise Linux
+
+This section covers the process of installing Podman Desktop on Red Hat Enterprise Linux (RHEL).
+
+*   **Installation Steps**: Learn to install Podman Desktop using RHEL's package managers, such as `dnf`.
+*   **Initial Setup**: Perform the initial setup, including the creation of a Podman machine, to get the environment ready.
+*   **Verification**: Confirm the successful installation and test basic functionality to ensure Podman Desktop is operational.#  Installing Podman Desktop on Red Hat Enterprise Linux
+
+=== Installing Podman Desktop on Red Hat Enterprise Linux
+
+This section covers the process of installing Podman Desktop on Red Hat Enterprise Linux.
+
+Key steps include:
+
+*  Installation using `dnf` or other package managers.
+*  Performing initial setup, including Podman machine creation.
+*  Verifying the installation and basic functionality.

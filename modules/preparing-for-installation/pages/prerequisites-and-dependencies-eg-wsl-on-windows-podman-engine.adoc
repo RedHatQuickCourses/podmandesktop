@@ -1,0 +1,227 @@
+#  Prerequisites and dependencies (e.g., WSL on Windows, Podman engine)
+
+Here is the detailed educational content for the topic "Prerequisites and dependencies (e.g., WSL on Windows, Podman engine)" in Antora AsciiDoc format.
+
+```asciidoc
+= Prerequisites and Dependencies for Red Hat Build of Podman Desktop
+:page-aliases: podman-desktop:prerequisites.adoc
+:page-pagination:
+:description: Understand the essential prerequisites and dependencies, including the Podman engine and WSL 2, required for a successful Red Hat Build of Podman Desktop installation.
+
+By the end of this section, you will be able to:
+
+* Identify the core dependencies of Red Hat Build of Podman Desktop.
+* Understand the role of the Podman engine and Podman Machine.
+* Explain why Windows Subsystem for Linux (WSL 2) is crucial for Podman Desktop on Windows.
+* Enable and configure WSL 2 on Windows as a prerequisite.
+
+Red Hat Build of Podman Desktop simplifies container management, but like any robust application, it relies on several underlying components to function correctly. Understanding these prerequisites and dependencies is key to a smooth installation and operation, especially across different operating systems.
+
+== The Podman Engine: The Heart of Container Management
+
+At its core, Red Hat Build of Podman Desktop is a graphical user interface (GUI) that interacts with the *Podman engine*. The Podman engine is the actual daemonless container engine that handles all the heavy lifting: pulling images, running containers, managing volumes, and configuring networks.
+
+While Podman Desktop provides a user-friendly interface, it doesn't run containers itself. Instead, it sends commands to the Podman engine, which then executes them. This client-server architecture (even when both components are on the same machine) allows Podman Desktop to provide a consistent experience regardless of where the Podman engine is actually running.
+
+=== Podman Machine: Bridging the OS Gap
+
+For operating systems like macOS and Windows, which do not natively support Linux container technologies (the Linux kernel is essential for running OCI containers), Podman Desktop utilizes a concept called *Podman Machine*.
+
+A Podman Machine is a lightweight Linux virtual machine (VM) that runs the Podman engine. Podman Desktop automatically creates and manages this VM during its initial setup, abstracting away the complexities of VM management from the user.
+
+[NOTE]
+====
+When you install Podman Desktop, it will typically detect if a Podman engine is available. If not, it will guide you through the creation of a Podman Machine to host the engine, ensuring all dependencies are met. While it's possible to install the Podman engine manually, Podman Desktop's integrated approach simplifies this significantly.
+====
+
+== Windows Specific: Windows Subsystem for Linux (WSL 2)
+
+For Windows users, Red Hat Build of Podman Desktop leverages *Windows Subsystem for Linux 2 (WSL 2)* to run the Podman Machine. WSL 2 provides a full Linux kernel environment directly within Windows, offering significant performance improvements and full system call compatibility compared to its predecessor, WSL 1.
+
+=== Why WSL 2 is Required for Podman on Windows
+
+*   **Linux Kernel**: The Podman engine, and by extension, OCI containers, fundamentally rely on Linux kernel features (like cgroups and namespaces) for isolation and resource management. WSL 2 provides this essential Linux kernel environment on Windows.
+*   **Performance**: WSL 2 uses a lightweight utility virtual machine (VM) that runs a real Linux kernel, offering significantly better file system performance and full system call compatibility compared to WSL 1. This makes container operations much faster and more reliable.
+*   **Integration**: WSL 2 seamlessly integrates with the Windows host, allowing for easy file sharing and network communication between your Windows applications and the Linux environment running Podman.
+
+=== Hands-on Activity: Enabling and Configuring WSL 2 on Windows
+
+Before installing Podman Desktop on Windows, it's crucial to ensure WSL 2 is enabled and configured correctly.
+
+[IMPORTANT]
+====
+You must have administrative privileges on your Windows machine to enable WSL 2 features.
+====
+
+.Prerequisites:
+*   A Windows 10 (version 1903 or higher, build 18362 or higher) or Windows 11 machine.
+*   Virtualization enabled in your computer's BIOS/UEFI settings.
+
+.Step 1: Enable WSL and Virtual Machine Platform Features
+Open PowerShell or Command Prompt *as an administrator* and run the following commands:
+
+```powershell
+dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
+dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
+```
+
+*   `Microsoft-Windows-Subsystem-Linux`: This command enables the core WSL feature.
+*   `VirtualMachinePlatform`: This command enables the necessary virtualization platform that WSL 2 relies on.
+
+.Step 2: Restart Your Computer
+A restart is required for these changes to take effect.
+
+.Step 3: Set WSL 2 as Your Default Version
+After restarting, open PowerShell or Command Prompt *as an administrator* again and run:
+
+```powershell
+wsl --set-default-version 2
+```
+
+This command ensures that any new Linux distributions you install (or that Podman Desktop provisions) will use the WSL 2 architecture.
+
+[NOTE]
+====
+If you receive an error like "WSL 2 requires an update to its kernel component," you might need to download and install the latest WSL 2 Linux kernel update package. You can typically find this on the official Microsoft WSL documentation page or by searching for "WSL 2 Linux kernel update package."
+====
+
+.Step 4: Verify WSL Installation (Optional, but Recommended)
+You can verify that WSL is installed and set to version 2 by running:
+
+```powershell
+wsl --list --verbose
+```
+
+This command will list any installed WSL distributions and their versions. If you haven't installed any yet, it might show nothing, but the `wsl --set-default-version 2` command confirms the default for future installations.
+
+Once these steps are complete, your Windows environment is ready for Podman Desktop to create and manage its Podman Machine using WSL 2.
+
+== General System Requirements
+
+While not strictly a "dependency" in the software sense, ensuring your system meets general hardware requirements is crucial for a good experience. The Podman engine and the virtual machines it might run (like Podman Machine) consume resources.
+
+*   **CPU**: A modern multi-core processor.
+*   **RAM**: Minimum 8 GB RAM recommended, with 16 GB or more for heavier workloads or running multiple containers. The Podman Machine VM will allocate a portion of this RAM.
+*   **Disk Space**: At least 20-30 GB of free disk space for the Podman Desktop application, container images, and temporary files. Images can grow quite large.
+*   **Network Access**: For pulling images from registries (e.g., Docker Hub, Quay.io) and for Podman Desktop updates.
+
+Meeting these prerequisites ensures that Red Hat Build of Podman Desktop can run efficiently and provide a stable environment for your container development and management tasks.
+```#  Prerequisites and dependencies (e.g., WSL on Windows, Podman engine)
+
+```asciidoc
+[[prerequisites-and-dependencies]]
+== Prerequisites and Dependencies
+
+Before diving into the installation of Red Hat Build of Podman Desktop, it's crucial to understand the foundational prerequisites and dependencies that ensure a smooth setup and optimal performance. Podman Desktop, while providing a user-friendly graphical interface, relies on specific underlying technologies to function correctly across various operating systems.
+
+=== Understanding Core Dependencies
+
+At its heart, Podman Desktop is a graphical user interface (GUI) that interacts with the Podman engine. The Podman engine is the command-line tool responsible for creating, running, and managing containers and images. Therefore, the primary dependency for Podman Desktop on any operating system is a functional Podman engine.
+
+However, the way this Podman engine runs differs significantly across operating systems due to their native architectures:
+
+*   **Linux**: Linux is the native environment for Podman. Podman Desktop on Linux typically interacts directly with a locally installed Podman engine.
+*   **macOS and Windows**: These operating systems do not natively run Linux containers. To overcome this, Podman Desktop leverages virtualization technology to run a lightweight Linux virtual machine (VM). Within this VM, the Podman engine is installed and runs, providing the necessary environment for container operations. This VM is often referred to as a "Podman Machine."
+
+=== Specific Prerequisites by Operating System
+
+Let's break down the specific requirements for different platforms:
+
+==== Windows: WSL 2 Integration and Podman Machine
+
+For Windows users, the key dependency is the **Windows Subsystem for Linux 2 (WSL 2)**.
+
+*   **Why WSL 2?** WSL 2 provides a lightweight virtual machine that allows you to run a full Linux kernel directly on Windows without the overhead of a traditional VM. Podman Desktop utilizes WSL 2 to provision and manage a Linux-based "Podman Machine." This machine hosts the Podman engine and all your container workloads, effectively bridging the gap between Windows and Linux containerization. Without WSL 2, Podman Desktop cannot create or connect to a Podman Machine on Windows.
+*   **Podman Engine**: Once WSL 2 is configured, Podman Desktop will automate the creation of a Podman Machine within WSL 2 and install the necessary Podman engine inside it. You typically don't need to manually install Podman on Windows itself.
+*   **Virtualization**: Ensure that virtualization is enabled in your system's BIOS/UEFI settings (e.g., Intel VT-x or AMD-V). WSL 2 requires hardware virtualization to function.
+
+==== macOS: Virtualization and Podman Machine
+
+On macOS, Podman Desktop also requires a virtual machine to run the Podman engine.
+
+*   **Virtualization Technology**: Podman Desktop typically uses native macOS virtualization frameworks (like HyperKit, which is part of Docker Desktop, or alternative hypervisors like QEMU, often managed by `Podman Machine`) to create a lightweight Linux VM.
+*   **Podman Engine**: Similar to Windows, Podman Desktop will manage the creation of this VM and the installation of the Podman engine within it, forming your "Podman Machine." You generally don't need to manually install Podman on macOS directly before installing Podman Desktop.
+
+==== Red Hat Enterprise Linux (RHEL) and other Linux Distributions: Podman Engine
+
+On Linux, the situation is simpler as Podman is a native Linux application.
+
+*   **Podman Engine**: The primary prerequisite is the `podman` package itself. Podman Desktop will connect directly to the Podman daemon (or socket) running on your host system. While Podman Desktop can also manage a "Podman Machine" on Linux, it's often used with the host's native Podman installation.
+*   **Package Manager**: You'll typically install Podman using your distribution's package manager (e.g., `dnf` on RHEL/Fedora, `apt` on Debian/Ubuntu).
+
+=== Understanding the Podman Machine Concept
+
+The "Podman Machine" is a key concept for macOS and Windows users, and optional for Linux users. It refers to the dedicated lightweight Linux virtual machine where the Podman engine runs. Podman Desktop on Windows and macOS will guide you through creating and managing this machine as part of its initial setup.
+
+Key characteristics of a Podman Machine:
+
+*   **Isolation**: It provides a separate, isolated environment for your container engine and workloads.
+*   **Resource Allocation**: You can configure CPU, memory, and disk resources allocated to this VM, ensuring your container workloads have sufficient resources without impacting your host OS.
+*   **Lifecycle Management**: Podman Desktop provides tools to start, stop, restart, and delete Podman Machines, giving you full control over their lifecycle.
+
+=== Hands-on Activity: Verifying Prerequisites
+
+Before proceeding with the Podman Desktop installation, let's verify if your system meets the fundamental prerequisites.
+
+==== Activity 1: Checking WSL 2 Status on Windows
+
+If you are on a Windows system, it's essential to ensure WSL 2 is installed and updated.
+
+.Open PowerShell as Administrator.
+.Run the following command to check the installed WSL distributions and their versions:
++
+[source,powershell]
+----
+wsl -l -v
+----
++
+[TIP]
+If you see `WSL 2` listed under the `VERSION` column for any distribution, WSL 2 is installed. If you only see `WSL 1` or no output, you'll need to install or update WSL.
+
+.If WSL 2 is not installed or needs updating, execute these commands in PowerShell (as Administrator):
++
+[source,powershell]
+----
+wsl --install
+wsl --update
+wsl --set-default-version 2
+----
++
+*   `wsl --install`: This command will install the necessary WSL components and an Ubuntu distribution by default.
+*   `wsl --update`: Ensures your WSL kernel is up to date.
+*   `wsl --set-default-version 2`: Sets WSL 2 as the default version for new distributions.
++
+[NOTE]
+You may need to reboot your system after installing or updating WSL. Ensure that virtualization is enabled in your system's BIOS/UEFI settings for WSL 2 to function correctly.
+
+==== Activity 2: Verifying Virtualization on macOS and Windows
+
+While Podman Desktop will guide you through machine creation, ensuring your system supports virtualization is a foundational step.
+
+. **On Windows**:
+    *   Open Task Manager (Ctrl+Shift+Esc).
+    *   Navigate to the "Performance" tab.
+    *   Select "CPU."
+    *   Look for "Virtualization." It should be "Enabled." If it's "Disabled," you'll need to enable it in your computer's BIOS/UEFI settings.
+. **On macOS**:
+    *   Open Terminal.
+    *   Run the command: `sysctl -a | grep -E "machdep.cpu.features|VMX"`
+    *   Look for `VMX` in the output (Intel Macs) or `MSR_HV_SYSCALLS` (Apple Silicon Macs), indicating virtualization support is present. macOS usually has virtualization enabled by default if the hardware supports it.
+
+==== Activity 3: Checking for Existing Podman Engine (Linux Only)
+
+For Linux users, verify if Podman is already installed.
+
+.Open a terminal.
+.Run the following command:
++
+[source,bash]
+----
+podman --version
+----
++
+*   If Podman is installed, you will see its version number.
+*   If Podman is not installed, the command will likely return an error like "command not found." You will then need to install it using your distribution's package manager before or during the Podman Desktop installation process. For example, on RHEL/Fedora: `sudo dnf install podman`.
+
+By completing these prerequisite checks, you ensure your system is prepared for a successful Red Hat Build of Podman Desktop installation.
+```

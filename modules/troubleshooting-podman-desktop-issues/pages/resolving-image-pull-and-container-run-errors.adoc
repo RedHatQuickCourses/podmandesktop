@@ -1,0 +1,440 @@
+#  Resolving image pull and container run errors
+
+Here's the content for "Resolving image pull and container run errors" in Antora AsciiDoc format.
+
+```asciidoc
+[[troubleshooting-image-pull-run-errors]]
+= Resolving Image Pull and Container Run Errors
+
+When working with containers, encountering issues during image pull operations or when attempting to run a container is not uncommon. These errors can stem from various sources, ranging from network connectivity problems to misconfigurations or resource limitations. Understanding the common causes and diagnostic steps is crucial for efficient troubleshooting.
+
+== Understanding Image Pull Errors
+
+Image pull errors occur when Podman Desktop (or the underlying Podman engine) fails to retrieve a container image from a registry. These errors manifest in various ways, often indicating issues with network access, registry authentication, or the image reference itself.
+
+=== Common Causes of Image Pull Errors
+
+. *Network Connectivity Issues*:
+  *   **No internet access**: The host machine or the Podman machine cannot reach the internet to download images from public registries (e.g., Docker Hub, Quay.io).
+  *   **Firewall restrictions**: A firewall might be blocking outbound connections to container registries.
+  *   **Proxy configuration**: If you are in a corporate network, an incorrectly configured proxy can prevent image pulls.
+  *   **DNS resolution failures**: The system might be unable to resolve the registry's hostname to an IP address.
+
+. *Registry Authentication Problems*:
+  *   **Incorrect credentials**: You might be using an incorrect username or password for a private registry.
+  *   **Expired or missing token**: Authentication tokens (e.g., from `podman login`) might have expired or not been provided.
+  *   **Missing image pull secrets**: In Kubernetes/OpenShift contexts, `imagePullSecrets` might be missing or misconfigured.
+
+. *Incorrect Image Reference*:
+  *   **Typo in image name**: A simple mistake in the image name (e.g., `nginx` vs. `ngnix`).
+  *   **Non-existent tag**: Attempting to pull an image with a tag that does not exist for that repository (e.g., `myimage:latest` when `latest` isn't available, or a specific version like `myimage:v2.0` that doesn't exist).
+  *   **Private registry specified incorrectly**: The registry URL might be wrong or missing (e.g., `quay.io/myuser/myimage` vs. `myuser/myimage` when `quay.io` isn't the default).
+
+. *Registry Availability/Issues*:
+  *   The container registry itself might be down or experiencing intermittent issues.
+  *   Rate limiting enforced by public registries (like Docker Hub) if too many pulls occur from the same IP without authentication.
+
+=== Hands-On Activity: Diagnosing and Resolving Image Pull Errors
+
+This activity will guide you through common troubleshooting steps for image pull failures.
+
+==== Prerequisites
+
+*   Podman Desktop installed and running.
+*   Access to a terminal or command prompt.
+
+==== Steps
+
+. *Verify Network Connectivity*:
+  *   From your host machine, try pinging a public website and a known container registry.
+    ```bash
+    ping google.com
+    ping registry.quay.io
+    ```
+  *   If you're using a Podman machine (e.g., on Windows or macOS), connect to it and perform the same checks:
+    ```bash
+    podman machine ssh
+    ping google.com
+    ping registry.quay.io
+    exit
+    ```
+  *   *Resolution*: Address any network or DNS issues on your host or Podman machine. Check proxy settings if applicable. Podman Desktop allows you to configure proxy settings under `Settings` -> `Proxy`.
+
+. *Check Image Reference Accuracy*:
+  *   Ensure the image name and tag are correct. For example, if you intend to pull `nginx:latest`, double-check for typos.
+  *   Try pulling a very common, simple image to rule out issues with your specific image.
+    ```bash
+    podman pull hello-world
+    ```
+  *   *Resolution*: Correct the image name or tag. If pulling from a private registry, ensure the full path is specified (e.g., `myregistry.com/myorg/myimage:mytag`).
+
+. *Verify Registry Authentication*:
+  *   If pulling from a private registry, ensure you are logged in. You can check your login status from the terminal:
+    ```bash
+    podman login --get-login registry.example.com
+    ```
+  *   If not logged in, attempt to log in:
+    ```bash
+    podman login registry.example.com -u <your-username>
+    ```
+    You will be prompted for your password.
+  *   In Podman Desktop, navigate to `Settings` -> `Registries` to add or manage credentials for registries.
+  *   *Resolution*: Provide correct login credentials or ensure your authentication tokens are valid.
+
+. *Inspect Podman Engine Logs*:
+  *   Podman Desktop's `Logs` section (accessible from the left navigation pane) can provide insights into engine activity, including failed image pulls.
+  *   For the Podman machine, you can also check its journal:
+    ```bash
+    podman machine ssh sudo journalctl -u podman.service
+    ```
+  *   *Resolution*: Look for specific error messages that can pinpoint the problem, such as `TLS handshake failed`, `unauthorized`, or `no such host`.
+
+. *Try a Different Registry/Image*:
+  *   If you're repeatedly failing with a specific image or registry, try pulling a different, well-known image from a different public registry (e.g., `docker.io/library/alpine:latest`) to isolate if the issue is with your environment or the specific image/registry.
+  *   *Resolution*: If other images pull successfully, the problem likely lies with the original image, registry, or your access rights to it.
+
+== Understanding Container Run Errors
+
+Container run errors occur when the Podman engine successfully pulls an image but encounters issues when attempting to start a container from that image. These errors often relate to resource limitations, port conflicts, incorrect command arguments, or problems within the container image itself.
+
+=== Common Causes of Container Run Errors
+
+. *Resource Limitations*:
+  *   **Insufficient memory/CPU**: The container requires more memory or CPU than allocated to the Podman machine or available on the host.
+  *   **Disk space**: Not enough disk space to create container layers or volumes.
+
+. *Port Conflicts*:
+  *   Attempting to map a container port to a host port that is already in use by another process on the host machine.
+
+. *Incorrect Container Arguments/Command*:
+  *   **Invalid command or entrypoint**: The `command` or `entrypoint` specified when running the container is incorrect or the executable doesn't exist within the image.
+  *   **Missing environment variables**: The application inside the container requires specific environment variables that were not provided.
+  *   **Incorrect volume mounts**: The container expects certain files or directories to be mounted, but they are missing or mounted incorrectly, leading to application startup failures.
+
+. *Application Errors within Container*:
+  *   The application inside the container itself has a bug or configuration error that prevents it from starting correctly.
+  *   Missing dependencies inside the container.
+
+. *Security Context Issues*:
+  *   SELinux or AppArmor might be preventing the container from accessing necessary resources if not configured correctly (more common on Linux hosts).
+  *   Insufficient permissions for the user running the container or for files accessed by the container process.
+
+=== Hands-On Activity: Diagnosing and Resolving Container Run Errors
+
+This activity will guide you through diagnosing and resolving common container run failures.
+
+==== Prerequisites
+
+*   Podman Desktop installed and running.
+*   Access to a terminal or command prompt.
+*   An image to run (e.g., `docker.io/library/nginx`).
+
+==== Steps
+
+. *Observe Container State and Errors*:
+  *   When a container fails to start, its status in Podman Desktop will often show `Exited` with a non-zero exit code.
+  *   Click on the container in Podman Desktop to view its details. The `Logs` tab is your primary source of information.
+
+. *Check Container Logs*:
+  *   The most crucial step is to inspect the container's logs.
+    *   In Podman Desktop, select the failed container and go to the `Logs` tab.
+    *   From the CLI:
+      ```bash
+      podman logs <container-name-or-id>
+      ```
+  *   *Resolution*: The logs will often contain specific error messages from the application inside the container, indicating why it failed to start. Examples include `port already in use`, `file not found`, `permission denied`, or application-specific errors.
+
+. *Verify Resource Allocation*:
+  *   If you suspect resource issues (memory, CPU), check the Podman machine's configuration.
+    *   In Podman Desktop, navigate to `Settings` -> `Podman machine`. Ensure adequate memory and CPU are allocated.
+    *   From the CLI:
+      ```bash
+      podman machine ls
+      ```
+  *   If running the container with specific resource limits, try removing or increasing them.
+    ```bash
+    # Example: Run with limited memory, might fail if app needs more
+    podman run -d --name myapp --memory="128m" myimage
+    ```
+  *   *Resolution*: Increase the memory/CPU allocated to your Podman machine or to the specific container, if needed.
+
+. *Check for Port Conflicts*:
+  *   If the error indicates a port binding issue, verify if the host port you're trying to map is already in use.
+    *   On Linux/macOS:
+      ```bash
+      sudo lsof -i :<host-port>
+      ```
+    *   On Windows (PowerShell):
+      ```powershell
+      Get-NetTCPConnection -LocalPort <host-port> | Select-Object -ExpandProperty OwningProcess | Get-Process
+      ```
+  *   *Resolution*: Choose a different host port for the mapping (e.g., `podman run -p 8081:80 nginx`) or stop the process currently using the desired port.
+
+. *Review Run Command and Arguments*:
+  *   Carefully examine the `podman run` command or the configuration used to start the container.
+  *   Are all required environment variables present? (e.g., `-e DATABASE_URL=...`)
+  *   Are volume mounts correct? (e.g., `-v /path/on/host:/path/in/container`)
+  *   Is the command or entrypoint specified correctly? (e.g., `podman run myimage /bin/bash` vs. `podman run myimage`)
+  *   *Resolution*: Correct any typos or missing arguments in your `podman run` command or container definition. Use `podman inspect <image-name>` to see the default `Entrypoint` and `Cmd` of an image.
+
+. *Access the Container Directly (for Debugging)*:
+  *   If the container fails to start and immediately exits, try running it interactively with an override command to investigate its environment.
+    ```bash
+    podman run -it --entrypoint /bin/bash <image-name>
+    # Once inside, you can check files, environment variables, etc.
+    ls /app
+    env
+    cat /etc/nginx/nginx.conf
+    exit
+    ```
+  *   If the application is expected to run, but crashes, try to manually start the application inside the interactive shell to see the exact error output.
+  *   *Resolution*: Use this method to explore the container's filesystem, test commands, and identify missing files or misconfigurations that cause the application to fail.
+
+. *Rebuild or Update Image*:
+  *   If the issue points to a problem within the containerized application itself (e.g., missing libraries, bad configuration baked into the image), you might need to update your `Containerfile` (Dockerfile) and rebuild the image.
+  *   *Resolution*: Fix the application code or `Containerfile` and push a new version of the image.
+
+By systematically going through these diagnostic steps, you can effectively pinpoint and resolve most image pull and container run errors within Podman Desktop environments. Remember that container logs are your most valuable tool for understanding what's happening inside the container.
+```#  Resolving image pull and container run errors
+
+[[troubleshooting-image-pull-container-run]]
+= Resolving Image Pull and Container Run Errors
+
+This section focuses on diagnosing and resolving common issues encountered when pulling container images and running containers with Red Hat Build of Podman Desktop. Mastering these troubleshooting techniques is vital for maintaining a smooth and efficient container development workflow. We will cover typical error scenarios, delve into their root causes, and provide practical, step-by-step solutions, including hands-on activities to reinforce your understanding.
+
+== Understanding Image Pull Errors
+
+Image pull errors occur when Podman Desktop or the underlying Podman engine fails to retrieve a specified container image from a registry. These issues primarily stem from network connectivity problems, incorrect image referencing, or authentication failures when accessing private registries.
+
+=== Common Causes and Solutions for Image Pull Errors
+
+.Network Connectivity Issues
+*   **Detailed Technical Explanation:**
+    The most prevalent cause of image pull failures is an inability to reach the container image registry over the network. This can be due to various factors:
+    **Firewalls:** Local operating system firewalls (e.g., `firewalld` on Linux, Windows Defender Firewall) or corporate network firewalls might block outgoing connections to registry ports (typically TCP 80 for HTTP, 443 for HTTPS).
+    **Proxies:** If your environment requires an HTTP/HTTPS proxy to access external networks, Podman Desktop and the Podman machine must be correctly configured to use it. An unconfigured or misconfigured proxy will prevent access to public registries.
+    **DNS Resolution:** Podman needs to resolve the registry hostname (e.g., `registry.redhat.io`, `docker.io`) to an IP address. If DNS servers are misconfigured or unreachable, resolution will fail.
+    **General Internet Connectivity:** A complete lack of internet connection will, of course, prevent any external image pulls.
+*   **Troubleshooting Steps:**
+    1.  **Verify General Internet Access:** Open a web browser and try to access a public website (e.g., `google.com`).
+    2.  **Check DNS Resolution:**
+        *   *On Linux/macOS (Terminal):* `ping registry.redhat.io` or `dig registry.redhat.io`.
+        *   *On Windows (Command Prompt):* `ping registry.redhat.io`.
+        If `ping` fails or `dig` returns no answers, investigate your DNS settings.
+    3.  **Inspect Firewall Rules:** Ensure your system's firewall allows outgoing connections on ports 80 and 443. Temporarily disabling the firewall (with caution) can help isolate if it's the culprit.
+    4.  **Configure Proxy Settings:**
+        *   **Podman Desktop:** Navigate to `Settings` (gear icon) -> `Proxy`. Enter your proxy server details (HTTP and HTTPS).
+        *   **Podman Machine:** For the Podman machine itself, if a proxy is required, you might need to configure environment variables. When creating a new machine, Podman Desktop will often apply these. For existing machines, you might need to re-create it or manually configure proxy settings within the VM (advanced).
+*   **Hands-on Activity: Simulating a Network Block During Image Pull**
+    **Objective:** Observe an image pull error caused by network unavailability.
+    **Steps:**
+    1.  **Prepare:** Ensure your Podman Desktop is running and you have an internet connection.
+    2.  **Disconnect Network:**
+        *   **On Wi-Fi:** Temporarily disable your Wi-Fi adapter.
+        *   **On Wired:** Disconnect your Ethernet cable.
+        *   **(Alternative for controlled test - not recommended for long term):** If comfortable, temporarily configure your system's firewall to block outbound connections to common registry domains (e.g., `registry.redhat.io`, `docker.io`) on ports 80/443. *Remember to revert this immediately after the lab.*
+    3.  **Attempt Image Pull:**
+        *   In Podman Desktop, navigate to the `Images` section.
+        *   Click the `Pull Image` button.
+        *   Enter a standard image name, such as `quay.io/libpod/busybox`.
+        *   Click `Pull`.
+    4.  **Observe Error:** You should see an error message indicating a network timeout, connection refused, or similar connectivity issue (e.g., "Error: error pulling image... Get ... dial tcp: lookup ... no such host").
+    5.  **Reconnect Network:** Re-enable your Wi-Fi or reconnect your Ethernet cable (or revert firewall rules).
+    6.  **Verify Resolution:** Attempt to pull the same image again. It should now succeed.
+
+.Incorrect Image Name or Tag
+*   **Detailed Technical Explanation:**
+    Container images are referenced by their fully qualified name, including the registry, repository, image name, and optionally a tag (e.g., `registry.redhat.io/rhel8/nginx-118:1.18`). If there's a typo in any part of this reference, or if the specified tag does not exist for that image, the registry will return an "image not found" error. It's crucial for the reference to precisely match what's available in the registry.
+*   **Troubleshooting Steps:**
+    1.  **Double-Check Syntax:** Carefully review the image name and tag for any spelling errors or incorrect characters.
+    2.  **Verify Existence:**
+        *   Use a web browser to navigate to the registry's website (e.g., `quay.io`, `hub.docker.com`, `registry.redhat.io`) and search for the image and tag to confirm its exact name and availability.
+        *   For private registries, ensure you have the correct internal documentation or access to its catalog.
+*   **Hands-on Activity: Pulling a Non-Existent Image**
+    **Objective:** Understand the error message for a missing image.
+    **Steps:**
+    1.  In Podman Desktop, go to the `Images` section.
+    2.  Click `Pull Image`.
+    3.  Enter a clearly non-existent image name and tag, for example, `registry.redhat.io/myimaginary/application:v9999`.
+    4.  Click `Pull`.
+    5.  **Observe Error:** You will see an error message similar to "Error: image ... not found", clearly indicating that the image reference could not be resolved in the specified registry.
+
+.Authentication Failures (Private Registries)
+*   **Detailed Technical Explanation:**
+    Accessing private or authenticated registries (like `registry.redhat.io` for Red Hat images, or internal corporate registries) requires valid credentials. If you attempt to pull an image from such a registry without first logging in, or if your stored credentials are incorrect, expired, or lack the necessary permissions, the pull operation will result in an "unauthorized" or "access denied" error. Podman Desktop manages these credentials, typically storing them securely.
+*   **Troubleshooting Steps:**
+    1.  **Verify Login Status:** In Podman Desktop, navigate to `Settings` -> `Registries`. Check if you are logged in to the required registry.
+    2.  **Login with Correct Credentials:**
+        *   If not logged in, click `Add Registry`, provide the registry URL, and your username/password or token.
+        *   If already logged in but still encountering errors, try logging out and logging back in with fresh credentials.
+    3.  **Check Permissions:** Ensure the user associated with the credentials has sufficient pull permissions for the specific image.
+    4.  **Podman CLI Login:** As an alternative or diagnostic step, you can try logging in via the terminal: `podman login registry.redhat.io`. This verifies the credentials at the engine level.
+*   **Hands-on Activity: Simulating Authentication Failure and Resolution**
+    **Objective:** Experience an authentication error and learn to resolve it by logging in.
+    **Prerequisites:** A Red Hat account is recommended for this exercise to access `registry.redhat.io`.
+    **Steps:**
+    1.  **Ensure Logout:** In Podman Desktop, go to `Settings` -> `Registries`. If you are currently logged in to `registry.redhat.io`, select it and click `Logout`.
+    2.  **Attempt Restricted Pull (Failure):**
+        *   Navigate to `Images` and click `Pull Image`.
+        *   Enter a Red Hat Universal Base Image (UBI) that typically requires authentication, for example, `registry.redhat.io/rhel8/nginx-118`.
+        *   Click `Pull`.
+    3.  **Observe Error:** You should receive an error message containing "unauthorized: authentication required" or "access denied".
+    4.  **Log In:**
+        *   Go back to `Settings` -> `Registries`.
+        *   Click `Add Registry`.
+        *   Enter `registry.redhat.io` as the address.
+        *   Provide your Red Hat account username and password.
+        *   Click `Login`.
+    5.  **Retry Pull (Success):**
+        *   Navigate back to `Images` and click `Pull Image`.
+        *   Enter `registry.redhat.io/rhel8/nginx-118` again.
+        *   Click `Pull`.
+    6.  **Verify Resolution:** The image should now pull successfully.
+
+.Insufficient Disk Space
+*   **Detailed Technical Explanation:**
+    Container images can range from a few megabytes to several gigabytes. Podman Desktop stores these images within the allocated virtual disk space of the Podman machine (on Windows/macOS) or directly on the host filesystem (on Linux). If this disk space is exhausted, image pulls will fail with "no space left on device" errors. This is particularly common in Podman machines with default, smaller disk allocations.
+*   **Troubleshooting Steps:**
+    1.  **Check Podman Machine Disk Space:**
+        *   In Podman Desktop, go to `Settings` -> `Resources`.
+        *   Observe the "Disk size" for your active Podman machine. If it's near capacity, you'll need to increase it or free up space.
+        *   You can increase the disk size directly from this screen. Note that increasing disk size might require recreating the Podman machine, which will delete existing images and containers.
+    2.  **Clean Up Unused Resources:**
+        *   In Podman Desktop, go to `Settings` -> `Resources`.
+        *   Click `Clean up` to remove dangling images, stopped containers, and unused volumes. This uses `podman system prune` internally.
+    3.  **Check Host OS Disk Space:** Ensure your host operating system also has sufficient free disk space, as the Podman machine's virtual disk file resides on it.
+
+== Understanding Container Run Errors
+
+Container run errors occur after an image has been successfully pulled but fails to start, exits immediately, or behaves unexpectedly during execution. These issues are often tied to resource allocation, port conflicts, volume mount problems, or application-specific failures within the container.
+
+=== Common Causes and Solutions for Container Run Errors
+
+.Image Not Found (Post-Pull)
+*   **Detailed Technical Explanation:**
+    Although an image might have been successfully pulled previously, a "container image not found" error can occur if the image was subsequently deleted (e.g., via `podman rmi` or `podman system prune`), or if the Podman machine was reset or recreated, clearing its local image store. This means the engine cannot locate the image required to create the container.
+*   **Troubleshooting Steps:**
+    1.  **Verify Image Presence:** In Podman Desktop, navigate to the `Images` section. Confirm that the required image is listed.
+    2.  **Re-pull Image:** If the image is missing, simply pull it again from the registry.
+
+.Insufficient Resources (Memory, CPU)
+*   **Detailed Technical Explanation:**
+    Containers, like any application, require system resources. If a container attempts to consume more memory or CPU than is available to the Podman machine or than explicitly limited for the container, it can lead to various issues:
+    **Out Of Memory (OOMKilled):** The container process might be terminated by the operating system (or Podman engine) with an "OOMKilled" status if it exceeds its memory allocation.
+    **Slow Performance/Startup Failure:** Insufficient CPU can lead to extremely slow startup times or applications failing to respond.
+*   **Troubleshooting Steps:**
+    1.  **Increase Podman Machine Resources:**
+        *   In Podman Desktop, go to `Settings` -> `Resources`.
+        *   Increase the allocated "CPUs" and "Memory" for your Podman machine. You will likely need to restart the Podman machine for changes to take effect.
+    2.  **Review Container-Specific Limits:** If you're running containers with explicit resource limits (e.g., `--memory="512m"`, `--cpus="1"` in a `podman run` command), ensure these limits are appropriate for the application's needs. Adjust or remove them for testing.
+    3.  **Check Container Logs:** Look for "OOMKilled" messages or other resource-related warnings in the container's logs.
+
+.Port Conflicts
+*   **Detailed Technical Explanation:**
+    When you map a container's internal port to a port on the host machine (e.g., `-p 8080:80`), the specified host port (8080 in this example) must be free. If another process or application on your host machine is already listening on that port, Podman will be unable to bind to it, and the container will fail to start with an error indicating the port is already in use.
+*   **Troubleshooting Steps:**
+    1.  **Identify Conflicting Process:**
+        *   **Linux/macOS (Terminal):** `sudo lsof -i :<port>` or `netstat -tulnp | grep :<port>`.
+        *   **Windows (Command Prompt - run as Admin):** `netstat -ano | findstr :<port>` to get the PID, then `tasklist /fi "PID eq <PID>"` to find the process name.
+    2.  **Change Host Port Mapping:** Modify your container run command or Podman Desktop settings to map the container port to a different, unused host port (e.g., `-p 8081:80`).
+    3.  **Stop Conflicting Process:** If the conflicting process is non-essential, you can stop it to free up the port.
+*   **Hands-on Activity: Simulating a Port Conflict**
+    **Objective:** Understand how a port conflict prevents a container from starting and how to resolve it.
+    **Steps:**
+    1.  **Occupy a Port:**
+        *   Open your system's terminal or command prompt.
+        *   Run a simple command that listens on a port, for example:
+            *   **Linux/macOS:** `python3 -m http.server 8000`
+            *   **Windows (PowerShell):** `Start-Process powershell -ArgumentList "-NoExit -Command New-NetFirewallRule -DisplayName 'TestPortBlock' -Direction Inbound -LocalPort 8000 -Action Block -Protocol TCP; iisexpress /port:8000 /path:`pwd`"` (This is more complex, simpler might be to use a tool like `netcat` or just temporarily stop IIS/other web servers if running). *For simplicity, if Python is available on Windows, use the Python command.* Keep this process running.
+    2.  **Attempt Container Run (Failure):**
+        *   In Podman Desktop, navigate to `Images`.
+        *   Find `quay.io/libpod/busybox` (pull it if not present).
+        *   Click `Run Image`.
+        *   In the `Port Mappings` section, add a new mapping: `Host Port: 8000`, `Container Port: 80`.
+        *   Click `Run`.
+    3.  **Observe Error:** The container will fail to start, and you will see an error message indicating that the port `8000` is already in use or cannot be allocated.
+    4.  **Resolve Conflict:** Go back to your terminal and stop the `python3` (or equivalent) server process (usually by pressing `Ctrl+C`).
+    5.  **Retry Container Run (Success):** In Podman Desktop, attempt to run the same `busybox` container with the `8000:80` port mapping again. It should now start successfully.
+
+.Volume Mount Errors
+*   **Detailed Technical Explanation:**
+    Volume mounts allow containers to access files and directories from the host system. Errors can occur if:
+    **Non-existent Host Path:** The host directory specified in the mount command (`-v /host/path:/container/path`) does not exist.
+    **Permissions Issues:** The Podman engine or the container itself lacks the necessary read/write permissions for the specified host directory. This is especially relevant on Linux systems with strict permissions or SELinux/AppArmor policies.
+    **SELinux (Red Hat Enterprise Linux):** On RHEL-based systems with SELinux enabled, a mounted directory might have an incorrect security context, preventing the container from accessing it.
+*   **Troubleshooting Steps:**
+    1.  **Verify Host Path Existence:** Double-check the host path in your volume mount configuration to ensure it exists and is spelled correctly.
+    2.  **Check Host Permissions:** Ensure the user running Podman Desktop (or the Podman engine process) has read and write permissions to the host directory you are trying to mount.
+    3.  **SELinux Context (on RHEL/CentOS):**
+        *   If you suspect SELinux, try temporarily setting the security context for the host directory: `sudo chcon -Rt container_file_t /path/to/host/directory`.
+        *   Alternatively, you can add `relabeling` options to your volume mount in the `podman run` command:
+            *   `:z`: Share the volume with all containers, giving them full read/write access.
+            *   `:Z`: Give the container a private, unshared label, allowing only that specific container access.
+            (e.g., `-v /path/to/host/directory:/container/path:Z`). Podman Desktop often handles common cases, but manual `podman run` might need these.
+
+.Application-Specific Errors (Entrypoint, Command, Configuration)
+*   **Detailed Technical Explanation:**
+    Sometimes, the container itself starts, but the application *inside* the container immediately crashes or exits. This indicates an issue with the application's startup requirements:
+    **Incorrect Entrypoint/Command:** The container might be invoked with an incorrect command or arguments that the application doesn't understand.
+    **Missing Configuration:** The application expects specific configuration files or environment variables that are not provided or are incorrectly set.
+    **Internal Application Logic:** A bug or misconfiguration within the application itself causing it to fail on startup.
+*   **Troubleshooting Steps:**
+    1.  **Check Container Logs (Primary Tool):** The `Logs` tab in Podman Desktop for a running or recently exited container is the first place to look. Application error messages are typically redirected here.
+    2.  **Inspect Image Defaults:** Use `podman inspect <image-name>` from the terminal to view the image's default `Entrypoint` and `Cmd`. This helps understand how the application is expected to start.
+    3.  **Run Interactively:** Try running the container interactively to debug manually: `podman run -it <image-name> /bin/bash` (or `/bin/sh` if Bash isn't available). This allows you to explore the container's filesystem, test commands, and examine configuration files directly.
+    4.  **Review Image Documentation:** Consult the official documentation for the container image you are using. It will often detail required environment variables, configuration paths, or expected commands.
+
+.Container Exit Codes
+*   **Detailed Technical Explanation:**
+    When a container stops, it returns an exit code, which is a numerical value indicating the result of its main process.
+    *   `0`: The command executed successfully without errors.
+    *   Non-zero values: Indicate an error or abnormal termination. Common non-zero codes include:
+        *   `1`: Generic error, often from `exec` or similar utility failures within the container.
+        *   `125`: The `podman run` command itself failed (e.g., `podman` binary issues).
+        *   `126`: Command invoked cannot execute (permissions problem or not an executable).
+        *   `127`: Command not found (e.g., typo in entrypoint/command).
+        *   `137`: Container received a `SIGKILL` signal (often due to OOMKilled or explicit `podman kill`).
+        *   `143`: Container received a `SIGTERM` signal (graceful shutdown, often by user or orchestrator).
+    While exit codes provide a quick hint, they don't give the full story.
+*   **Troubleshooting Steps:**
+    1.  **Always Consult Logs:** An exit code like `1` or `127` provides minimal information. The container's `Logs` are essential for understanding *why* the process exited with that code.
+    2.  **Interpret Code:** Use the exit code in conjunction with logs to narrow down the problem (e.g., `137` points strongly to resource constraints).
+
+== Utilizing Logs for Problem Identification
+
+Logs are your most powerful diagnostic tool for both image pull and container run errors. They provide a chronological record of events, errors, and messages from Podman Desktop, the Podman machine, and individual containers.
+
+*   **Podman Desktop Application Logs:**
+    *   **Purpose:** These logs capture events and errors related to Podman Desktop's UI, its interaction with the Podman machine, and integration issues (e.g., WSL setup problems).
+    *   **Access:** In Podman Desktop, navigate to `Help` -> `Troubleshoot` -> `Open Log Directory`. Reviewing these can help identify issues with the desktop application itself.
+*   **Podman Machine Logs:**
+    *   **Purpose:** The Podman machine is a lightweight virtual machine. Its logs contain information about its startup, network configuration, and issues with the underlying Podman engine.
+    *   **Access:** The location varies by OS and hypervisor.
+        *   **WSL (Windows):** `wsl.exe -d podman-machine-default -- user root journalctl -f` (from PowerShell/CMD).
+        *   **macOS/Linux:** You can often SSH into the Podman machine (`podman machine ssh`) and then use `journalctl -xe` to view system logs within the VM.
+*   **Container Logs:**
+    *   **Purpose:** These logs capture the standard output (`stdout`) and standard error (`stderr`) streams of the processes running inside your containers. They are crucial for debugging application-level errors.
+    *   **Access in Podman Desktop:**
+        1.  Navigate to the `Containers` view.
+        2.  Select the container you wish to inspect (even if it has exited).
+        3.  Click on the `Logs` tab in the detail panel below.
+    *   **Access via CLI:** Open a terminal and use `podman logs <container-name-or-id>`. Use `-f` to follow logs in real-time.
+
+*   **Hands-on Activity: Diagnosing with Container Logs**
+    **Objective:** Practice using container logs to understand why an application fails or behaves in a certain way.
+    **Steps:**
+    1.  **Pull an Image:**
+        *   In Podman Desktop, navigate to `Images`.
+        *   Click `Pull Image` and pull `docker.io/hello-world`.
+    2.  **Run and Inspect Logs (Success Example):**
+        *   Run the `hello-world` image (it will print a message and exit).
+        *   Go to the `Containers` view. You'll see `hello-world` in an "Exited (0)" state.
+        *   Click on the `hello-world` container, then select the `Logs` tab.
+        *   **Observe:** You will see the "Hello from Docker!" message and explanation, demonstrating successful execution.
+    3.  **Simulate an Application Error:**
+        *   Pull the `alpine/git` image.
+        *   Run the `alpine/git` image. By default, this image's entrypoint often expects an argument and might not run a long-lived process without one.
+        *   Go to the `Containers` view. You'll see the `alpine/git` container in an "Exited (non-zero)" state.
+        *   Click on the `alpine/git` container, then select the `Logs` tab.
+    4.  **Diagnose Error with Logs:**
+        *   **Observe:** You will likely see an error message from `git` itself, such as `git: 'help' is not a git command.` or similar. This clearly indicates that the application (git) was executed but didn't receive valid arguments, causing it to exit with an error. This demonstrates how logs provide specific application context for troubleshooting.

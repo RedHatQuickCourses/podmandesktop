@@ -1,0 +1,231 @@
+#  WSL 2 integration and configuration
+
+= WSL 2 Integration and Configuration for Podman Desktop
+
+This section details the critical role of Windows Subsystem for Linux 2 (WSL 2) in running Red Hat Build of Podman Desktop on Windows. We will cover why WSL 2 is essential, its underlying architecture, and how to prepare your Windows environment for seamless integration.
+
+== Understanding WSL 2 and its Importance
+
+Windows Subsystem for Linux (WSL) allows developers to run a Linux environment directly on Windows, without the overhead of a traditional virtual machine or dual-boot setup. WSL 2 represents a significant architectural improvement over its predecessor, WSL 1.
+
+=== Why WSL 2 is Essential for Podman Desktop
+
+Podman Desktop leverages WSL 2 to provide a robust and performant Linux environment where the Podman engine and its associated container images can run natively. Here's why WSL 2 is crucial:
+
+*   **Full Linux Kernel:** WSL 2 includes a real Linux kernel, providing full system call compatibility. This is vital for containerization technologies like Podman, which rely on specific kernel features (e.g., cgroups, namespaces) that WSL 1 could not fully emulate.
+*   **Improved File System Performance:** For Linux-based file systems, WSL 2 offers significantly faster I/O performance compared to WSL 1, especially when interacting with files stored within the Linux distribution itself. This directly impacts container build and runtime performance.
+*   **Networking Compatibility:** WSL 2 provides better network compatibility, allowing containers to interact with the host network in a more predictable and robust manner.
+*   **Virtual Machine Technology:** Unlike WSL 1 which used a translation layer, WSL 2 runs each Linux distribution as a lightweight utility virtual machine (VM). This VM is fully managed by Windows, consuming fewer resources than a traditional Hyper-V VM and integrating seamlessly with the Windows environment.
+*   **Podman Machine Host:** When you create a Podman machine in Podman Desktop on Windows, it typically runs inside a dedicated minimal Linux distribution within WSL 2 (often a Fedora CoreOS variant). This provides a self-contained, isolated environment for your containers.
+
+=== WSL 1 vs. WSL 2: A Brief Comparison
+
+[cols="1,2,2", options="header"]
+|===
+|Feature|WSL 1|WSL 2
+
+|Architecture|Translation layer (no real Linux kernel)|Lightweight VM with real Linux kernel
+|Performance|Slower file I/O for Linux files|Faster file I/O for Linux files
+|System Call Compatibility|Limited, some applications not supported|Full system call compatibility
+|Networking|Network Address Translation (NAT) with limitations|Improved networking, better integration
+|Requirements|No virtualization required|Requires hardware virtualization enabled
+|Typical Use Case|Running basic Linux command-line tools|Running full-fledged Linux applications, Docker, Podman, Kubernetes
+|===
+
+[NOTE]
+For Podman Desktop on Windows, _only_ WSL 2 is supported and required due to its architectural advantages for container workloads.
+
+== Prerequisites for WSL 2
+
+Before proceeding with the installation of Podman Desktop on Windows, ensure your system meets the following prerequisites for WSL 2:
+
+*   **Operating System:** Windows 10 version 1903 or higher, with Build 18362 or higher. For ARM64 systems, Windows 10 version 2004 or higher, with Build 19041 or higher. You can check your Windows version by typing `winver` in the Run dialog (`Win + R`).
+*   **Hardware Virtualization:** Your computer's BIOS/UEFI must have virtualization enabled (e.g., Intel VT-x or AMD-V). This is usually found in the CPU configuration settings of your BIOS. Without this, WSL 2 cannot run.
+
+== Hands-on Activity: Configuring WSL 2
+
+This activity guides you through enabling and configuring WSL 2 on your Windows system, preparing it for Podman Desktop.
+
+=== Step 1: Enable WSL and Virtual Machine Platform Features
+
+First, you need to enable the necessary Windows features that allow WSL 2 to function.
+
+. Open PowerShell as an Administrator.
+. Run the following command to enable the "Windows Subsystem for Linux" feature:
++
+[source,powershell]
+----
+dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
+----
+. Run the following command to enable the "Virtual Machine Platform" feature, which is required by WSL 2:
++
+[source,powershell]
+----
+dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
+----
+. Restart your computer when prompted, or after enabling both features, to apply the changes.
+
+[NOTE]
+If you are running Windows 11, the `wsl --install` command (introduced later) can often handle enabling these features automatically. However, explicitly enabling them ensures readiness.
+
+=== Step 2: Update the WSL Kernel
+
+Ensure your WSL installation has the latest kernel.
+
+. Open PowerShell as an Administrator.
+. Run the following command to update the WSL kernel:
++
+[source,powershell]
+----
+wsl --update
+----
+. Allow the update process to complete. You might see a message indicating the kernel is up to date, or that it's downloading and installing a new version.
+
+=== Step 3: Set WSL 2 as the Default Version
+
+This step ensures that any new Linux distributions installed (including the one Podman Desktop will create for its machine) will use the WSL 2 architecture by default.
+
+. Open PowerShell as an Administrator.
+. Run the following command:
++
+[source,powershell]
+----
+wsl --set-default-version 2
+----
+. You should see a message confirming the operation was successful. If you encounter an error like "WSL 2 requires an update to its kernel component," ensure you completed Step 2 correctly and restarted if necessary.
+
+[TIP]
+If you already have existing WSL 1 distributions and want to convert them to WSL 2, you can do so by running `wsl --set-version <DistroName> 2`. Replace `<DistroName>` with the actual name of your distribution (e.g., `Ubuntu`).
+
+=== Step 4: Verify WSL Installation and Version
+
+Finally, verify that WSL is correctly installed and configured to use version 2.
+
+. Open PowerShell or Command Prompt.
+. Run the following command to list all installed WSL distributions and their versions:
++
+[source,powershell]
+----
+wsl --list --verbose
+----
+. The output should look similar to this (you might not have any distributions yet, which is fine for now):
++
+[source,text]
+----
+  NAME      STATE           VERSION
+* Ubuntu    Stopped         2
+----
++
+Ensure that the `VERSION` column for any listed distributions (or for future distributions) shows `2`. If you don't have any distributions, the output will simply show no running distributions, but the `wsl --set-default-version 2` command would have already set the default for new ones.
+
+[IMPORTANT]
+If you encounter issues during any of these steps, such as `Error: 0x80370102 The virtual machine could not be started because a required feature is not installed`, it typically indicates that hardware virtualization (Hyper-V or your BIOS settings for Intel VT-x/AMD-V) is not enabled or properly configured. Check your BIOS settings and ensure Hyper-V is not conflicting if you have other virtualization software.
+
+With WSL 2 successfully configured, your Windows environment is now ready for the Red Hat Build of Podman Desktop installation.#  WSL 2 integration and configuration
+
+ifndef::imagesdir[:imagesdir: ../assets/images]
+
+[[wsl2-integration-configuration]]
+= WSL 2 Integration and Configuration for Podman Desktop
+
+This section details the critical role of Windows Subsystem for Linux (WSL) 2 in running Red Hat Build of Podman Desktop on Windows. We will cover how to enable, configure, and prepare WSL 2 to ensure a smooth installation and operation of Podman Desktop.
+
+== Understanding WSL 2 for Podman Desktop
+
+The Red Hat Build of Podman Desktop leverages the power of WSL 2 to provide a robust and Linux-native environment for running container engines like Podman. While Windows itself can run some container technologies, Podman Desktop primarily relies on a Linux-based virtual machine managed by WSL 2 to host the Podman engine and associated services. This architecture offers several key benefits:
+
+*   **Linux Kernel Performance:** WSL 2 uses a true Linux kernel, offering full system call compatibility and significantly improved file system performance compared to WSL 1, which was an emulation layer. This is crucial for container workloads.
+*   **Isolation:** Each WSL 2 distribution runs in its own lightweight virtual machine, providing better isolation for container processes.
+*   **Seamless Integration:** WSL 2 integrates well with the Windows file system and network, allowing Podman Desktop to manage containers that interact with your Windows environment.
+*   **Podman Machine Host:** The Podman machine, which is a lightweight Linux VM where the Podman engine runs, is typically created within a WSL 2 distribution. This provides the necessary Linux environment for Podman to operate.
+
+Essentially, WSL 2 acts as the foundational layer on Windows, providing the Linux operating system environment required for Podman and other container tools to function optimally, bridging the gap between Windows and the Linux container world.
+
+== Preparing WSL 2 for Podman Desktop
+
+Before installing Podman Desktop, it's essential to ensure WSL 2 is properly enabled and configured on your Windows system. This involves enabling the necessary Windows features, installing a Linux distribution, and confirming that it's using WSL 2.
+
+=== Technical Explanation: WSL 2 Prerequisites
+
+To run WSL 2, your Windows system must meet certain requirements:
+
+*   **Windows Version:**
+    *   For x64 systems: Version 1903 or higher, with Build 18362 or higher.
+    *   For ARM64 systems: Version 2004 or higher, with Build 19041 or higher.
+    *   You can check your Windows version by pressing `Win + R`, typing `winver`, and pressing Enter.
+*   **Virtual Machine Platform Feature:** WSL 2 relies on Hyper-V virtualization. The "Virtual Machine Platform" optional feature must be enabled.
+*   **Windows Subsystem for Linux Feature:** The core "Windows Subsystem for Linux" feature must be enabled.
+*   **WSL 2 Linux Kernel Update:** The WSL 2 Linux kernel is distributed via Windows Update, but it sometimes requires a manual update package installation.
+
+It's highly recommended to keep your Windows operating system up-to-date to ensure you have the latest WSL features and bug fixes.
+
+=== Hands-On Activity: Configuring WSL 2
+
+This lab will guide you through the process of enabling and configuring WSL 2 on your Windows machine, preparing it for Podman Desktop installation.
+
+==== Prerequisites
+
+*   A Windows 10 (version 1903+, build 18362+) or Windows 11 machine.
+*   Administrator privileges on your Windows machine.
+*   An active internet connection to download necessary components.
+
+==== Procedure
+
+Follow these steps to enable and configure WSL 2:
+
+.  **Step 1: Enable Required Windows Features**
+    a.  Open PowerShell as an Administrator. You can do this by searching for "PowerShell" in the Start menu, right-clicking "Windows PowerShell", and selecting "Run as administrator".
+    b.  Run the following commands to enable the "Windows Subsystem for Linux" and "Virtual Machine Platform" features:
+        ```powershell
+        dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
+        dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
+        ```
+    c.  After executing these commands, you will likely be prompted to restart your computer. **Restart your computer** to apply these changes.
+
+.  **Step 2: Set WSL 2 as the Default Version**
+    a.  After your computer restarts, open PowerShell as an Administrator again.
+    b.  Run the following command to set WSL 2 as the default version for any new Linux distributions you install:
+        ```powershell
+        wsl --set-default-version 2
+        ```
+    c.  You might see a message indicating that the requested operation could not be completed because a virtualization feature is not enabled. In this case, ensure virtualization is enabled in your computer's BIOS/UEFI settings. (This is specific to your hardware and typically involves entering BIOS/UEFI during startup and looking for settings like "Intel VT-x", "AMD-V", "Virtualization Technology", or "SVM Mode".)
+
+.  **Step 3: Install a Linux Distribution**
+    a.  Open the Microsoft Store on your Windows machine.
+    b.  Search for a Linux distribution. Popular choices include:
+        *   `Ubuntu` (Recommended for general use)
+        *   `Debian`
+        *   `OpenSUSE`
+    c.  Select your preferred distribution (e.g., "Ubuntu") and click the *Get* or *Install* button.
+    d.  Once the installation is complete, click *Launch* from the Microsoft Store, or find your distribution in the Start menu and open it.
+    e.  The first time you launch a new distribution, it will take a few minutes to complete the initial setup. You will then be prompted to create a username and password for your new Linux environment. Enter these details.
+
+.  **Step 4: Update the WSL Linux Kernel (if necessary)**
+    a.  Although Windows Update typically handles this, it's good practice to ensure you have the latest WSL 2 kernel.
+    b.  Visit the official Microsoft WSL documentation page for the latest WSL 2 Linux kernel update package: link:https://learn.microsoft.com/en-us/windows/wsl/install-manual#step-4---download-the-linux-kernel-update-package[WSL Kernel Update Package].
+    c.  Download the `wsl_update_x64.msi` installer.
+    d.  Run the downloaded installer. It's a simple "next, next, finish" process.
+
+.  **Step 5: Verify WSL 2 Configuration**
+    a.  Open PowerShell or Command Prompt.
+    b.  Run the following command to list your installed WSL distributions and their versions:
+        ```powershell
+        wsl --list --verbose
+        ```
+        or its shorter alias:
+        ```powershell
+        wsl -l -v
+        ```
+    c.  You should see output similar to this:
+        ```
+          NAME            STATE           VERSION
+        * Ubuntu          Running         2
+          docker-desktop  Running         2
+        ```
+        Ensure that your installed Linux distribution (e.g., `Ubuntu`) shows `VERSION` as `2`. If it shows `1`, you can convert it by running:
+        ```powershell
+        wsl --set-version <DistributionName> 2
+        ```
+        (Replace `<DistributionName>` with the actual name, e.g., `Ubuntu`). This conversion may take some time.
+
+By successfully completing these steps, your Windows environment is now ready with a fully functional WSL 2 setup, providing the necessary Linux host for the Red Hat Build of Podman Desktop to install and operate its Podman engine.

@@ -1,22 +1,55 @@
-= An Example Quick Course
+=  Red Hat Build of Podman Desktop: Installation, Configuration, and Troubleshooting
 :navtitle: Home
 
 == Introduction
 
-Course Title: Course title FIXME
+Course Title:  Red Hat Build of Podman Desktop: Installation, Configuration, and Troubleshooting
 
 Description:
 Course description FIXME
 
 Duration: FIXME hours
 
-== Objectives
+== Topics covered in this course
 
-On completing this course, you should be able to:
 
-* Observable, measurable objective...
-* Observable, measurable objective...
-* Observable, measurable objective...
+*  Introduction to Podman Desktop
+
+*  Preparing for Installation
+
+*  Installing Podman Desktop on macOS
+
+*  Installing Podman Desktop on Windows
+
+*  Installing Podman Desktop on Red Hat Enterprise Linux
+
+*  Deploying Podman Desktop in Air-Gapped Environments
+
+*  Configuring and Customizing Podman Desktop
+
+*  Troubleshooting Podman Desktop Issues
+
+*  Hands-On Exercises
+
+*  Introduction to Podman Desktop
+
+*  Preparing for Installation
+
+*  Installing Podman Desktop on macOS
+
+*  Installing Podman Desktop on Windows
+
+*  Installing Podman Desktop on Red Hat Enterprise Linux
+
+*  Deploying Podman Desktop in Air-Gapped Environments
+
+*  Configuring and Customizing Podman Desktop
+
+*  Troubleshooting Podman Desktop Issues
+
+*  Hands-On Exercises
+
+
 
 == Prerequisites
 

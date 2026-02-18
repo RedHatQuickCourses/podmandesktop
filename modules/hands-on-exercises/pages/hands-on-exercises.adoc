@@ -1,0 +1,19 @@
+#  Hands-On Exercises
+
+=== Hands-On Exercises
+
+This section provides practical, guided exercises to reinforce learning and build proficiency with Red Hat Build of Podman Desktop. Labs cover:
+
+*   Installation on various operating systems.
+*   Managing Podman machines and container engines.
+*   Deploying and interacting with containers.
+*   Configuring private registry connections.
+*   Troubleshooting common Podman Desktop issues.#  Hands-On Exercises
+
+A section dedicated to practical application, enabling users to:
+
+* Install Podman Desktop on their chosen operating system.
+* Manage Podman machines and container engines.
+* Deploy and interact with containers.
+* Configure connections to private image registries.
+* Practice troubleshooting common Podman Desktop issues.

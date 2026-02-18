@@ -1,0 +1,353 @@
+#  Best practices for issue prevention
+
+= Best Practices for Issue Prevention
+:navtitle: Issue Prevention
+:page-aliases: troubleshooting::best-practices.adoc
+
+Proactive measures are key to maintaining a smooth and efficient container development workflow with Red Hat Build of Podman Desktop. By following these best practices, you can significantly reduce the likelihood of encountering common issues, minimize downtime, and ensure your environment remains robust and reliable.
+
+== Keep Podman Desktop and Engine Up-to-Date
+
+Keeping your Podman Desktop application and the underlying Podman engine updated is paramount for stability, security, and access to the latest features. Updates often include critical bug fixes, performance improvements, and compatibility enhancements for your operating system and container images.
+
+.Why it's important
+*   **Bug Fixes and Stability:** New releases frequently address known issues that could lead to crashes, unexpected behavior, or resource leaks.
+*   **Security Patches:** Updates include patches for newly discovered security vulnerabilities in the Podman engine or related components.
+*   **Feature Enhancements:** Gain access to new functionalities, improved user interfaces, and better integration capabilities.
+*   **Compatibility:** Ensure compatibility with the latest operating system versions, container runtimes, and image formats.
+
+.Technical Details
+Podman Desktop acts as a graphical user interface (GUI) for the Podman engine. Both components evolve independently but are designed to work together. Outdated versions might have known bugs that have already been fixed in newer releases, or they might lack compatibility with recent changes in operating systems (e.g., WSL2 updates on Windows, macOS system changes) or underlying container image specifications. Regularly updating ensures you benefit from the latest improvements in image pulling, container execution, and overall application responsiveness, while also mitigating potential security risks identified in older versions.
+
+.Hands-on Activity: Verifying and Updating Podman Desktop
+Ensure you are running the latest version of Podman Desktop to benefit from bug fixes and new features.
+
+. Open Podman Desktop.
+. Navigate to the *Settings* icon (gear icon) in the bottom-left corner.
+. In the *About* section, check your current version.
+. Podman Desktop automatically checks for updates on startup. If an update is available, a notification will appear. Follow the prompts to download and install it.
+. You can also manually check for updates:
+    *   **On macOS/Windows:** Go to `Podman Desktop > Check for Updates` in the application menu.
+    *   **On Red Hat Enterprise Linux:** Updates are typically managed via your system's package manager. For `dnf` based systems, run:
++
+[source,bash]
+----
+sudo dnf update podman-desktop
+----
+
+== Ensure Adequate System Resources
+
+Container operations can be resource-intensive. Insufficient CPU, memory, or disk space on your host machine or within the Podman machine can lead to slow performance, unresponsive applications, or outright failures when pulling images, building, or running containers.
+
+.Why it's important
+*   **Performance:** Adequate resources ensure containers run efficiently without throttling or excessive swapping.
+*   **Stability:** Prevents "out of memory" errors or applications crashing due to resource starvation.
+*   **Build Success:** Complex container builds often require significant temporary disk space and memory, especially with multi-stage builds.
+
+.Technical Details
+The Podman machine itself is a lightweight virtual machine (VM) that hosts the Podman engine and runs your containers. Its allocated resources (CPU cores, RAM, and disk size) are provisioned from your host system's resources. If the Podman machine's allocated memory is insufficient for the applications running inside your containers, or if the disk becomes full due to accumulated images and volumes, you will experience `OOM (Out Of Memory)` errors, container startup failures, or `no space left on device` messages. Similarly, the host operating system needs sufficient resources to comfortably run Podman Desktop and other applications alongside the Podman machine.
+
+.Hands-on Activity: Inspecting and Adjusting Podman Machine Resources
+Regularly review and adjust the resources allocated to your Podman machine based on your workload.
+
+. Open Podman Desktop.
+. Navigate to *Settings* -> *Resources*.
+. Select the *Podman machine* tab.
+. Review the allocated *CPU Cores*, *Memory*, and *Disk Size*.
+. Based on your typical workload (e.g., number of containers, complexity of applications), adjust these values. For development, a good starting point might be 4 CPU cores, 4-8 GB RAM, and 50-100 GB disk space.
+. Click *Apply* to save changes. Note that applying resource changes may require restarting the Podman machine. Ensure any running containers are stopped and their data saved if necessary before restarting.
+
+== Regularly Clean Up Unused Resources
+
+Over time, your local container environment can accumulate unused images, stopped containers, and dangling volumes. These "leftovers" consume valuable disk space and can sometimes lead to conflicts or confusion.
+
+.Why it's important
+*   **Disk Space Management:** Frees up significant disk space, preventing "no space left on device" errors that can halt your development workflow.
+*   **Performance:** A cleaner environment can sometimes lead to faster operations, especially when listing or searching for resources, as the Podman engine has less metadata to manage.
+*   **Clarity:** Reduces clutter in the Podman Desktop UI and CLI output, making it easier to identify active and relevant images, containers, and volumes.
+
+.Technical Details
+When you pull a new image or build a container image, various layers are downloaded and stored. If an image is updated or a container is removed, some of these layers might become "dangling" (no longer referenced by any active image or container). Similarly, volumes created for containers might persist even after the containers are removed, especially if not explicitly deleted. The `podman system prune` command is a powerful tool designed to automatically remove these unreferenced and unused resources, reclaiming valuable disk space.
+
+.Hands-on Activity: Pruning Unused Resources
+Periodically clean up your Podman environment to reclaim disk space.
+
+. Open your terminal or Podman Desktop's embedded terminal.
+. List current disk usage to see the impact of unused resources:
++
+[source,bash]
+----
+podman system df
+----
+. To remove all stopped containers, dangling images, and unused networks:
++
+[source,bash]
+----
+podman system prune
+----
+. To also remove all unused volumes (be cautious, as this will delete data not associated with running containers and cannot be easily undone):
++
+[source,bash]
+----
+podman system prune --volumes
+----
+. After running `podman system prune`, run `podman system df` again to observe the reclaimed disk space. This can often free up many gigabytes.
+
+== Verify Network Configuration
+
+Network issues are a frequent cause of problems, especially when pulling images from registries, or when containers need to communicate with external services. This includes correct proxy settings, firewall rules, and DNS resolution.
+
+.Why it's important
+*   **Image Pull Success:** Ensures Podman can reach external container registries (e.g., `registry.redhat.io`, `docker.io`) to download images.
+*   **Container Connectivity:** Allows containers to access necessary external APIs, databases, or other services required for your applications.
+*   **Service Exposure:** Ensures that services exposed by containers are reachable from your host machine or other machines on the network.
+
+.Technical Details
+If you are behind a corporate proxy, both Podman Desktop and the Podman machine must be configured with the correct proxy settings (`HTTP_PROXY`, `HTTPS_PROXY`, `NO_PROXY`). Firewalls on your host system (e.g., Windows Defender, `firewalld` on Linux, macOS firewall) must allow the necessary traffic for Podman Desktop and the Podman machine to communicate and access external networks. DNS resolution within the Podman machine is also critical for resolving registry hostnames and service endpoints. Incorrect configurations can manifest as "connection timed out," "hostname not found," or "x509: certificate signed by unknown authority" errors.
+
+.Hands-on Activity: Testing Network Connectivity and Proxy Settings
+Confirm your Podman environment can access external networks.
+
+. Open your terminal or Podman Desktop's embedded terminal.
+. If you are using a Podman machine, you might need to SSH into it first to test internal connectivity:
++
+[source,bash]
+----
+podman machine ssh
+----
+. Test basic internet connectivity from the Podman machine (or your host if not using a machine):
++
+[source,bash]
+----
+ping google.com
+curl -I https://www.google.com
+----
+. If you are behind a proxy, ensure your proxy settings are configured in Podman Desktop:
+    . Open Podman Desktop *Settings* -> *Proxy*.
+    . Configure `HTTP Proxy` and `HTTPS Proxy` environment variables. Podman Desktop applies these to the Podman machine.
+. Attempt to pull a common image from a public registry:
++
+[source,bash]
+----
+podman pull registry.access.redhat.com/ubi8/ubi-minimal:latest
+----
+. If this fails, investigate proxy settings, firewall rules, or DNS resolution on both your host and within the Podman machine.
+
+== Manage Registries and Credentials Securely
+
+Incorrectly configured registries or expired/missing credentials can prevent image pulls and pushes, leading to frustrating workflow interruptions. This is particularly crucial when working with private or secure registries.
+
+.Why it's important
+*   **Reliable Image Operations:** Ensures consistent and uninterrupted access to necessary container images from various registries (public or private).
+*   **Security:** Proper credential management prevents unauthorized access to private registries and ensures sensitive images are protected.
+*   **Compliance:** Adhering to secure practices for storing and using credentials helps maintain regulatory compliance for enterprise environments.
+
+.Technical Details
+Podman uses configuration files (primarily `auth.json` and `registries.conf`) to manage registry authentication tokens and define how registries are accessed. Issues can arise from incorrect registry URLs, expired authentication tokens, or problems with SSL/TLS certificates (e.g., self-signed certificates not trusted by the Podman machine). For air-gapped environments, ensuring the `registries.conf` is correctly configured to point to local mirrors or internal registries is paramount, along with proper certificate handling. Podman Desktop provides a user-friendly interface to manage these, but understanding the underlying mechanisms is key for troubleshooting.
+
+.Hands-on Activity: Verifying Registry Connections and Credentials
+Ensure your private registries are correctly configured and your credentials are valid.
+
+. Open Podman Desktop.
+. Navigate to *Settings* -> *Registries*.
+. Review the list of configured registries. Ensure their URLs are correct and any required authentication tokens or certificates are present and valid.
+. If you have a private registry, attempt to log in using the Podman Desktop UI or via the CLI:
++
+[source,bash]
+----
+podman login my.private.registry.com
+----
+. If the login fails, verify your username, password/token, and ensure the registry URL is correct. For self-signed certificates, ensure they are added to the Podman machine's trusted certificates (typically by copying them to `/etc/pki/ca-trust/source/anchors/` within the Podman machine and running `update-ca-trust`).
+
+== Understand and Utilize Logs
+
+Logs are your most valuable resource for diagnosing and preventing issues. Proactively checking logs for warnings or errors can help you identify and address potential problems before they escalate into critical failures.
+
+.Why it's important
+*   **Early Detection:** Spot warning signs (e.g., resource warnings, deprecation notices, network issues) before they become critical errors that impact your workflow.
+*   **Rapid Diagnosis:** Quickly pinpoint the root cause of an issue when it occurs, reducing the time spent on troubleshooting.
+*   **Troubleshooting Data:** Provide essential information when seeking support from communities, Red Hat, or other vendors.
+
+.Technical Details
+Podman Desktop itself generates logs for its UI and application-level operations, capturing events like application startup, settings changes, and interactions with the Podman engine. The underlying Podman engine (either local or within the Podman machine) generates more detailed logs for container lifecycle events, image pulls, network activities, and system errors. Additionally, each container typically has its own logs (`stdout`/`stderr`), which provide insights into application-level issues *within* the container. Understanding where to find these different log sources and how to interpret their messages is a fundamental skill for effective issue prevention and resolution.
+
+.Hands-on Activity: Locating and Reviewing Podman Desktop Logs
+Familiarize yourself with where Podman Desktop stores its logs and how to access them.
+
+. To access Podman Desktop's application logs directly from the application:
+    . Open Podman Desktop.
+    . Navigate to *Settings* -> *About*.
+    . Click the *Open Logs Directory* button. This will open the file explorer to the location of the Podman Desktop logs.
+. Alternatively, you can find the logs at these common operating system-specific locations:
+    *   **macOS:** `~/Library/Logs/Podman Desktop`
+    *   **Windows:** `%APPDATA%\Podman Desktop\logs` (e.g., `C:\Users\<username>\AppData\Roaming\Podman Desktop\logs`)
+    *   **Red Hat Enterprise Linux:** `~/.config/Podman Desktop/logs` or `/var/log/podman-desktop` (depending on installation method and user context).
+. For Podman machine logs (if you are using a Podman machine), you would typically SSH into the machine (`podman machine ssh`) and check system logs using `journalctl` (e.g., `journalctl -u podman.service`).
+. For individual container logs, use the `podman logs <container_name_or_id>` command in your terminal.
+
+By consistently applying these best practices, you can create a more resilient and manageable Podman Desktop environment, allowing you to focus more on development and less on troubleshooting.#  Best practices for issue prevention
+
+= Best practices for issue prevention
+
+This section outlines best practices to minimize common issues encountered with Red Hat Build of Podman Desktop. By proactively implementing these strategies, you can maintain a stable, efficient, and reliable container development environment.
+
+== Keep Podman Desktop and Engine Updated
+
+Regularly updating your Podman Desktop application and the underlying Podman engine (including the Podman machine where applicable) is crucial for issue prevention. Updates often include bug fixes, performance improvements, security patches, and compatibility enhancements with newer operating systems or container technologies. Running outdated versions can lead to unexpected behavior, security vulnerabilities, and compatibility issues with new container images or features.
+
+*   **Bug Fixes**: Resolve known issues that might be causing instability or incorrect behavior.
+*   **Security Patches**: Protect against newly discovered vulnerabilities that could compromise your environment.
+*   **Performance Improvements**: Enhance the speed and efficiency of container operations.
+*   **New Features & Compatibility**: Gain access to new functionalities and ensure compatibility with the latest container runtimes and specifications.
+
+=== Hands-on Activity: Checking for Updates
+
+It's a good practice to periodically check for available updates for both Podman Desktop and your Podman engine.
+
+.Procedure
+. **Check Podman Desktop Updates**:
+    a. Open Red Hat Build of Podman Desktop.
+    b. Navigate to the *Settings* (gear icon) in the left sidebar.
+    c. Go to the *About* section.
+    d. Look for the "Check for updates" option or an indicator of your current version. If an update is available, you'll typically see a notification or an option to download and install it.
+. **Check Podman Engine Version (via CLI)**:
+    a. Open your terminal or command prompt.
+    b. Run the following command to check the Podman engine version:
+        ```bash
+        podman --version
+        ```
+    c. Compare this version with the latest stable release available on the official Podman website or documentation. For Podman machine, you can also run:
+        ```bash
+        podman machine list
+        podman machine inspect <machine-name> | grep -i version
+        ```
+    d. If an update is needed for the Podman engine, Podman Desktop will often prompt you, or you might need to update your operating system packages (`dnf update podman` on RHEL, `brew upgrade podman` on macOS, or `podman machine init/update` for the machine).
+
+== Allocate Adequate Resources
+
+Insufficient system resources (CPU, memory, disk space) are a common cause of container failures, slow performance, and application crashes within Podman Desktop. Podman Desktop and its underlying Podman machine (especially on Windows via WSL2 or macOS) require dedicated resources to run efficiently.
+
+*   **CPU**: Containers are CPU-intensive operations. Insufficient CPU can lead to slow build times, unresponsive applications, and timeouts.
+*   **Memory (RAM)**: Each running container consumes memory. If the Podman machine or your host system doesn't have enough RAM, applications will swap to disk, leading to severe performance degradation or out-of-memory errors.
+*   **Disk Space**: Container images, volumes, and temporary files can consume significant disk space. Running out of disk space can prevent new containers from starting, images from being pulled, or even corrupt existing data.
+
+=== Hands-on Activity: Verifying Podman Machine Resource Settings
+
+Ensure your Podman machine has sufficient resources allocated.
+
+.Procedure
+. **Open Podman Desktop Settings**:
+    a. Open Red Hat Build of Podman Desktop.
+    b. Navigate to *Settings* (gear icon) in the left sidebar.
+    c. Go to *Container Engine*.
+. **Adjust Podman Machine Resources**:
+    a. Locate the section for your Podman machine (e.g., `podman-machine-default`).
+    b. Review the allocated *CPU*, *Memory*, and *Disk Size*.
+    c. Adjust these values based on your host system's capabilities and the demands of your container workloads. As a general guideline, allocate at least 2-4 CPU cores, 4-8 GB of RAM, and 50-100 GB of disk space for typical development work. For heavy workloads, these values may need to be higher.
+    d. Click *Apply changes* and restart the Podman machine if prompted.
+
+.Verification
+. After adjusting resources, start a few containers that you typically use.
+. Monitor your host system's resource usage (e.g., Task Manager on Windows, Activity Monitor on macOS, `top`/`htop` on Linux) to ensure that the Podman machine and containers are running without excessive resource contention.
+
+== Understand Your Environment and Configurations
+
+Problems often arise from conflicts or misconfigurations within your operating system or network environment. Being aware of these external factors and how they interact with Podman Desktop can prevent many headaches.
+
+*   **Firewall Rules**: Firewalls can block network access required by Podman Desktop or containers. Ensure necessary ports are open.
+*   **Proxy Settings**: If you're in an environment that uses a proxy server, Podman Desktop and the Podman engine must be correctly configured to use it for image pulls and external network access.
+*   **WSL2 Configuration (Windows)**: For Windows users, WSL2 is integral. Ensure WSL2 is healthy, has adequate resources, and is correctly integrated. Issues with WSL2 networking or disk can directly impact Podman Desktop.
+*   **Storage Drivers**: Understand the storage driver used by Podman (e.g., `overlayfs`) and ensure the underlying filesystem is compatible and has sufficient inodes.
+
+=== Hands-on Activity: Reviewing Network and Proxy Settings
+
+If you operate in a network environment with strict rules or proxies, verifying these settings is crucial.
+
+.Procedure
+. **Check Podman Desktop Network Settings**:
+    a. Open Red Hat Build of Podman Desktop.
+    b. Navigate to *Settings* > *Proxy*.
+    c. If your environment requires a proxy, ensure the "Enable HTTP/HTTPS proxy" option is checked and the correct proxy host and port are configured. You might also need to add `no_proxy` entries for internal registries or services.
+. **Verify System-Level Proxy (if applicable)**:
+    a. Consult your operating system's network settings for system-wide proxy configurations.
+    b. Ensure that if a system proxy is used, Podman Desktop is either configured to inherit it or has its own explicit settings that match.
+. **Review Firewall (Conceptual)**:
+    a. Check your operating system's firewall settings (e.g., Windows Defender Firewall, `firewalld` on Linux, `pf` on macOS or third-party firewalls).
+    b. Ensure that `podman` and `podman-desktop` related processes are allowed network access, especially on ports needed for communication (e.g., typically `2375` for `podman-machine` or a random high port for local access).
+
+== Regularly Review Logs
+
+Logs are your first line of defense in identifying potential issues before they escalate. Podman Desktop and the Podman engine generate logs that can provide insights into what's happening internally, even if no explicit error message is displayed. Proactively reviewing these logs can help spot warnings, resource exhaustion signs, or repeated minor errors that indicate an underlying problem.
+
+*   **Podman Desktop Logs**: Application-specific logs for the UI and its interactions.
+*   **Podman Engine Logs**: Logs related to container creation, runtime, networking, and image management. On Podman machines, these are typically within the VM.
+
+=== Hands-on Activity: Locating and Reviewing Logs
+
+Knowing where to find logs and how to interpret them is a valuable skill for prevention.
+
+.Procedure
+. **Access Podman Desktop Logs**:
+    a. Open Red Hat Build of Podman Desktop.
+    b. Navigate to *Settings* (gear icon) > *Troubleshooting*.
+    c. Look for the "Diagnostic logs" or "Log files" section. You can often export or view these logs directly from here.
+    d. Review the recent log entries for any `WARN` or `ERROR` messages.
+. **Access Podman Machine Logs (Linux/macOS)**:
+    a. Open your terminal.
+    b. If your Podman engine runs directly on the host (Linux), system logs are often found via `journalctl`. For Podman machines, you usually SSH into the machine first.
+    c. To SSH into your Podman machine:
+        ```bash
+        podman machine ssh
+        ```
+    d. Once inside the machine, you can often view relevant service logs using `journalctl`:
+        ```bash
+        journalctl -u podman.service
+        journalctl -u docker.service  # If you are using docker.service emulation
+        ```
+    e. Look for any errors or repeated warnings that might indicate problems with the Podman machine itself, its storage, or networking.
+. **Access Podman Machine Logs (Windows via WSL2)**:
+    a. Open a PowerShell or Command Prompt.
+    b. Access your WSL2 distribution:
+        ```bash
+        wsl -d <your-podman-machine-distro>
+        ```
+        (You might need to find the specific WSL distro name first, `wsl -l -v`).
+    c. Once inside the WSL environment, proceed with `journalctl` commands as described for Linux/macOS.
+
+.Interpretation Tip
+*   Look for recurring patterns of errors.
+*   Note timestamps to correlate issues with actions you performed.
+*   Search for specific error messages online if they are not immediately clear.
+
+== Clean Up Unused Resources
+
+Over time, you can accumulate many unused container images, stopped containers, and dangling volumes. These can consume significant disk space and sometimes lead to unexpected conflicts or performance issues. Regularly cleaning up these resources helps maintain a lean and efficient environment.
+
+*   **Dangling Images**: Images that are not tagged and not used by any container.
+*   **Stopped Containers**: Containers that are no longer running but still consume disk space for their filesystem layers and logs.
+*   **Unused Volumes**: Volumes that are not attached to any container.
+
+=== Hands-on Activity: Pruning Unused Resources
+
+Use `podman system prune` to reclaim disk space and remove unused objects.
+
+.Procedure
+. **Open Terminal**:
+    a. Open your terminal or command prompt.
+    b. Ensure you are connected to the correct Podman engine if you have multiple (e.g., local or a remote machine).
+. **Prune System Resources**:
+    a. To remove all stopped containers, dangling images, and unused networks, run:
+        ```bash
+        podman system prune
+        ```
+        This command will prompt you for confirmation before proceeding.
+    b. If you want to also remove all unused volumes, including anonymous volumes:
+        ```bash
+        podman system prune --volumes
+        ```
+        *Caution*: This will remove all volumes not associated with a running container. Ensure you don't have important data in unattached volumes you wish to keep.
+. **Review Pruning Results**:
+    a. The command will output how much disk space was reclaimed.
+    b. Regularly running this command can prevent your disk from filling up and improve general system responsiveness.
+
+By consistently applying these best practices, you can significantly reduce the frequency and severity of issues encountered with Red Hat Build of Podman Desktop, allowing you to focus more on development and less on troubleshooting.

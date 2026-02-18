@@ -1,10 +1,26 @@
-name: REPLACEREPONAME
-title: FIXME Course Title
-version: 1
+name: podmandesktop
+title:  Red Hat Build of Podman Desktop: Installation, Configuration, and Troubleshooting
+version: 1.0.0
 nav:
 - modules/ROOT/nav.adoc
 - modules/LABENV/nav.adoc
-- modules/chapter1/nav.adoc
-- modules/chapter2/nav.adoc
-- modules/chapter3/nav.adoc
+
+- modules/introduction-to-podman-desktop/nav.adoc
+
+- modules/preparing-for-installation/nav.adoc
+
+- modules/installing-podman-desktop-on-macos/nav.adoc
+
+- modules/installing-podman-desktop-on-windows/nav.adoc
+
+- modules/installing-podman-desktop-on-red-hat-enterprise-linux/nav.adoc
+
+- modules/deploying-podman-desktop-in-air-gapped-environments/nav.adoc
+
+- modules/configuring-and-customizing-podman-desktop/nav.adoc
+
+- modules/troubleshooting-podman-desktop-issues/nav.adoc
+
+- modules/hands-on-exercises/nav.adoc
+
 - modules/appendix/nav.adoc

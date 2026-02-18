@@ -1,0 +1,303 @@
+#  Gathering necessary installation artifacts
+
+[[gathering-necessary-installation-artifacts]]
+=== Gathering Necessary Installation Artifacts for Air-Gapped Environments
+
+In air-gapped environments, where direct internet access is restricted or non-existent, careful preparation is paramount for successful software deployment. This section details the process of identifying and collecting all essential installation artifacts from an internet-connected system before transferring them to your isolated network.
+
+The goal is to ensure that every dependency, installer, and required component is available offline, preventing deployment failures due to missing resources and enabling immediate productivity with Red Hat Build of Podman Desktop.
+
+==== Identifying Core Artifacts
+
+Before initiating the collection process, it's crucial to understand the key components required for a complete Podman Desktop installation and initial operation in an air-gapped setting. These typically include:
+
+*   **Podman Desktop Installer:** The primary application installer for your target operating system.
+*   **Podman Engine and Dependencies (for Linux):** The underlying container engine (`podman`) and any specific libraries it requires, particularly for Red Hat Enterprise Linux (RHEL) or Fedora. For macOS and Windows, the Podman engine components are generally bundled or managed by the Podman Desktop installer itself, though a Podman Machine (a lightweight Linux VM) is still utilized.
+*   **Windows Subsystem for Linux (WSL 2) Components (for Windows deployments):** The WSL 2 Linux kernel update package, which is a critical prerequisite for the Podman Machine on Windows.
+*   **Container Images:** Any base images or application images you intend to use immediately after installation to ensure that development or operational tasks can begin without needing external connections.
+*   **Configuration Files (Optional):** If connecting to internal air-gapped registries or services, specific configuration files (e.g., custom certificates, proxy settings) might be needed.
+
+==== Detailed Artifact Collection Procedure
+
+This procedure assumes you are performing these steps on an *internet-connected machine* that can access Red Hat and other necessary public repositories.
+
+===== 1. Podman Desktop Installer
+
+The Podman Desktop installer is specific to your target operating system.
+
+. **Action:** Navigate to the official Red Hat Build of Podman Desktop download page or a trusted Red Hat mirror.
+. **Instruction:** Download the appropriate installer for your target air-gapped system's operating system:
+    *   For **Windows**: Download the `.exe` installer (e.g., `podman-desktop-*-setup.exe`).
+    *   For **macOS**: Download the `.dmg` installer (e.g., `podman-desktop-*-mac.dmg`).
+. **For RHEL/Fedora (Air-Gapped):**
+    *   On an internet-connected RHEL/Fedora machine, use the `dnf download` command to fetch the RPM packages for Podman Desktop without installing them. This is necessary because the air-gapped system cannot access online repositories to resolve installation dependencies.
+        ```bash
+        sudo dnf download podman-desktop --destdir=/tmp/podman-desktop-rpms
+        ```
+    *   This command downloads the `podman-desktop` RPM and its immediate dependencies into the specified directory. For truly isolated scenarios, you may need to recursively check for deeper dependencies to ensure nothing is missed.
+
+===== 2. Podman Engine and Related Tools (for RHEL/Air-Gapped Linux)
+
+For Red Hat Enterprise Linux and similar distributions, the Podman engine (`podman`) is installed as a separate package. For air-gapped environments, you must collect these RPMs and their critical dependencies.
+
+. **Action:** Gather the `podman` package and its commonly associated tools and critical dependencies.
+. **Instruction:** On an internet-connected RHEL/Fedora machine, download the `podman` RPMs and other related tools that are frequently used with Podman for building, running, and managing containers.
+    ```bash
+    sudo dnf download podman buildah skopeo containers-common netavark aardvark-dns --destdir=/tmp/podman-rpms
+    ```
+    *   *Note:* This command attempts to download a comprehensive set of common Podman-related packages. For maximum assurance in a strictly air-gapped setup, you may need to use `repoquery --requires --resolve <package-name>` on critical packages (e.g., `podman`) to ensure *all* recursive dependencies are present in your collected `rhel-rpms` directory. This is crucial for avoiding runtime issues in an offline environment.
+
+===== 3. Windows Subsystem for Linux (WSL 2) Components (for Windows Air-Gapped)
+
+For air-gapped Windows installations, WSL 2 is a critical prerequisite for Podman Machine, which Podman Desktop uses to host the Linux-based Podman engine. The core component required is the WSL 2 Linux kernel update package.
+
+. **Action:** Download the WSL 2 Linux kernel update package.
+. **Instruction:** Visit the official Microsoft WSL documentation page (e.g., `https://learn.microsoft.com/en-us/windows/wsl/install-manual#step-4---download-the-linux-kernel-update-package`) and locate the link for the latest "WSL2 Linux kernel update package for x64 machines." This is typically an `.msi` installer.
+. **Example Download (URL may vary, always check official sources):**
+    `https://wslstore.blob.core.windows.net/wsl-public/wsl_update_x64.msi`
+. **Optional (WSL Distribution):** While Podman Desktop's Podman Machine creates its own minimal operating system within WSL 2, if the air-gapped Windows machine does not have *any* WSL distribution installed, you might consider pre-downloading a common distribution (e.g., Ubuntu from the Microsoft Store) to use as a base for `wsl --import`. However, the kernel update package remains the absolute minimum required for Podman Desktop to function.
+
+===== 4. Container Images
+
+To make Podman Desktop useful immediately in an air-gapped environment, you'll need to pre-load container images that your team will use. This is a critical step to avoid issues when trying to pull images from an unavailable internet registry.
+
+. **Action:** Pull desired container images from public registries and save them as tar archives.
+. **Instruction:** On your internet-connected machine, use the `podman pull` command to download the image, and then `podman save` to export it to a file.
+. **Example:**
+    ```bash
+    podman pull registry.access.redhat.com/ubi8/ubi:latest
+    podman save -o ubi8-latest.tar registry.access.redhat.com/ubi8/ubi:latest
+
+    podman pull docker.io/library/nginx:latest
+    podman save -o nginx-latest.tar docker.io/library/nginx:latest
+    ```
+. **Considerations for Image Collection:**
+    *   **Identify all necessary images:** Compile a comprehensive list of all base images, application images, and any helper images your development or deployment workflow will require in the air-gapped environment.
+    *   **Version control:** Be precise with image tags (e.g., `:latest`, `:8.9`, `:1.23`) to ensure you collect the exact versions needed.
+    *   **Size management:** Be mindful of image sizes. Large collections of images can significantly increase transfer time and storage requirements. Consider using `gzip` or `xz` to compress the `.tar` files.
+    *   **Automation:** For managing a large number of images, consider creating a script to automate the `podman pull` and `podman save` process. This script can then be version-controlled, providing a repeatable and auditable method for artifact collection.
+
+===== 5. Other Potential Artifacts (Advanced Considerations)
+
+Depending on the specifics of your air-gapped environment and intended use, you might also need to collect additional items:
+
+*   **Custom Certificates:** If your air-gapped environment uses a private Certificate Authority (CA) for internal container registries or other services, you must collect and transfer these CA certificates for proper trust configuration within Podman Desktop and the Podman engine.
+*   **Proxy Configuration Snippets:** If network access *within* the air-gapped network (e.g., to an internal registry or other internal services) requires a proxy, gather the necessary environment variable settings or configuration files. These will be needed during post-installation configuration.
+*   **Firewall/Antivirus Exclusions:** Documentation or configuration for any required exclusions for Podman, WSL, or Podman Desktop if your air-gapped network has stringent security software. Proactive configuration of these exclusions helps prevent operational issues and performance degradation.
+
+==== Lab: Collecting Podman Desktop and Dependency Artifacts for Air-Gapped Deployment
+
+This hands-on lab guides you through collecting the essential artifacts on an internet-connected system, preparing them for secure transfer to an air-gapped environment.
+
+[NOTE]
+====
+This lab requires an internet-connected machine with administrative privileges and `podman` installed (or Docker, if preferred for `podman save`/`docker save` operations). Ensure you have sufficient disk space (several gigabytes are typically recommended) for all downloads.
+====
+
+. **Prerequisites:**
+    *   An internet-connected machine (Windows, macOS, or RHEL/Fedora).
+    *   `podman` or `docker` installed on the machine for image management.
+    *   Sufficient disk space (several GBs typically) to store downloaded installers and container images.
+
+. **Step 1: Create a Collection Directory**
+    Create a dedicated directory to store all your collected artifacts. This makes organization and subsequent transfer much easier.
+    ```bash
+    mkdir podman-desktop-airgap-artifacts
+    cd podman-desktop-airgap-artifacts
+    ```
+
+. **Step 2: Download Podman Desktop Installer**
+    Download the Podman Desktop installer for your target air-gapped OS from a trusted source.
+
+    *   **For Windows Target:**
+        Navigate to `https://podman-desktop.io/downloads` (or Red Hat's official download page) and download the latest `Podman Desktop installer.exe`.
+        Once downloaded, move the `Podman Desktop-*-setup.exe` file into your `podman-desktop-airgap-artifacts` directory.
+    *   **For macOS Target:**
+        Navigate to `https://podman-desktop.io/downloads` and download the latest `Podman Desktop installer.dmg`.
+        Once downloaded, move the `Podman Desktop-*-mac.dmg` file into your `podman-desktop-airgap-artifacts` directory.
+    *   **For RHEL/Fedora Target (Download RPMs):**
+        Create a subdirectory for RPMs and download the `podman-desktop` package.
+        ```bash
+        mkdir rhel-rpms
+        sudo dnf download podman-desktop --destdir=$(pwd)/rhel-rpms
+        ```
+        This will place the Podman Desktop RPMs into the `rhel-rpms` subdirectory within your collection directory.
+
+. **Step 3: Collect Podman Engine and Related Tool RPMs (for RHEL/Air-Gapped Linux)**
+    If your air-gapped target is RHEL/Fedora and the `podman` engine needs to be installed, collect its RPMs and common dependencies to ensure a complete offline installation.
+    ```bash
+    sudo dnf download podman buildah skopeo containers-common netavark aardvark-dns --destdir=$(pwd)/rhel-rpms
+    ```
+    *   *Note:* As mentioned previously, for a strictly air-gapped setup, you may need to perform a deeper dependency analysis using tools like `repoquery` to ensure *all* recursive dependencies are present in your `rhel-rpms` directory. This step is critical for a robust offline environment.
+
+. **Step 4: Download WSL 2 Kernel Update (for Windows Air-Gapped)**
+    If your target is Windows and WSL 2 is not already installed, download the kernel update package.
+    Navigate to `https://learn.microsoft.com/en-us/windows/wsl/install-manual#step-4---download-the-linux-kernel-update-package` and download `wsl_update_x64.msi`.
+    Move it to your `podman-desktop-airgap-artifacts` directory.
+
+. **Step 5: Save Essential Container Images**
+    Choose a few common base images or application images that you'll need to use immediately in the air-gapped environment. This is crucial for getting started quickly.
+
+    ```bash
+    # Example: Red Hat UBI 8 Minimal and Nginx
+    podman pull registry.access.redhat.com/ubi8/ubi-minimal:latest
+    podman save -o ubi8-minimal-latest.tar registry.access.redhat.com/ubi8/ubi-minimal:latest
+
+    podman pull docker.io/library/nginx:latest
+    podman save -o nginx-latest.tar docker.io/library/nginx:latest
+
+    # Optional: Compress the tar files to save space and potentially speed up transfer
+    gzip ubi8-minimal-latest.tar
+    gzip nginx-latest.tar
+    ```
+    *   Ensure the images you save are directly relevant to your air-gapped use case and include all necessary versions. Consider the specific applications and services that will be deployed.
+
+. **Step 6: Verify Collected Artifacts**
+    List the contents of your `podman-desktop-airgap-artifacts` directory and any subdirectories to ensure all necessary files are present and correctly organized.
+    ```bash
+    ls -lh podman-desktop-airgap-artifacts
+    ls -lh podman-desktop-airgap-artifacts/rhel-rpms # If you collected RHEL RPMs
+    ```
+    You should see your platform-specific installer (e.g., `.exe`, `.dmg`), potentially the `rhel-rpms` directory, `wsl_update_x64.msi` (if targeting Windows), and your `.tar` or `.tar.gz` image files.
+
+. **Step 7: Transfer Artifacts**
+    Once all artifacts are collected and verified, transfer the entire `podman-desktop-airgap-artifacts` directory (or its contents) to your air-gapped environment. Use a secure and appropriate method, such as an external hard drive, USB stick, or an internal secure file transfer system that bridges the networks.
+
+This completes the artifact gathering process. With these files in hand, the next phase in an air-gapped deployment involves the actual offline installation and subsequent configuration using these collected resources.#  Gathering necessary installation artifacts
+
+= Gathering Necessary Installation Artifacts
+
+This section details the critical process of identifying and acquiring all necessary components for deploying Red Hat Build of Podman Desktop in an air-gapped environment. In such scenarios, direct internet access from the target machines is restricted or entirely unavailable, necessitating a meticulous preparation phase to ensure all dependencies and installation files are available offline.
+
+== Understanding Air-Gapped Artifact Requirements
+
+Deploying any software in an air-gapped environment presents unique challenges, primarily the inability to download packages, updates, or container images on demand. For Podman Desktop, this means every single piece of its operational stack, from the installer itself to the underlying container engine dependencies and any container images you intend to use, must be pre-staged.
+
+The core principle here is *proactive collection*: on a machine with internet access, you must anticipate every file, package, and image that the air-gapped environment will require and transfer them securely. This includes:
+
+*   **Podman Desktop Installer:** The main application package for the target operating system.
+*   **Podman Engine Dependencies:** While Podman Desktop often bundles a basic Podman engine, specific system-level dependencies for the Podman machine (e.g., WSL2 for Windows, QEMU for macOS/Linux virtual machines) or certain Linux distributions might need to be sourced separately.
+*   **Container Images:** Any container images you plan to use with Podman Desktop must be pre-pulled and saved. In an air-gapped setup, there's no direct access to public registries like Quay.io or Docker Hub.
+*   **Registry Configuration and Certificates:** If you intend to use an internal, air-gapped container registry, you'll need its configuration details and any necessary TLS certificates to establish trust.
+
+== Identifying Core Installation Artifacts
+
+Before proceeding with the hands-on activity, it's crucial to understand which artifacts are required based on your target air-gapped environment's operating system.
+
+=== 1. Podman Desktop Installers
+
+The Podman Desktop application itself is distributed as an operating system-specific package. You will need to download the correct version from an internet-connected machine.
+
+*   **For Windows:** A `.msi` installer package.
+*   **For macOS:** A `.dmg` disk image file.
+*   **For Red Hat Enterprise Linux (RHEL) / Fedora / CentOS Stream:** Typically, an `.rpm` package or you can get the source if building offline. While `dnf` is the standard installer, for air-gapped environments, you will need the `.rpm` file and its dependencies.
+
+=== 2. Podman Engine and Machine Dependencies
+
+Podman Desktop relies on the Podman engine to manage containers. The Podman engine, in turn, often requires specific system components, particularly when running a Podman machine.
+
+*   **For Windows:**
+    *   **WSL 2 (Windows Subsystem for Linux 2):** This is a critical dependency for Podman Desktop on Windows. You'll need the WSL2 kernel update package (`.msi`) if it's not already installed or requires an update on the target air-gapped machine. You may also need the base WSL install command if WSL is not enabled at all.
+*   **For macOS and Linux (when using a Podman machine VM):**
+    *   **QEMU:** Podman machine utilizes QEMU for virtualization. While often pre-installed or easily installable on internet-connected systems, for air-gapped environments, you might need to source QEMU packages or binaries if they are not included or available in the base OS. Specific `qemu` packages (e.g., `qemu-system-x86_64` for Intel/AMD architectures) might be required.
+*   **For Linux (direct Podman engine, no Podman machine VM):**
+    *   If you're installing Podman Desktop on Linux and planning to use the host's Podman engine directly (without a separate Podman machine VM), you'll need the Podman package itself (`podman.x86_64.rpm` for RHEL-based systems) and its core dependencies. Key dependencies might include `container-selinux`, `fuse-overlayfs`, `slirp4netns`, `crun`, `containernetworking-plugins`, etc. You'll need to identify the full dependency tree and download all `.rpm` (or `.deb`) files.
+
+=== 3. Container Images and Registry Configurations
+
+This is perhaps the most critical component for functional container operations in an air-gapped environment.
+
+*   **Pre-pulled Container Images:** Any container images (e.g., `nginx:latest`, `registry.access.redhat.com/ubi8/ubi:latest`) that you expect to use must be pulled from a public or accessible private registry on an internet-connected machine and then saved as tarball archives.
+*   **Private Registry Certificates:** If your air-gapped environment will connect to an internal, offline container registry, you must obtain any necessary root CA certificates or public keys to establish secure communication with that registry. These certificates ensure that Podman Desktop can trust the internal registry.
+
+== Hands-On Activity: Gathering Podman Desktop Artifacts for Air-Gapped Deployment
+
+This activity guides you through collecting the necessary installation artifacts on an *internet-connected machine*. You will then transfer these artifacts to your air-gapped environment.
+
+=== Prerequisites
+
+*   An internet-connected machine with administrative privileges.
+*   Sufficient disk space to store all downloaded artifacts and container images.
+*   A portable storage device (USB drive, external hard drive) or a secure network transfer method suitable for your air-gapped environment.
+
+=== Steps
+
+.  **Create a Dedicated Artifact Directory:**
+    On your internet-connected machine, create a clean directory to store all your collected artifacts. This helps in organization and ensures you don't miss anything.
+    ```bash
+    mkdir podman-desktop-airgapped-artifacts
+    cd podman-desktop-airgapped-artifacts
+    ```
+
+.  **Download Podman Desktop Installer:**
+    Visit the official Podman Desktop download page (e.g., `podman-desktop.io/downloads`) and download the installer for your target air-gapped operating system.
+
+    *   **For Windows:**
+        Download `Podman-Desktop-*-Setup.exe` (or `.msi`).
+    *   **For macOS:**
+        Download `Podman-Desktop-*-mac.dmg`.
+    *   **For RHEL/Fedora/CentOS Stream:**
+        While direct `.rpm` downloads might not always be prominently linked on the main page, you can often find them in releases section of the Podman Desktop GitHub repository or consider installing via `dnf` on a temporary VM and then extracting the `.rpm` from `/var/cache/dnf` or using `dnf download` command with `--resolve` to get all dependencies.
+
+        ```bash
+        # Example for RHEL/Centora on an internet-connected system
+        # Get the specific version you need
+        PODMAN_DESKTOP_VERSION="1.8.0" # Replace with the actual version
+        dnf download podman-desktop-"${PODMAN_DESKTOP_VERSION}" --resolve
+        # This will download the podman-desktop RPM and its dependencies to the current directory.
+        ```
+        *Note:* Ensure you collect *all* downloaded `.rpm` files if using `dnf download --resolve`.
+
+.  **Collect Podman Engine and Machine Dependencies:**
+
+    *   **For Windows (WSL 2):**
+        1.  Download the latest WSL2 Linux kernel update package. Search for "WSL2 Linux kernel update package" or go to the official Microsoft documentation for WSL. The file is typically named `wsl_update_x64.msi`.
+        2.  (Optional but recommended) If WSL is not enabled on the target machine, document the commands to enable it, which are typically:
+            ```powershell
+            dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
+            dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
+            ```
+            These commands do not require internet access *after* the initial Windows image is provisioned, but it's good to have them handy.
+
+    *   **For macOS and Linux (QEMU for Podman machine):**
+        If you expect QEMU to be missing or require a specific version, you'll need to source its installer. On Linux, this typically means collecting the `qemu-system-x86_64` (or `aarch64`) package and its dependencies.
+        ```bash
+        # Example for RHEL/CentOS
+        dnf download qemu-system-x86_64 --resolve
+        ```
+
+    *   **For Linux (Direct Podman Engine on Host):**
+        If you're using the host's Podman engine directly on an air-gapped Linux system, collect the `podman` package and its critical dependencies.
+        ```bash
+        # Example for RHEL/CentOS, replace version if needed
+        dnf download podman container-selinux fuse-overlayfs slirp4netns crun containernetworking-plugins --resolve
+        ```
+        *Note:* The `--resolve` flag is crucial to ensure all necessary sub-dependencies are also downloaded.
+
+.  **Pre-pull and Save Container Images:**
+    Identify all container images you plan to use in the air-gapped environment. For demonstration purposes, let's use a simple Nginx image.
+
+    1.  Ensure you have Podman installed on your internet-connected machine.
+    2.  Pull the desired image(s):
+        ```bash
+        podman pull docker.io/library/nginx:latest
+        podman pull registry.access.redhat.com/ubi8/ubi:latest
+        # Pull any other images you need
+        ```
+    3.  Save the images to a tarball. It's good practice to name the tarball descriptively.
+        ```bash
+        podman save -o nginx_latest.tar docker.io/library/nginx:latest
+        podman save -o ubi8_latest.tar registry.access.redhat.com/ubi8/ubi:latest
+        # Save other images similarly
+        ```
+    These `*.tar` files will contain all layers of the respective images, ready to be loaded into Podman Desktop on the air-gapped system.
+
+.  **Gather Private Registry Certificates (if applicable):**
+    If you have an internal air-gapped container registry, obtain its root CA certificate. This certificate is typically a `.crt` or `.pem` file. Place it in your `podman-desktop-airgapped-artifacts` directory.
+
+.  **Verify and Transfer Artifacts:**
+    Before leaving your internet-connected machine, double-check that all required files are present in your `podman-desktop-airgapped-artifacts` directory. Organize them logically if needed (e.g., subdirectories for OS, images, certs).
+
+    Once verified, transfer the entire `podman-desktop-airgapped-artifacts` directory to your portable storage device (e.g., USB drive). Ensure the storage device is secure and free of malware before connecting it to your air-gapped environment.
+
+By diligently following these steps, you will have successfully gathered all necessary installation artifacts, laying the groundwork for a smooth and successful air-gapped deployment of Red Hat Build of Podman Desktop.

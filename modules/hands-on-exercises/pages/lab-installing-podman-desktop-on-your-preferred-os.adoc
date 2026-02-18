@@ -1,0 +1,363 @@
+#  Lab: Installing Podman Desktop on your preferred OS
+
+= Lab: Installing Red Hat Build of Podman Desktop on Your Preferred OS
+
+== Introduction
+
+This hands-on lab guides you through the process of installing the Red Hat Build of Podman Desktop on your preferred operating system. Podman Desktop provides a user-friendly graphical interface for managing containers, Podman Pods, and Kubernetes resources, simplifying complex container workflows. By the end of this lab, you will have Podman Desktop successfully installed and verified on your system.
+
+=== Objectives
+
+Upon completion of this lab, you will be able to:
+
+*   Identify the necessary prerequisites for Podman Desktop installation.
+*   Download and install Red Hat Build of Podman Desktop on macOS, Windows, or Red Hat Enterprise Linux.
+*   Perform the initial setup, including Podman machine creation.
+*   Verify the successful installation and basic functionality of Podman Desktop.
+
+== Prerequisites
+
+Before you begin, ensure your system meets the following general requirements:
+
+*   **Operating System**: macOS (Intel or Apple Silicon), Windows 10/11 (64-bit), or Red Hat Enterprise Linux 8/9.
+*   **System Resources**: At least 4 GB RAM, 2 CPU cores, and 20 GB free disk space recommended for the Podman machine.
+*   **Podman Engine**: While Podman Desktop can install a Podman engine, it's beneficial to understand that it manages an underlying Podman engine. On Linux, Podman Desktop leverages the system's Podman installation. On Windows and macOS, it typically sets up and manages a *Podman machine* (a lightweight Linux virtual machine) where the Podman engine runs.
+
+[NOTE]
+For Windows users, ensuring that Windows Subsystem for Linux (WSL 2) is enabled and updated is crucial for Podman Desktop to function correctly. Podman Desktop relies on WSL 2 to provision the Podman machine.
+
+== Hands-On Activity: Installing Podman Desktop
+
+Choose the section below that corresponds to your operating system and follow the instructions.
+
+[IMPORTANT]
+Do *not* follow the instructions for all operating systems. Select *one* and proceed.
+
+=== Option 1: Installing on macOS
+
+This section details the installation of Red Hat Build of Podman Desktop on macOS systems.
+
+==== Step 1: Download the Installer
+
+. Open your web browser and navigate to the official Red Hat Build of Podman Desktop download page.
+. Locate and download the appropriate `.dmg` installer file for your macOS architecture (Intel or Apple Silicon).
+
+==== Step 2: Install Podman Desktop
+
+. Once the download is complete, open the downloaded `.dmg` file.
+. A new window will appear, typically showing the Podman Desktop application icon and an "Applications" folder alias.
+. Drag the Podman Desktop application icon into the "Applications" folder.
+. Close the `.dmg` window and eject the disk image from your Finder sidebar.
+
+==== Step 3: Launch Podman Desktop and Initial Setup
+
+. Open your "Applications" folder and double-click the "Podman Desktop" icon to launch the application.
+. The first time you launch Podman Desktop, it might prompt you about downloading from the internet. Click "Open."
+. Podman Desktop will perform an initial setup, which includes checking for a Podman engine. If a Podman machine is not detected or created, it will guide you through its creation.
+. Follow the on-screen prompts to create a new Podman machine. This process involves downloading a minimal Linux distribution image and setting up a virtual machine where the Podman engine will run. This might take a few minutes.
+. Once the Podman machine is successfully created and started, the Podman Desktop dashboard will become accessible.
+
+[TIP]
+If you encounter issues during Podman machine creation, ensure you have sufficient disk space and a stable internet connection for downloading the necessary images. Restarting Podman Desktop or your machine can sometimes resolve transient issues.
+
+=== Option 2: Installing on Windows
+
+This section details the installation of Red Hat Build of Podman Desktop on Windows systems, leveraging WSL 2.
+
+==== Step 1: Verify WSL 2 Installation and Update
+
+Podman Desktop on Windows relies heavily on Windows Subsystem for Linux (WSL 2). Ensure it's installed and updated.
+
+. Open PowerShell or Command Prompt *as an administrator*.
+. Run the following command to check the WSL version and installed distributions:
++
+```powershell
+wsl --list --verbose
+```
+. If WSL 2 is not enabled, or if you need to update it, run:
++
+```powershell
+wsl --install
+wsl --update
+```
+. You may need to restart your computer after enabling or updating WSL.
+
+[NOTE]
+If you don't have any Linux distributions installed for WSL, Podman Desktop will likely guide you through installing a minimal one (like Ubuntu) during its initial setup.
+
+==== Step 2: Download the Installer
+
+. Open your web browser and navigate to the official Red Hat Build of Podman Desktop download page.
+. Locate and download the appropriate `.exe` installer file for Windows.
+
+==== Step 3: Install Podman Desktop
+
+. Once the download is complete, double-click the downloaded `.exe` file to start the installer.
+. Follow the on-screen instructions. The installation process is typically straightforward, involving accepting the license agreement and choosing an installation directory.
+. Allow the installer to complete the process.
+
+==== Step 4: Launch Podman Desktop and Initial Setup
+
+. After installation, launch Podman Desktop from your Start Menu.
+. The first time you launch Podman Desktop, it will perform an initial setup, which includes checking for an existing Podman engine or machine.
+. Podman Desktop will guide you through creating a new Podman machine within WSL 2 if one doesn't exist. This involves downloading a lightweight Linux distribution and configuring it.
+. Follow the on-screen prompts. This process may take several minutes as it downloads and sets up the necessary components.
+. Once the Podman machine is successfully created and started, the Podman Desktop dashboard will be displayed.
+
+[WARNING]
+If you experience issues with WSL, ensure that virtualization is enabled in your system's BIOS/UEFI settings. Hyper-V might also be required or conflict with other virtualization solutions.
+
+=== Option 3: Installing on Red Hat Enterprise Linux
+
+This section details the installation of Red Hat Build of Podman Desktop on Red Hat Enterprise Linux using `dnf`.
+
+==== Step 1: Ensure `dnf` Configuration and Repositories
+
+Ensure your system has access to the necessary repositories for installing Podman Desktop. Typically, this involves having the `extra-packages-for-enterprise-linux` (EPEL) or similar repositories enabled, though Red Hat may provide it through official channels.
+
+. Open a terminal.
+. Update your package cache:
++
+```bash
+sudo dnf check-update
+```
+
+==== Step 2: Install Podman Desktop
+
+Use the `dnf` package manager to install Podman Desktop.
+
+. In your terminal, run the following command:
++
+```bash
+sudo dnf install podman-desktop
+```
+. When prompted, type `y` and press Enter to confirm the installation and any required dependencies.
+. Wait for the installation process to complete.
+
+==== Step 3: Launch Podman Desktop and Initial Setup
+
+. Once the installation is complete, you can launch Podman Desktop from your applications menu or by typing `podman-desktop` in the terminal and pressing Enter.
+. Podman Desktop will launch and automatically detect the local Podman engine installed on your RHEL system.
+. It should display the dashboard, showing the active Podman engine (which is your system's Podman). On RHEL, a separate "Podman machine" virtual machine is typically *not* required as the application directly interacts with the host's Podman daemon.
+
+[NOTE]
+If you encounter permission issues when Podman Desktop tries to interact with the Podman socket, ensure your user is part of the `podman` group, or configure rootless Podman appropriately.
+
+== Verifying Podman Desktop Installation
+
+After installing Podman Desktop using one of the methods above, perform the following verification steps:
+
+==== Step 1: Launch Podman Desktop
+
+. Open Podman Desktop (if not already open).
+. You should see the main dashboard. On the left sidebar, navigate to the "Containers" or "Machines" section.
+
+==== Step 2: Verify Podman Machine Status (macOS/Windows) or Engine Connection (RHEL)
+
+. **macOS/Windows**: In the "Machines" section, you should see your `podman-machine-default` listed and its status as "Running."
+. **RHEL**: In the "Settings" (gear icon) -> "Container Engine" section, verify that the "Podman" engine is detected and shows a healthy status.
+
+==== Step 3: Pull and Run a Test Container
+
+Let's run a simple `hello-world` container to confirm everything is working as expected.
+
+. In Podman Desktop, navigate to the "Containers" section.
+. Click the "+ Create" button or similar prompt to pull an image.
+. In the "Pull an image" dialog, enter `hello-world` as the image name and click "Pull Image."
+. Once the image is pulled, it will appear in your "Images" section.
+. Go back to "Containers", select the `hello-world` image, and click "Run" (or click the play icon).
+. A new container will be created and should run briefly, then exit.
+. You can inspect its logs from the container details view to see the "Hello from Docker!" message (this is a common test image).
+
+[TIP]
+If the `hello-world` container fails to run, check the logs within Podman Desktop for error messages. Common issues include network connectivity, insufficient resources for the Podman machine, or issues with the Podman machine itself (if on macOS/Windows).
+
+== Conclusion
+
+Congratulations! You have successfully installed Red Hat Build of Podman Desktop on your preferred operating system, performed the initial setup, and verified its basic functionality by running a test container. You are now ready to explore Podman Desktop's capabilities for managing your containerized applications.#  Lab: Installing Podman Desktop on your preferred OS
+
+Here is the detailed content for the "Lab: Installing Podman Desktop on your preferred OS" topic, presented in Antora AsciiDoc format.
+
+```asciidoc
+= Lab: Installing Podman Desktop on your preferred OS
+
+This lab guides you through the process of installing Red Hat Build of Podman Desktop on your chosen operating system. Podman Desktop provides a user-friendly graphical interface for managing Podman containers, pods, and volumes, simplifying container development and deployment workflows.
+
+== Lab Objectives
+
+Upon completing this lab, you will be able to:
+
+*   Identify the system requirements and prerequisites for installing Podman Desktop.
+*   Successfully download and install Podman Desktop on macOS, Windows, or Red Hat Enterprise Linux.
+*   Perform the initial setup, including Podman machine creation (where applicable).
+*   Verify the correct installation and basic functionality of Podman Desktop.
+
+== Introduction to Podman Desktop Installation
+
+Red Hat Build of Podman Desktop is a powerful tool designed to streamline the experience of working with containers locally. It acts as a graphical front-end for Podman, providing an intuitive way to manage container engines, images, containers, pods, and volumes, as well as integrating with Kubernetes and OpenShift.
+
+The installation process varies slightly depending on your operating system, primarily due to differences in package management, virtualization technologies (like WSL 2 on Windows), and underlying container engine setup. However, the core outcome is the same: a fully functional Podman Desktop instance ready for container development.
+
+== Prerequisites and System Requirements
+
+Before you begin the installation, ensure your system meets the necessary requirements and you have the required prerequisites in place.
+
+=== General System Requirements
+
+*   **Operating System**:
+    *   macOS (Intel or Apple Silicon)
+    *   Windows 10/11 (64-bit)
+    *   Red Hat Enterprise Linux 8/9 (64-bit) or compatible distributions (e.g., Fedora, CentOS Stream).
+*   **Memory**: Minimum 4 GB RAM (8 GB recommended for optimal performance).
+*   **Disk Space**: Minimum 20 GB free disk space (more is recommended for container images and volumes).
+*   **Internet Connection**: Required for downloading installers and images.
+
+=== OS-Specific Prerequisites
+
+*   **Windows**:
+    *   xref:./preparing-for-installation.adoc#_wsl_2_integration_and_configuration[Windows Subsystem for Linux (WSL) 2] must be enabled and updated. Podman Desktop relies on WSL 2 to run its Podman machine for container management on Windows.
+    *   A stable internet connection for downloading WSL 2 kernel updates and the Podman Desktop installer.
+*   **macOS**:
+    *   No specific external prerequisites beyond system updates and sufficient disk space.
+*   **Red Hat Enterprise Linux**:
+    *   `dnf` or `yum` package manager.
+    *   Access to the appropriate Red Hat repositories (e.g., `rhel-9-for-x86_64-appstream-rpms`, `rhel-9-for-x86_64-baseos-rpms`).
+    *   `podman` package installed as the underlying container engine. While Podman Desktop can install a Podman machine, having the `podman` engine package installed locally can be beneficial.
+
+[[activity-install-podman-desktop]]
+== Hands-On Activity: Installing Podman Desktop
+
+Follow the instructions specific to your operating system. Choose *one* of the following sections to complete the installation.
+
+=== Option 1: Installing Podman Desktop on macOS
+
+This section guides you through installing Red Hat Build of Podman Desktop on macOS using the graphical installer.
+
+.Steps
+.  **Download the Installer**:
+    *   Open your web browser and navigate to the official Red Hat Build of Podman Desktop download page (or a designated internal download portal if in an enterprise environment).
+    *   Locate and download the macOS installer (`.dmg` file).
+.  **Mount the Disk Image**:
+    *   Once the download is complete, open the downloaded `.dmg` file. This will mount a disk image and open a Finder window showing its contents.
+.  **Install Podman Desktop**:
+    *   Drag the *Podman Desktop* application icon from the mounted disk image window into your *Applications* folder.
+.  **Eject the Disk Image**:
+    *   After copying, you can eject the *Podman Desktop* disk image from the Finder sidebar or by dragging its icon to the Trash.
+.  **Launch Podman Desktop**:
+    *   Open your *Applications* folder and double-click the *Podman Desktop* icon.
+    *   If prompted with a security warning about an application downloaded from the internet, click *Open*.
+.  **Initial Setup and Podman Machine Creation**:
+    *   Upon first launch, Podman Desktop will detect if a Podman machine is present. If not, it will prompt you to create one. A Podman machine is a lightweight virtual machine that hosts the Podman engine, enabling container operations.
+    *   Click *Create a Podman Machine* (or similar prompt). Accept the default settings unless you have specific requirements for memory, CPU, or disk space.
+    *   Wait for the Podman machine to be initialized and started. This process might take a few minutes.
+.  **Verify Installation**:
+    *   Once the Podman machine is running, the Podman Desktop dashboard should appear, indicating that the `podman` engine is connected and ready. You should see "Podman machine is running" in the status bar or the dashboard.
+    *   Navigate to the *Containers* or *Images* section to confirm you can browse or pull images.
+
+=== Option 2: Installing Podman Desktop on Windows
+
+This section covers the installation of Red Hat Build of Podman Desktop on Windows, emphasizing the integration with WSL 2.
+
+.Steps
+.  **Verify/Enable WSL 2**:
+    *   Open PowerShell as an administrator.
+    *   Run the command: `wsl --install` (if WSL is not installed) or `wsl --update` (to ensure it's up to date).
+    *   Ensure that WSL 2 is set as the default version: `wsl --set-default-version 2`.
+    *   Restart your computer if prompted or if you made significant WSL changes.
+    *   Refer to the xref:./preparing-for-installation.adoc#_wsl_2_integration_and_configuration[Preparing for Installation] section for more detailed WSL 2 setup.
+.  **Download the Installer**:
+    *   Open your web browser and navigate to the official Red Hat Build of Podman Desktop download page (or a designated internal download portal).
+    *   Locate and download the Windows installer (`.exe` file).
+.  **Run the Installer**:
+    *   Double-click the downloaded `.exe` file to start the installation wizard.
+    *   Follow the prompts in the installer. It's generally safe to accept the default settings for installation path and components.
+    *   Grant administrator privileges if requested.
+.  **Launch Podman Desktop**:
+    *   Once the installation is complete, you can launch Podman Desktop from the Start Menu or the desktop shortcut (if created).
+.  **Initial Setup and Podman Machine Creation**:
+    *   On its first run, Podman Desktop will detect if a Podman machine is available via WSL 2. If not, it will prompt you to create one.
+    *   Click *Create a Podman Machine*. This will provision a new WSL 2 distribution specifically for the Podman engine.
+    *   Accept the default resource allocations (memory, CPU, disk) unless you have specific needs.
+    *   Wait for the Podman machine to be created and started within WSL 2. This process might take several minutes.
+.  **Verify Installation**:
+    *   Once the Podman machine is active, the Podman Desktop dashboard will display, confirming the `podman` engine is connected. Look for "Podman machine is running" or a similar status.
+    *   Try pulling a sample image (e.g., `quay.io/redhattraining/hello-world`) from the *Images* section to confirm connectivity and engine functionality.
+
+=== Option 3: Installing Podman Desktop on Red Hat Enterprise Linux
+
+This section outlines the steps for installing Red Hat Build of Podman Desktop on Red Hat Enterprise Linux using `dnf`.
+
+.Steps
+.  **Configure Repositories**:
+    *   Ensure your RHEL system is registered and subscribed to the necessary repositories. Podman Desktop packages are typically found in the AppStream and BaseOS repositories.
+    *   If you encounter issues, verify your subscription status and enabled repositories:
+        ```bash
+        sudo subscription-manager status
+        sudo dnf repolist
+        ```
+    *   Enable the required repositories if they are not already:
+        ```bash
+        sudo subscription-manager repos --enable rhel-9-for-x86_64-appstream-rpms
+        sudo subscription-manager repos --enable rhel-9-for-x86_64-baseos-rpms
+        # For RHEL 8, adjust repo names accordingly.
+        ```
+.  **Install Podman Desktop**:
+    *   Open a terminal and update your package lists:
+        ```bash
+        sudo dnf update -y
+        ```
+    *   Install the `podman-desktop` package:
+        ```bash
+        sudo dnf install podman-desktop -y
+        ```
+    *   This command will also install `podman` if it's not already present, as it's a dependency.
+.  **Launch Podman Desktop**:
+    *   After installation, you can launch Podman Desktop from your desktop environment's application launcher (search for "Podman Desktop") or by running `podman-desktop` in the terminal.
+.  **Initial Setup and Podman Machine Configuration**:
+    *   On Linux, Podman Desktop often connects directly to the system's `podman` engine, so a separate Podman machine might not be strictly necessary for local container management. However, for features like Kubernetes integration or specific development needs, you might still want to create a dedicated Podman machine.
+    *   If prompted, you can choose to initialize a new Podman machine or connect to the existing system Podman. For this lab, assume you are connecting to the system Podman directly, or proceed with machine creation if prompted and desired.
+    *   If a Podman machine is offered, creating it involves similar steps to macOS/Windows, but it runs as a local virtual machine.
+.  **Verify Installation**:
+    *   Once Podman Desktop is running and connected to an engine (either system Podman or a new Podman machine), the dashboard should be visible.
+    *   Confirm that the status indicates a healthy connection to the `podman` engine.
+    *   Try to pull an image, such as `quay.io/redhattraining/hello-world`, to confirm that Podman Desktop can interact with the container engine.
+
+== Post-Installation Verification (Common Steps)
+
+Regardless of your installation method, perform these checks to ensure Podman Desktop is fully functional:
+
+1.  **Check Engine Status**: On the Podman Desktop dashboard, verify that the 'Podman' engine is running and shows a green status indicator. If it's not running, click the *Start* button next to the engine.
+2.  **Explore the Dashboard**: Familiarize yourself with the layout. You should see sections for containers, images, pods, and volumes.
+3.  **Pull a Sample Image**:
+    *   Navigate to the *Images* section in Podman Desktop.
+    *   Click the *Pull an image* button.
+    *   In the "Image name" field, enter `quay.io/redhattraining/hello-world`.
+    *   Click *Pull image*.
+    *   Confirm that the image appears in your list of local images after the pull completes.
+4.  **Run a Sample Container**:
+    *   From the *Images* section, locate the `quay.io/redhattraining/hello-world` image.
+    *   Click the *Play* icon (Run Image) next to it.
+    *   Accept the default settings and click *Start Container*.
+    *   Navigate to the *Containers* section and verify that a new container named `hello-world` (or similar) is running. You should see its status as "Running".
+5.  **Check Extensions**: Go to the *Extensions* section. Ensure the default extensions are loaded, and if you have network access, browse for new extensions.
+
+If all these steps are successful, your Red Hat Build of Podman Desktop installation is complete and verified!
+
+== Troubleshooting Common Installation Issues
+
+*   **"Podman machine not found" or "Podman machine creation failed"**:
+    *   **Windows**: Ensure WSL 2 is fully updated and running. Open PowerShell as admin and run `wsl --update` and `wsl --shutdown`. Then retry. Check system BIOS settings for virtualization (Intel VT-x or AMD-V) to be enabled.
+    *   **macOS/Linux**: Check for sufficient disk space and RAM. Sometimes, reinstalling the Podman Desktop application might resolve underlying issues.
+*   **"Failed to connect to Podman engine"**:
+    *   Ensure the Podman machine is started within Podman Desktop.
+    *   On Linux, verify the `podman` service is running and accessible to your user. `systemctl --user status podman.socket` or `podman system service --time=0 &`
+*   **"Image pull failed"**:
+    *   Check your internet connection.
+    *   Verify if there are any proxy settings required for your network (see xref:./configuring-and-customizing-podman-desktop.adoc#_setting_up_network_proxies[Configuring network proxies]).
+    *   Ensure the image name is correct and the registry is accessible.
+*   **Permissions Issues**: On Linux, ensure your user is part of the `podman` group (if applicable for your distribution) or that the `podman` socket has appropriate permissions.
+
+For more in-depth troubleshooting, refer to the xref:./troubleshooting-podman-desktop-issues.adoc[Troubleshooting Podman Desktop Issues] section.
+
+---
+```

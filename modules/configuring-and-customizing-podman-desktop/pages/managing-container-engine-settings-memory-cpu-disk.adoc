@@ -1,0 +1,290 @@
+#  Managing container engine settings (memory, CPU, disk)
+
+:managing-container-engine-settings.adoc
+= Managing Container Engine Settings (Memory, CPU, Disk)
+
+:icons: font
+:toc: macro
+:toc-title: Contents
+:description: Learn how to manage container engine settings for memory, CPU, and disk in Red Hat Build of Podman Desktop to optimize performance and resource utilization.
+:keywords: Podman Desktop, container engine, settings, memory, CPU, disk, resources, configuration, optimization, Podman machine
+
+toc::[]
+
+[[introduction]]
+== Introduction to Container Engine Resource Management
+
+Optimizing the performance of your containerized applications starts with efficiently managing the resources allocated to your container engine. Red Hat Build of Podman Desktop utilizes a lightweight virtual machine (VM), known as a Podman machine, to run the Podman engine and host your containers, especially on macOS and Windows. This VM consumes a portion of your host system's resources, including memory, CPU, and disk space.
+
+Properly configuring these settings is crucial for:
+
+*   *Application Performance:* Ensuring your containers have sufficient resources to run smoothly without bottlenecks.
+*   *Host System Stability:* Preventing the Podman machine from consuming too many resources and impacting your host system's responsiveness.
+*   *Resource Efficiency:* Allocating just enough resources to meet your needs, avoiding unnecessary waste.
+
+This section will guide you through understanding and configuring these vital resource settings within Podman Desktop.
+
+[[memory-settings]]
+== Configuring Memory Settings
+
+The memory setting determines the amount of RAM allocated to the Podman machine. This RAM is then shared among all containers running within that machine.
+
+=== Technical Explanation
+
+*   *Purpose:* Provides working memory for the Podman engine, container images, running containers, and their processes.
+*   *Impact:*
+    *   *Too little memory:* Can lead to `Out of Memory` (OOM) errors in containers, slow application performance, container crashes, or even Podman machine instability.
+    *   *Too much memory:* Can starve your host operating system of RAM, making your entire system slow and unresponsive.
+*   *Best Practices:*
+    *   Start with a reasonable default (often 2-4 GB for development).
+    *   Monitor memory usage of your containers and the Podman machine.
+    *   Increase memory if you frequently run many containers or memory-intensive applications (e.g., databases, Java applications).
+    *   Decrease memory if your host system is struggling and your containers don't require significant RAM.
+*   *How it works:* When you change the memory setting, you are essentially resizing the RAM available to the Linux VM that the Podman machine uses. Any containers running inside this VM will draw from this allocated pool.
+
+[[cpu-settings]]
+== Configuring CPU Settings
+
+The CPU setting specifies the number of virtual CPU cores allocated to the Podman machine. These cores are then available for the Podman engine and your containers to execute tasks.
+
+=== Technical Explanation
+
+*   *Purpose:* Dictates the processing power available for your containerized workloads.
+*   *Impact:*
+    *   *Too few CPUs:* Can cause CPU-bound applications to run slowly, leading to poor performance and responsiveness.
+    *   *Too many CPUs:* While generally less harmful than over-allocating memory, it can still lead to unnecessary resource contention with your host system's processes, especially if your host has limited physical cores.
+*   *Best Practices:*
+    *   Allocate enough cores to handle parallel tasks within your containers. For typical development, 2-4 cores are often sufficient.
+    *   If you're running highly parallelized applications or many containers concurrently, you might need more.
+    *   Keep in mind that these are *virtual* cores. Over-allocating more virtual cores than your physical host has can sometimes lead to performance degradation due to scheduling overhead.
+*   *How it works:* The Podman machine schedules its processes to run on the allocated virtual CPU cores. The host OS's hypervisor manages how these virtual cores are mapped and scheduled onto your physical CPU cores.
+
+[[disk-settings]]
+== Configuring Disk Settings
+
+The disk setting determines the maximum amount of storage space allocated to the Podman machine for storing container images, container layers, writable container data, and volumes.
+
+=== Technical Explanation
+
+*   *Purpose:* Provides persistent storage for the Podman machine's operating system, container images (layers), writable layers of running containers, and any persistent volumes mounted within the VM.
+*   *Impact:*
+    *   *Too little disk space:* Can prevent new images from being pulled, containers from starting, or data from being written, leading to `No space left on device` errors.
+    *   *Too much disk space:* While less critical for performance, allocating an excessively large disk can consume unnecessary physical disk space on your host, especially if you have limited storage.
+*   *Best Practices:*
+    *   Start with a reasonable default (e.g., 10-50 GB).
+    *   If you frequently pull many large images, build complex images, or have applications that generate significant data, you may need to increase this.
+    *   Regularly prune unused images and containers to free up space (`podman system prune`).
+*   *How it works:* The Podman machine typically uses a virtual disk image file on your host system. This setting controls the *maximum* size this virtual disk file can grow to. It often uses sparse allocation, meaning it only consumes physical space as data is actually written, up to the maximum limit.
+
+[[hands-on-lab-engine-settings]]
+== Lab: Managing Podman Machine Engine Settings
+
+In this hands-on lab, you will learn how to adjust the memory, CPU, and disk settings for your Podman machine using Red Hat Build of Podman Desktop.
+
+*   *Goal:* To modify the resource allocation of your Podman machine.
+*   *Prerequisites:*
+    *   Red Hat Build of Podman Desktop installed and running.
+    *   A Podman machine created and running (if not, Podman Desktop will prompt you to create one).
+
+=== Activity 1: Accessing Engine Settings
+
+. Open Red Hat Build of Podman Desktop.
+. In the left-hand navigation pane, click on the *gear icon* (Settings).
+. In the Settings view, select *Resources*. This section displays the current settings for your Podman machine.
+
+[[img-settings-resources]]
+.Podman Desktop Settings - Resources
+image::images/podman-desktop-settings-resources.png[Podman Desktop Settings - Resources, width=800, link="https://example.com/images/podman-desktop-settings-resources.png"]
+
+=== Activity 2: Adjusting Memory, CPU, and Disk
+
+. In the *Resources* section, locate the settings for *Memory*, *CPUs*, and *Disk Size*.
+. *Adjust Memory:*
+    *   Click on the numerical value next to *Memory* (e.g., `4 GB`).
+    *   Use the slider or type a new value into the input field to change the allocated RAM. For this exercise, increase it slightly, for example, from `4 GB` to `6 GB`.
+. *Adjust CPUs:*
+    *   Click on the numerical value next to *CPUs* (e.g., `2`).
+    *   Use the slider or type a new value to change the number of virtual CPU cores. For this exercise, increase it to `4`.
+. *Adjust Disk Size:*
+    *   Click on the numerical value next to *Disk Size* (e.g., `100 GB`).
+    *   Use the slider or type a new value to change the maximum disk allocation. For this exercise, increase it to `150 GB`.
+
+[[img-settings-changes]]
+.Podman Desktop Settings with pending changes
+image::images/podman-desktop-settings-changes.png[Podman Desktop Settings with pending changes, width=800, link="https://example.com/images/podman-desktop-settings-changes.png"]
+
+. Observe the changes. Podman Desktop will indicate that changes are pending and require a restart of the Podman machine. A yellow banner typically appears at the top.
+
+=== Activity 3: Applying Changes and Verification
+
+. To apply the new settings, you must restart the Podman machine. Click the blue *Apply changes and restart* button, usually found in the yellow banner or at the bottom of the *Resources* section.
+. Confirm the restart when prompted. Podman Desktop will stop the current Podman machine, apply the new configuration, and then start it again. This process may take a few moments.
+. Once the Podman machine has restarted, the new settings will be active.
+. You can verify the changes by:
+    *   Checking the *Resources* section in Podman Desktop settings; the displayed values should now reflect your changes.
+    *   Using the Podman CLI:
+        . Open your terminal or command prompt.
+        . Run the command `podman machine inspect podman-machine-default` (or the name of your Podman machine if it's different).
+        . Examine the output for fields like `Memory` (in bytes), `CPUs`, and `DiskSize` (in bytes) to confirm the new allocations.
+
+[source,bash]
+----
+podman machine inspect podman-machine-default | grep -E "Memory|CPUs|DiskSize"
+----
+
+This command will filter the output to show relevant lines for memory, CPU, and disk size, allowing you to quickly confirm your adjustments.
+
+Congratulations! You have successfully configured and applied new resource settings for your Podman machine, optimizing its performance for your containerized workloads. Remember to adjust these settings based on the specific demands of your development environment and applications.#  Managing container engine settings (memory, CPU, disk)
+
+= Managing Container Engine Settings (Memory, CPU, Disk)
+
+Managing the resources allocated to your container engine is crucial for optimizing performance, preventing resource contention, and ensuring the smooth operation of your containerized applications. Red Hat Build of Podman Desktop provides intuitive controls to configure these settings, particularly for the underlying Podman machine that hosts your containers on systems like Windows and macOS.
+
+== Detailed Technical Explanation
+
+When you run containers, they consume resources from the host system, or more commonly, from a dedicated virtual machine (VM) like the Podman machine. Properly configuring these resources—memory, CPU, and disk space—is vital for several reasons:
+
+*   *Performance:* Under-provisioning resources can lead to slow container startup, application lag, and crashes. Over-provisioning can starve your host system of resources it needs for other tasks.
+*   *Stability:* Insufficient memory can cause containers to be killed by the operating system's out-of-memory (OOM) killer. Insufficient disk space can prevent new images from being pulled or volumes from expanding.
+*   *Efficiency:* Optimizing resource allocation ensures that your containers have what they need without wasting valuable system resources.
+
+Podman Desktop centralizes the management of these settings, primarily for the *Podman machine*. The Podman machine is a lightweight Linux virtual machine that runs the Podman engine on macOS and Windows. On Linux, Podman runs directly on the host, and resource management for containers is typically done via `podman run` options or Cgroup configurations, though Podman Desktop can still show overall engine status.
+
+=== Memory Management
+
+Memory (RAM) is a critical resource for containers. Applications running inside containers need memory for their code, data, and runtime environment.
+
+*   *Impact:*
+    *   Insufficient memory can lead to applications crashing, slow performance, or the kernel terminating processes (OOM killer).
+    *   Excessive memory allocation to the Podman machine can reduce the memory available to your host operating system and other applications, making your computer sluggish.
+*   *Configuration:* Podman Desktop allows you to specify the amount of RAM allocated to the Podman machine. This directly impacts the total memory available to all containers running within that machine. It's recommended to allocate enough memory for your typical workload, leaving some headroom for your host OS.
+*   *Best Practices:* Start with a reasonable default (e.g., 2GB-4GB for development) and monitor your container's memory usage. Adjust upwards if you encounter OOM errors or performance bottlenecks.
+
+=== CPU Management
+
+The Central Processing Unit (CPU) provides the processing power for your containers. Each container requires CPU cycles to execute its processes.
+
+*   *Impact:*
+    *   Too few CPU cores allocated to the Podman machine can lead to slow execution of CPU-intensive containerized applications.
+    *   Allocating too many CPU cores can be wasteful if your containers don't fully utilize them, potentially impacting other host processes.
+*   *Configuration:* Podman Desktop allows you to specify the number of virtual CPUs (vCPUs) allocated to the Podman machine. This determines how many parallel processing threads the containers within the machine can utilize.
+*   *Best Practices:* A good starting point is 2-4 vCPUs. For development environments, this is often sufficient. If you are running multiple CPU-intensive containers, consider increasing this number. Remember that these are *virtual* CPUs; their performance also depends on the physical cores available on your host.
+
+=== Disk Space Management
+
+Disk space is used for storing container images, container writable layers, volumes mounted by containers, and the operating system of the Podman machine itself.
+
+*   *Impact:*
+    *   Running out of disk space can prevent new images from being pulled, containers from starting, or applications from writing data to volumes.
+    *   Excessive disk allocation to the Podman machine might consume storage that could be used by your host OS or other applications.
+*   *Configuration:*
+    *   Podman Desktop typically allows you to configure the *initial* virtual disk size for a new Podman machine. For existing machines, increasing disk size is generally a more involved operation, often requiring command-line tools.
+    *   More commonly, within Podman Desktop, you manage *used* disk space by pruning old images, stopped containers, and unused volumes.
+*   *Best Practices:*
+    *   Ensure your Podman machine has sufficient disk space for the images you pull and the data your containers generate.
+    *   Regularly clean up unused resources (dangling images, stopped containers) to free up space. Podman Desktop provides tools for this.
+    *   For persistent data, always use named volumes, as they are easier to manage and backup than data within container layers.
+
+NOTE: On Linux systems, Podman runs natively. Resource allocation for individual containers (memory, CPU limits) is typically configured when running containers using `podman run` options (e.g., `--memory`, `--cpus`). Podman Desktop on Linux primarily provides an interface for managing containers and images, rather than the engine's core resource allocation as it does for the Podman machine on Windows/macOS.
+
+== Hands-on Activities
+
+These activities will guide you through configuring the Podman machine's resources using Podman Desktop.
+
+=== Lab: Accessing and Modifying Podman Machine Resources
+
+In this lab, you will navigate to the Podman Desktop settings to view and adjust the CPU and memory allocated to your Podman machine.
+
+.Prerequisites:
+*   Red Hat Build of Podman Desktop installed and running.
+*   A Podman machine initialized and running (this happens automatically during first run on Windows/macOS).
+
+.Step 1: Open Podman Desktop Settings
+.  Launch Red Hat Build of Podman Desktop.
+.  In the left-hand navigation bar, click on the *gear icon* (Settings) at the bottom.
+
+.Step 2: Navigate to Podman Machine Settings
+.  In the Settings view, select *Resources* from the left-hand menu.
+.  You will see a section for *Podman Machine* (on macOS/Windows) or *Container Engine* (on Linux, showing host resource limits).
+
+.Step 3: Adjust CPU and Memory
+.  Locate the *Memory* and *CPUs* sliders or input fields.
+.  For this exercise, try reducing the *Memory* slightly (e.g., from 4GB to 2GB) and *CPUs* (e.g., from 4 to 2).
++
+[CAUTION]
+====
+Do not set these values too low, especially if you are running other applications on your host. Setting memory below 2GB or CPUs below 2 might cause performance issues for Podman Desktop or your containers.
+====
+.  Click the *Apply* button to save the changes.
++
+[NOTE]
+====
+For changes to memory and CPU on a Podman machine to take effect, the machine must be restarted. Podman Desktop will typically prompt you to restart the machine, or you can do it manually from the *Dashboard* or *Resources* section.
+====
+.  If prompted, confirm the restart of the Podman machine. Wait for the machine to restart and show a "Running" status.
+
+.Step 4: Verify the New Settings
+.  Once the Podman machine is running again, open a terminal on your host machine (e.g., PowerShell on Windows, Terminal on macOS/Linux).
+.  Run the following command to inspect the Podman machine's configuration:
++
+[source,bash]
+----
+podman machine inspect podman-machine-default --format "{{.Host.CPUs}} CPUs, {{.Host.Memory}} MB Memory"
+----
++
+[TIP]
+====
+The default Podman machine is usually named `podman-machine-default`. If you have multiple machines, replace this with the correct machine name.
+====
+.  The output should reflect the CPU and memory values you set in Podman Desktop.
++
+Example output:
+----
+2 CPUs, 2048 MB Memory
+----
+.  Feel free to go back to the Podman Desktop settings and revert the CPU and memory settings to their original or preferred values. Remember to apply and restart the Podman machine.
+
+=== Lab: Managing Disk Space and Cleaning Up Resources
+
+This lab focuses on maintaining disk space efficiency by removing unused container images and stopped containers.
+
+.Prerequisites:
+*   Red Hat Build of Podman Desktop installed and running.
+*   A Podman machine initialized and running.
+*   You should have some images pulled and potentially some stopped containers. If not, pull a small image like `docker.io/library/hello-world` and run it once to create a stopped container.
+
+.Step 1: Check Current Disk Usage
+.  In Podman Desktop, navigate to the *Resources* section (Settings -> Resources).
+.  Look for the *Disk usage* metric. This provides an overview of how much disk space is being consumed by your Podman machine or container engine.
+.  Alternatively, you can go to the *Images* or *Containers* section to see individual resource consumption.
+
+.Step 2: Pull a Sample Image (if you don't have many)
+.  In Podman Desktop, navigate to the *Images* section.
+.  Click *Pull an image*.
+.  Enter `docker.io/library/ubuntu` and click *Pull image*.
+.  Wait for the image to download.
+
+.Step 3: Run and Stop a Container
+.  Navigate to the *Images* section and locate the `ubuntu` image you just pulled.
+.  Hover over it and click the *Play* icon to run a new container from this image. Accept the default settings and click *Start Container*.
+.  Wait for the container to start. Then, navigate to the *Containers* section.
+.  Locate your newly created `ubuntu` container. Click the *Stop* button (square icon) to stop it. This container will now be in a 'Stopped' state but still consume disk space.
+
+.Step 4: Clean Up Unused Resources
+.  In Podman Desktop, navigate to the *Dashboard* or *Settings* section.
+.  On the *Dashboard*, you might see a "System Cleanup" card or similar.
+.  Alternatively, in *Settings*, go to *Resources*. You should see options like "Remove all unused images" or "Remove all stopped containers".
+.  Let's clean up:
+    *   Click on *Remove all stopped containers*. Confirm the action if prompted.
+    *   Click on *Remove all unused images*. Confirm the action if prompted.
++
+[NOTE]
+====
+"Unused images" typically refers to images that are not tagged and not currently used by a running container. Images used by stopped containers are generally *not* considered unused until the container itself is removed.
+====
+
+.Step 5: Verify Disk Space Recovery
+.  Go back to the *Resources* section and observe the *Disk usage*. You should see a reduction in the consumed disk space after cleaning up.
+.  You can also check the *Images* and *Containers* sections to confirm that the stopped container and any truly unused images have been removed.
+
+By regularly managing these settings and performing cleanup, you can ensure your Podman Desktop environment remains efficient and responsive.

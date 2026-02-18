@@ -1,0 +1,15 @@
+#  Installing Podman Desktop on macOS
+
+[NOTE]
+====
+This topic covers the process of installing Red Hat Build of Podman Desktop on macOS.
+
+Key steps include:
+
+*   Downloading and running the installer package.
+*   Performing initial setup, which often involves creating and starting a Podman machine.
+*   Verifying the installation by checking basic functionality, such as listing containers or images.
+====#  Installing Podman Desktop on macOS
+
+[.lead]
+Install Podman Desktop on macOS by downloading the installer, following the installation process, and then performing initial setup including Podman machine creation. Verify the installation to ensure basic functionality.

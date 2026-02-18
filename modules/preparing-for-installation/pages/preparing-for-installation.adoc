@@ -1,0 +1,16 @@
+#  Preparing for Installation
+
+[.lead]
+Before installing Red Hat Build of Podman Desktop, ensure your system meets the necessary requirements and prerequisites.
+
+*   System requirements:: Verify your operating system (macOS, Windows, RHEL) meets the specified hardware and software criteria.
+*   Prerequisites and dependencies:: Install essential components like WSL (Windows Subsystem for Linux) 2 for Windows users and the Podman engine across all platforms.
+*   Podman machine concept:: Understand how Podman Desktop utilizes Podman machines to manage containers, especially on macOS and Windows where Linux virtual machines are required.#  Preparing for Installation
+
+=== Preparing for Installation
+
+Preparing for installation involves ensuring your system meets the necessary criteria before installing Red Hat Build of Podman Desktop. Key steps include:
+
+*   **System Requirements:** Verify your operating system meets the minimum specifications for Podman Desktop.
+*   **Prerequisites & Dependencies:** Install necessary software like WSL 2 on Windows or the Podman engine itself.
+*   **Podman Machine Concept:** Understand how Podman machines provide a Linux environment for container execution, especially on macOS and Windows.

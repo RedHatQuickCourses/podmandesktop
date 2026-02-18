@@ -1,0 +1,342 @@
+#  Verifying installation and basic functionality
+
+module:podman-desktop-installation
+antora-id: verifying-installation
+title: Verifying Red Hat Build of Podman Desktop Installation and Basic Functionality
+nav_title: Verify Installation
+
+[abstract]
+This section guides you through the process of verifying your Red Hat Build of Podman Desktop installation and ensuring its core functionalities are operational. Proper verification confirms that all components, including the Podman Desktop application and the underlying Podman engine (Podman machine), are correctly configured and ready for use.
+
+== Technical Explanation: The Importance of Verification
+
+After successfully installing Red Hat Build of Podman Desktop, it's crucial to perform a series of checks to ensure everything is working as expected. This verification process typically involves confirming:
+
+. *Podman Desktop Application Launch:* The graphical user interface (GUI) starts without errors and displays the main dashboard.
+. *Podman Engine Status:* The integrated Podman engine, often running within a virtual machine (Podman machine) on Windows and macOS, is initialized, running, and accessible to the Podman Desktop application. On Linux, this involves ensuring the local Podman service is available.
+. *Basic Container Operations:* The ability to pull images, create, run, and manage containers demonstrates that the communication between Podman Desktop and the Podman engine is functional.
+
+These checks help identify and troubleshoot potential issues early, preventing more complex problems down the line when you start deploying your actual containerized applications.
+
+== Hands-on Activities: Verifying Podman Desktop
+
+The following activities will walk you through verifying your Podman Desktop installation and its basic functionality.
+
+=== Activity 1: Launching Podman Desktop and Checking Initial Status
+
+This activity focuses on launching the application and observing its initial state.
+
+. *Prerequisites:*
+    *   Red Hat Build of Podman Desktop installed on your system.
+
+. *Steps:*
+
+. *Launch Podman Desktop:*
+    *   *On Windows:* Search for "Podman Desktop" in the Start Menu and click to open.
+    *   *On macOS:* Open your `Applications` folder and double-click `Podman Desktop`.
+    *   *On Red Hat Enterprise Linux:* Search for "Podman Desktop" in your applications menu or run `podman-desktop` from the terminal if it's in your PATH.
+
+. *Observe the Dashboard:*
+    *   Upon launching, Podman Desktop should display its main dashboard.
+    *   Look for the *Status* indicators, typically found on the left sidebar or at the bottom of the window.
+    *   Verify that the "Podman" engine is listed and shows a "Running" or "Started" status. If it's your first launch, it might show "Starting" or prompt you to create a Podman machine. Allow it to complete this initial setup if necessary.
+
+. *Expected Outcome:*
+    *   The Podman Desktop application launches successfully.
+    *   The dashboard is visible, and the Podman engine is reported as "Running." If it's initializing, ensure it successfully transitions to a "Running" state.
+
+[NOTE]
+If the Podman engine is not running, Podman Desktop will usually provide prompts or buttons to start or create a new Podman machine. Follow these prompts if they appear.
+
+=== Activity 2: Verifying Podman Engine (Podman Machine) Functionality
+
+This activity ensures that the underlying Podman engine is fully operational and reachable.
+
+. *Prerequisites:*
+    *   Podman Desktop is running and showing the Podman engine as "Running" (as verified in Activity 1).
+
+. *Steps (Using Podman Desktop UI):*
+
+. *Navigate to Engines:*
+    *   In the Podman Desktop left-hand navigation, click on *Engines* or *Settings* (depending on your version, it might be under 'Preferences' or 'Settings' then 'Container Engine').
+    *   Confirm that your primary Podman engine (e.g., `podman-machine-default` on macOS/Windows, or `podman` on Linux) is listed and marked as `Running`.
+    *   Review the engine's configuration details such as memory, CPU, and disk usage to ensure they are as expected.
+
+. *Steps (Using Terminal - Optional but Recommended for Deeper Verification):*
+
+. *Open a Terminal:*
+    *   *On Windows:* Open PowerShell or Command Prompt.
+    *   *On macOS/Linux:* Open your preferred terminal application.
+
+. *Check Podman Machine Status (macOS/Windows only):*
+    *   Execute the command:
+        ```bash
+        podman machine ls
+        ```
+    *   *Expected Output:* You should see a list of Podman machines. Your default machine (e.g., `podman-machine-default`) should have `Running` in the `VM STATE` column.
+        ```
+        NAME                    VM STATE      IMAGE                            CPUS        MEMORY      DISK SIZE
+        podman-machine-default  Running       quay.io/podman/fedora-coreos:38  2           2.147GB     107.3GB
+        ```
+
+. *Verify Podman Client-Server Communication:*
+    *   Execute a basic Podman command:
+        ```bash
+        podman info
+        ```
+    *   *Expected Output:* This command should return detailed information about your Podman client and server configuration, including versions, registries, and runtime information. If Podman is correctly installed and communicating with the engine, this command will succeed. Errors here indicate a problem with the Podman engine or its connection.
+
+. *Expected Outcome:*
+    *   Podman Desktop shows the engine as running.
+    *   `podman machine ls` (if applicable) shows your Podman machine in a `Running` state.
+    *   `podman info` successfully returns detailed information about the Podman environment.
+
+=== Activity 3: Running a Test Container
+
+This activity confirms that Podman Desktop can interact with the engine to pull images and run containers.
+
+. *Prerequisites:*
+    *   Podman Desktop is running, and the Podman engine is active (as verified in Activity 1 and 2).
+    *   An active internet connection to pull images from public registries.
+
+. *Steps (Using Podman Desktop UI):*
+
+. *Navigate to Images:*
+    *   In the Podman Desktop left-hand navigation, click on *Images*.
+
+. *Pull a Test Image:*
+    *   Click the *Pull Image* button (usually located at the top right).
+    *   In the "Image name" field, enter `docker.io/library/hello-world`.
+    *   Click *Pull*.
+    *   *Expected Output:* You should see the image being downloaded and then listed in your *Images* view.
+
+. *Run the Test Container:*
+    *   Hover over the `hello-world` image in the *Images* list and click the *Run* button (or three dots and then *Run Image*).
+    *   A 'Run Image' dialog will appear. You can usually accept the defaults for this simple image.
+    *   Click *Run*.
+
+. *Verify Container Status:*
+    *   In the Podman Desktop left-hand navigation, click on *Containers*.
+    *   You should see a container named similar to `hello-world` listed. Its status should briefly be `Running` and then quickly transition to `Exited` or `Stopped`, as the `hello-world` image is designed to print a message and then exit.
+    *   Click on the container name. In the logs tab, you should see the "Hello from Docker!" message or similar output.
+
+. *Steps (Using Terminal - Optional):*
+
+. *Pull a Test Image:*
+    *   Open your terminal and execute:
+        ```bash
+        podman pull docker.io/library/nginx:latest
+        ```
+    *   *Expected Output:* The `nginx` image will be downloaded and saved locally.
+
+. *Run the Test Container:*
+    *   Execute the command to run an Nginx web server container:
+        ```bash
+        podman run -d -p 8080:80 --name my-nginx docker.io/library/nginx:latest
+        ```
+    *   *Expected Output:* A container ID will be printed, indicating the container has started in detached mode.
+
+. *Verify Container Status:*
+    *   Check if the container is running:
+        ```bash
+        podman ps
+        ```
+    *   *Expected Output:* You should see `my-nginx` listed with a `Up` status.
+        ```
+        CONTAINER ID  IMAGE                            COMMAND               CREATED         STATUS             PORTS                 NAMES
+        <container_id>  docker.io/library/nginx:latest "/docker-entrypoint.s"  <time_ago>      Up <time_ago>      0.0.0.0:8080->80/tcp  my-nginx
+        ```
+
+. *Access the Nginx Web Server (if using terminal steps):*
+    *   Open your web browser and navigate to `http://localhost:8080`.
+    *   *Expected Outcome:* You should see the default "Welcome to nginx!" page.
+
+. *Stop and Remove the Nginx Container (if using terminal steps):*
+    *   Once verified, stop and remove the container to free up resources:
+        ```bash
+        podman stop my-nginx
+        podman rm my-nginx
+        ```
+
+. *Expected Outcome for Activity 3:*
+    *   You are able to successfully pull images.
+    *   You are able to run containers from those images.
+    *   Container logs are accessible and show expected output.
+    *   (Optional) The Nginx web server is accessible via `http://localhost:8080`.
+
+By successfully completing these verification steps, you can be confident that your Red Hat Build of Podman Desktop installation is functional and ready for your container development tasks.#  Verifying installation and basic functionality
+
+```asciidoc
+[[verifying-installation-and-basic-functionality]]
+= Verifying Installation and Basic Functionality
+
+After successfully installing Red Hat Build of Podman Desktop on your operating system, it's crucial to verify that the application and its underlying components are functioning correctly. This ensures that you can immediately begin managing containers without encountering unexpected issues. This section will guide you through confirming the installation and basic operational capabilities of Podman Desktop.
+
+== Why Verification is Essential
+
+Verification steps serve several critical purposes:
+
+*   **Confirming Installation Integrity**: Ensures all components of Podman Desktop, including its user interface, background services, and the Podman engine, are correctly installed and launched.
+*   **Validating Podman Machine Health**: On macOS and Windows, Podman Desktop relies on a Linux virtual machine (the Podman machine) to run containers. Verifying its status is paramount.
+*   **Testing Core Functionality**: By running a simple container, you confirm that the Podman engine can pull images, create containers, and execute commands as expected.
+*   **Early Issue Detection**: Identifying potential problems early in the setup process prevents more complex troubleshooting later.
+
+== Accessing Podman Desktop
+
+The first step in verification is to successfully launch and navigate the Podman Desktop application.
+
+. On **macOS**:
+.. Open the `Applications` folder and double-click `Podman Desktop`.
+.. Alternatively, use Spotlight Search (Cmd + Space) and type "Podman Desktop," then press Enter.
+
+. On **Windows**:
+.. Click the `Start` button, navigate to `All apps`, and select `Podman Desktop`.
+.. Alternatively, use the Windows Search bar and type "Podman Desktop," then press Enter.
+
+. On **Red Hat Enterprise Linux**:
+.. Open your applications menu and search for `Podman Desktop`.
+.. Alternatively, if installed via `dnf` or `flatpak`, you might launch it from the command line:
++
+[source,bash]
+----
+podman-desktop
+----
+
+Upon successful launch, you should see the Podman Desktop welcome screen or the main dashboard, which provides an overview of your container engines and running containers.
+
+[[lab-verifying-podman-desktop]]
+=== Hands-On Activity: Verify Podman Desktop UI
+
+Let's ensure the application launches and displays correctly.
+
+. **Launch Podman Desktop** using the method appropriate for your operating system.
+. **Observe the Welcome Screen/Dashboard**:
+    *   If this is your first time launching, you might see a welcome wizard guiding you to set up your Podman machine. Follow the prompts to complete this initial setup if you haven't already.
+    *   Once setup is complete or if you've launched it before, you should see the main dashboard.
+. **Identify Key UI Elements**:
+    *   On the left sidebar, locate the navigation items like `Containers`, `Images`, `Pods`, `Volumes`, `Networks`, `Settings`, etc.
+    *   In the main content area, look for an `Engine` section, typically indicating `Podman (running)` or similar status.
+. **Check for Error Messages**: Ensure there are no prominent error messages or warning banners indicating issues with the application itself or its connection to the container engine.
+
+If Podman Desktop launches and displays its interface without immediate errors, this indicates the application package is installed and running correctly.
+
+== Verifying Podman Machine Status (macOS and Windows)
+
+For macOS and Windows users, Podman Desktop relies on a lightweight Linux virtual machine, known as the "Podman machine," to host the actual Podman engine. Verifying its status is critical to ensure container operations can proceed. On Red Hat Enterprise Linux, Podman runs natively, so this step is not applicable.
+
+=== Understanding the Podman Machine
+
+The Podman machine is a virtualized environment that provides a Linux kernel and userland where the Podman daemon runs. This architecture allows Windows and macOS users to leverage Podman's full capabilities, which are inherently Linux-based. Podman Desktop simplifies the creation and management of this machine.
+
+[[lab-check-podman-machine]]
+=== Hands-On Activity: Check Podman Machine Status
+
+This activity focuses on confirming the health of your Podman machine.
+
+. **Navigate to the Engine Section**:
+    *   In Podman Desktop, click on the `Engines` item in the left sidebar.
+    *   Alternatively, you might see an "Engines" widget on the main dashboard.
+. **Locate the Podman Engine Entry**:
+    *   You should see an entry for "Podman" (or "Red Hat Podman").
+    *   Observe its status. It should typically show `Running`.
+. **Verify Connection**:
+    *   Click on the "Podman" engine entry to expand its details.
+    *   Look for information about the `Podman Machine`. Its status should also be `Running`.
+    *   You should see details like its IP address, CPU, and memory allocation.
+
+If the Podman engine and its associated Podman machine show a `Running` status, this confirms that the virtual environment is operational and ready to receive container commands. If it's not running, you might see options to "Start" or "Restart" the machine.
+
+You can also use the terminal to verify the Podman machine status.
+
+. **Open a terminal**:
+    *   On macOS, open `Terminal.app`.
+    *   On Windows, open `PowerShell` or `Command Prompt`.
+. **Check Podman machine status**:
+    +
+[source,bash]
+----
+podman machine ls
+----
++
+.Expected Output (example):
+[source,text]
+----
+NAME          VM TYPE    CPUS   MEMORY      DISK SIZE   API SOCKET                    STATE      AUTO START   
+podman-machine  qemu       2      2.147GB     10.74GB     /run/user/1000/podman/podman.sock running    true
+----
++
+Ensure the `STATE` column for your default machine (usually `podman-machine`) shows `running`.
+
+== Running a Test Container
+
+The ultimate verification step is to run a simple container. This tests the entire pipeline: image pulling, container creation, and execution, confirming that Podman Desktop can successfully interact with the Podman engine and execute container workloads.
+
+[[lab-run-test-container]]
+=== Hands-On Activity: Run Your First Container
+
+Let's deploy a basic 'hello-world' container to confirm full functionality.
+
+. **Open Podman Desktop Terminal**:
+    *   In Podman Desktop, navigate to `Settings` (gear icon on the left sidebar).
+    *   Under `Podman Machine` (for macOS/Windows) or `Podman` (for Linux), find the option to "Open a terminal to the Podman Machine" or "Open a terminal". Click it.
+    *   Alternatively, you can use your system's terminal after ensuring `podman` is in your PATH.
+. **Run a `hello-world` container**:
+    *   In the terminal, execute the following command:
+    +
+[source,bash]
+----
+podman run hello-world
+----
++
+This command instructs Podman to:
+    *   Check for the `hello-world` image locally.
+    *   If not found, pull it from a configured registry (by default, `registry.access.redhat.com` and `docker.io`).
+    *   Create and run a new container from that image.
+. **Verify the Output**:
+    *   You should see output similar to this (exact text might vary slightly):
+    +
+[source,text]
+----
+Trying to pull registry.access.redhat.com/hello-world...
+Getting image source signatures
+Copying blob sha256:d2c94e258d4a...
+Copying config sha256:4a0d9b43...
+Writing manifest to image destination
+Storing signatures
+Attempting to pull "docker.io/library/hello-world:latest"
+Resolved "docker.io/library/hello-world:latest" as an alias (/etc/containers/registries.conf.d/000-shortnames.conf)
+Trying to pull docker.io/library/hello-world:latest...
+Getting image source signatures
+Copying blob 4a0d9b43725b done  
+Copying config 4a0d9b4372 done  
+Writing manifest to image destination
+Storing signatures
+Hello from Docker!
+This message shows that your installation appears to be working correctly.
+... (more text) ...
+----
++
+The key line to look for is `Hello from Docker!` or similar confirmation that the container executed its task and printed output.
+
+If you see the "Hello from Docker!" message, congratulations! Your Red Hat Build of Podman Desktop installation is fully operational, and the Podman engine is successfully running containers.
+
+== Basic Troubleshooting Tips for Verification Issues
+
+If any of the verification steps fail, consider the following common issues and solutions:
+
+*   **Podman Desktop Fails to Launch**:
+    *   **Restart your computer**: A simple reboot can often resolve installation-related glitches.
+    *   **Reinstall Podman Desktop**: If a component was corrupted during the initial installation, a fresh install might fix it.
+    *   **Check system logs**: On macOS, use `Console.app`; on Windows, `Event Viewer`.
+*   **Podman Machine Not Running (macOS/Windows)**:
+    *   **Restart Podman Desktop**: Sometimes the machine fails to start on first launch.
+    *   **Use `podman machine start`**: Open a system terminal and run `podman machine start` to manually start the machine.
+    *   **Check virtualization software**: Ensure WSL 2 (Windows) or HyperKit/Virtualization Framework (macOS) is enabled and functional. For Windows, confirm WSL 2 is installed and updated (`wsl --update`, `wsl --set-default-version 2`).
+    *   **Increase resources**: In Podman Desktop settings (`Settings` > `Resources` or `Podman Machine`), allocate more CPU or memory if the machine struggles to start.
+*   **`podman run hello-world` Fails**:
+    *   **"Error: ... connection refused"**: The Podman engine is not running or the client cannot connect to it. Ensure the Podman machine is `Running`.
+    *   **"Error: ... image not found"**: Podman cannot pull the image. Check your internet connection. If in a restricted environment, you may need to configure proxy settings or use pre-pulled images (covered in later sections).
+    *   **Check firewall rules**: Ensure your firewall isn't blocking communication between Podman Desktop and the Podman machine or external registries.
+
+These verification steps provide a robust check of your Podman Desktop installation. Addressing any issues at this stage ensures a smoother experience as you delve deeper into container management.
+```

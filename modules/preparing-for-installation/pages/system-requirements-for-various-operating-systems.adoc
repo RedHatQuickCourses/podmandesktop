@@ -1,0 +1,226 @@
+#  System requirements for various operating systems
+
+= System Requirements for Podman Desktop
+
+This section details the essential system requirements for successfully installing and running Red Hat Build of Podman Desktop on various operating systems. Adhering to these specifications will facilitate a smooth installation process and ensure optimal performance when managing your container workloads.
+
+== macOS System Requirements
+
+For users running macOS, the following minimum and recommended specifications are crucial for an efficient Podman Desktop experience.
+
+*   **Operating System:** macOS 11 (Big Sur) or a newer version.
+*   **Processor:**
+    *   Intel-based Macs with a 64-bit processor (x86-64).
+    *   Apple Silicon (M1, M2, M3, or newer) series chips (ARM64 architecture).
+*   **RAM:** A minimum of 8 GB RAM is recommended. While Podman Desktop may function with less, performance, especially when running multiple containers or complex applications, will be significantly improved with 8 GB or more.
+*   **Disk Space:** At least 20 GB of free disk space is recommended. This space is utilized by the Podman machine (a lightweight Linux virtual machine that hosts the Podman engine) and for storing container images, volumes, and other related data.
+*   **Internet Connection:** Required for the initial download of the installer, subsequent updates, and pulling container images from public registries.
+
+=== Hands-on: Checking macOS System Information
+
+You can quickly verify your macOS version, processor type, and available RAM using the built-in system tools.
+
+. To check your macOS version, processor type, and installed memory:
+ .. Click the *Apple menu icon* (&#x2318;) in the top-left corner of your screen.
+ .. Select *About This Mac*.
+ .. A window will appear displaying your macOS version (e.g., "macOS Ventura"), processor (e.g., "Apple M2 Pro" or "Intel Core i7"), and memory (e.g., "16 GB").
+
+. To check your free disk space:
+ .. Open *Finder*.
+ .. From the Finder menu bar, go to *Finder* -> *Preferences* -> *Sidebar*.
+ .. Ensure that *Hard disks* is checked under the "Locations" section.
+ .. In the Finder sidebar, select your main hard drive (typically named "Macintosh HD").
+ .. At the bottom of the Finder window, the available space will be displayed (e.g., "100 GB available of 500 GB"). Alternatively, right-click on the drive in the sidebar and select *Get Info* for a detailed view.
+
+== Windows System Requirements
+
+On Windows, Podman Desktop leverages the Windows Subsystem for Linux 2 (WSL2) to provide a robust environment for container management. Meeting these requirements ensures proper WSL2 integration and Podman engine operation.
+
+*   **Operating System:** Windows 10 (version 21H2 or newer) or Windows 11. It is highly recommended to keep your Windows OS updated to the latest stable release for compatibility and security.
+*   **Processor:** A 64-bit processor that supports Second Level Address Translation (SLAT). This feature is essential for virtualization technologies like WSL2.
+*   **RAM:** A minimum of 8 GB RAM is recommended. For users working with resource-intensive containers or multiple development environments, 16 GB or more will significantly enhance performance.
+*   **Disk Space:** At least 20 GB of free disk space is recommended. This space is allocated for the WSL2 distribution that hosts the Podman engine, container images, and other related files.
+*   **Virtualization:** Hardware virtualization must be enabled in your computer's BIOS/UEFI settings. This is a fundamental prerequisite for WSL2 to function correctly.
+*   **WSL2:** Windows Subsystem for Linux 2 must be installed and configured prior to or during the Podman Desktop installation. Podman Desktop relies on WSL2 to provide a Linux environment where the Podman engine runs natively.
+
+=== Hands-on: Checking Windows System Information and WSL2 Status
+
+Verify your Windows specifications and confirm WSL2 is ready using the following steps.
+
+. To check your Windows version, processor, and RAM:
+ .. Press `Win + R` to open the Run dialog.
+ .. Type `msinfo32` and press `Enter`.
+ .. The System Information window will open, displaying details such as your OS Name, Version, Processor, and Installed Physical Memory (RAM).
+
+. To check your free disk space:
+ .. Open *File Explorer* (you can press `Win + E`).
+ .. Navigate to *This PC* in the left sidebar.
+ .. Under "Devices and drives," you will see your primary drive (usually `C:`). The available free space will be displayed directly below it.
+
+. To confirm hardware virtualization is enabled:
+ .. Open *Task Manager* (press `Ctrl + Shift + Esc`).
+ .. Go to the *Performance* tab.
+ .. Select *CPU* from the left pane.
+ .. On the right side, look for "Virtualization." It should display "Enabled." If it shows "Disabled," you will need to enable it in your computer's BIOS/UEFI settings (the specific steps vary by manufacturer).
+
+. To check the WSL2 installation status:
+ .. Open a PowerShell terminal as an administrator (right-click the Start button and select "Windows Terminal (Admin)" or "PowerShell (Admin)").
+ .. Run the command:
+    ```bash
+    wsl -l -v
+    ```
+ .. This command lists your installed WSL distributions and their versions. Ensure you see "WSL 2" listed for any distribution (e.g., `Ubuntu-20.04   Running   2`). If WSL2 is not installed or configured, refer to the "Prerequisites and dependencies" section for detailed setup instructions.
+
+== Red Hat Enterprise Linux (RHEL) System Requirements
+
+For users deploying on Red Hat Enterprise Linux, Podman Desktop integrates directly with the existing Podman engine on the system.
+
+*   **Operating System:** Red Hat Enterprise Linux 8 or 9. While Podman Desktop can run on other RHEL-based distributions (e.g., Fedora, CentOS Stream), RHEL is the primary target and fully supported environment.
+*   **Processor:** A 64-bit x86-64 architecture processor.
+*   **RAM:** A minimum of 8 GB RAM is recommended. More RAM will significantly improve performance, especially when running multiple containers, building images, or managing complex containerized applications.
+*   **Disk Space:** At least 20 GB of free disk space is recommended for storing container images, volumes, and other runtime data. The `/var` partition is commonly used for container storage, so ensure sufficient space there.
+*   **Podman Engine:** A compatible version of the Podman engine must be installed and running. Podman Desktop functions as a graphical user interface (GUI) for the underlying Podman CLI and daemonless engine.
+
+=== Hands-on: Checking RHEL System Information
+
+Use the following command-line utilities to verify your RHEL system's specifications.
+
+. To check your RHEL version:
+ ```bash
+ cat /etc/redhat-release
+ ```
+ This command will output the specific release of Red Hat Enterprise Linux installed (e.g., `Red Hat Enterprise Linux release 9.2 (Plow)`).
+
+. To check your processor architecture:
+ ```bash
+ uname -m
+ ```
+ This should typically return `x86_64` for compatible systems.
+
+. To check your total RAM:
+ ```bash
+ free -h
+ ```
+ Look for the "Mem" line under the "total" column to see your installed RAM in a human-readable format.
+
+. To check free disk space:
+ ```bash
+ df -h /
+ ```
+ This command shows the disk usage for your root filesystem. If your container storage resides on a different partition (e.g., `/var`), adjust the command accordingly (e.g., `df -h /var`).
+
+. To check if the Podman engine is installed and running:
+ ```bash
+ podman --version
+ systemctl status podman
+ ```
+ The `podman --version` command will display the installed Podman CLI version. If it returns an error, Podman is not installed.
+ The `systemctl status podman` command will show the status of the `podman` systemd service. Ensure it indicates "active (running)". If it's not running, you may need to start and enable it: `sudo systemctl start podman` and `sudo systemctl enable podman`.#  System requirements for various operating systems
+
+:system[]
+== System Requirements for Various Operating Systems
+
+Understanding and meeting the system requirements is a crucial first step before installing Red Hat Build of Podman Desktop. Adhering to these specifications ensures a smooth installation, optimal performance, and a stable environment for managing your containers. Disregarding these requirements can lead to installation failures, performance bottlenecks, or unexpected behavior when interacting with containers and Kubernetes environments.
+
+=== General System Considerations
+
+While specific requirements vary by operating system, some general considerations apply across the board:
+
+*   **Processor (CPU):** A modern multi-core processor is highly recommended. For development and running multiple containers or Kubernetes clusters, at least 2 cores are advisable, with 4 cores or more being ideal.
+*   **Memory (RAM):** Podman Desktop itself has a relatively small footprint. However, the container engine (Podman Machine, Docker Desktop, etc.) and the containers you run will consume significant memory. A minimum of 8 GB RAM is generally recommended for the host system, with 16 GB or more strongly advised for development work involving multiple containers, Kubernetes, or resource-intensive applications.
+*   **Disk Space:** You will need sufficient disk space for the Podman Desktop application, the container engine's virtual machine (if applicable, like Podman Machine or WSL2), container images, and container volumes. A minimum of 20-50 GB of free disk space is a good starting point, but this can quickly increase depending on the number and size of images and volumes you use. SSDs (Solid State Drives) are highly recommended for better performance.
+*   **Internet Connection:** Required for downloading the installer, container images from registries, and application updates. For air-gapped environments, specific preparation steps are necessary, as covered in a later section.
+
+=== Operating System Specific Requirements
+
+Below are the key system requirements and prerequisites for installing Podman Desktop on common operating systems. Always refer to the official Red Hat Build of Podman Desktop documentation for the most current and precise requirements.
+
+==== macOS
+
+Podman Desktop on macOS leverages a Podman machine (a lightweight virtual machine) to host the Podman engine.
+
+*   **Operating System:** macOS 11 (Big Sur) or newer. It is always recommended to use a recently supported version of macOS.
+*   **Processor:** Intel x86-64 based Macs or Apple Silicon (M1/M2/M3) based Macs are supported.
+*   **Virtualization:** macOS's built-in Hypervisor framework is utilized by Podman Machine, so no additional virtualization software (like VirtualBox or VMware) is typically required for the Podman machine itself.
+*   **Podman Engine:** Podman Desktop will guide you through creating and managing a Podman machine, which includes the Podman engine.
+
+==== Windows
+
+On Windows, Podman Desktop relies heavily on the Windows Subsystem for Linux (WSL) 2 to provide a Linux environment where the Podman engine can run.
+
+*   **Operating System:** Windows 10 (version 2004 or higher, Build 19041 or higher) or Windows 11.
+    *   *Note:* Ensure your Windows installation is up to date to support WSL2.
+*   **WSL 2:**
+    *   You *must* have WSL 2 installed and enabled. This typically involves enabling the "Virtual Machine Platform" and "Windows Subsystem for Linux" optional features.
+    *   A default WSL distribution (e.g., Ubuntu) is often helpful but not strictly required for Podman Desktop to install WSL components.
+    *   WSL 2 requires virtualization to be enabled in your computer's BIOS/UEFI settings. This is often referred to as Intel VT-x or AMD-V.
+*   **Processor:** 64-bit processor with Second Level Address Translation (SLAT).
+*   **Memory:** At least 4 GB RAM. As mentioned in general considerations, 8 GB or more is highly recommended.
+*   **Podman Engine:** Podman Desktop will create and manage a Podman machine within WSL2, which hosts the Podman engine.
+
+==== Red Hat Enterprise Linux (RHEL) and Fedora/CentOS Stream
+
+On Linux, Podman Desktop runs natively and interacts directly with the Podman engine installed on the host.
+
+*   **Operating System:**
+    *   Red Hat Enterprise Linux 8 or 9 (or compatible derivatives like CentOS Stream 8/9, Rocky Linux 8/9, AlmaLinux 8/9).
+    *   Fedora (recent versions).
+*   **Podman Engine:** The Podman engine *must* be installed on your system. Podman Desktop acts as a graphical interface to this existing engine.
+    *   Ensure Podman is installed and configured correctly. You can typically install it using your distribution's package manager (e.g., `sudo dnf install podman`).
+*   **Dependencies:** Podman Desktop may require specific graphical libraries or dependencies that your desktop environment provides. These are typically handled by the package manager during installation.
+*   **Systemd User Services:** Podman often uses `systemd` user services to manage containers, which should be active for your user.
+
+=== Hands-On Activity: System Pre-flight Checklist
+
+Before proceeding with the installation, it's essential to perform a pre-flight check of your system to ensure it meets the necessary requirements. This activity will guide you through verifying your system's specifications.
+
+*Goal:* Verify your system meets the minimum requirements for Red Hat Build of Podman Desktop.
+
+*Estimated Time:* 10-15 minutes
+
+==== Steps:
+
+.  **Identify your Operating System and Version:**
+    *   **macOS:** Click the Apple menu icon (top-left corner) -> `About This Mac`. Note down the macOS version (e.g., macOS Sonoma 14.x).
+    *   **Windows:** Press `Windows Key + R`, type `winver`, and press Enter to see the version and build number. Alternatively, go to `Settings` -> `System` -> `About`. Note down the Edition, Version, and OS build.
+    *   **RHEL/Linux:** Open a terminal and run `cat /etc/os-release`. Note down the `NAME` and `VERSION_ID`.
+
+.  **Check Processor (CPU):**
+    *   **macOS:** In `About This Mac`, look under "Chip" (for Apple Silicon) or "Processor" (for Intel).
+    *   **Windows:** In `Settings` -> `System` -> `About`, look for "Processor".
+    *   **RHEL/Linux:** Open a terminal and run `lscpu | grep "Model name"`.
+
+.  **Verify Installed Memory (RAM):**
+    *   **macOS:** In `About This Mac`, look for "Memory".
+    *   **Windows:** In `Settings` -> `System` -> `About`, look for "Installed RAM".
+    *   **RHEL/Linux:** Open a terminal and run `free -h | grep Mem:`.
+
+.  **Assess Available Disk Space:**
+    *   **macOS:** In `About This Mac`, go to the "Storage" tab.
+    *   **Windows:** Open "This PC" (My Computer), right-click on your C: drive, and select "Properties". Note the "Free space".
+    *   **RHEL/Linux:** Open a terminal and run `df -h /`.
+
+.  **Windows Specific - Verify WSL 2 and Virtualization:**
+    *   Open PowerShell as an administrator.
+    *   Run `wsl --status`. Ensure "Default Version: 2" is shown. If not, refer to Microsoft's documentation to enable and update WSL2.
+    *   To check for virtualization in BIOS/UEFI, you usually need to restart your computer and enter the firmware settings. Look for "Virtualization Technology," "Intel VT-x," or "AMD-V" and ensure it's enabled. (This step requires a reboot, so proceed if unsure or after saving your work).
+
+.  **RHEL/Linux Specific - Verify Podman Engine Installation:**
+    *   Open a terminal and run `podman --version`. If Podman is not found or the version is old, you may need to install or update it:
+        ```bash
+        sudo dnf install podman -y
+        ```
+    *   To verify that `systemd` user services for Podman are running:
+        ```bash
+        systemctl --user status podman.socket
+        ```
+        It should show `active (running)`.
+
+==== Verification:
+
+Once you have completed these checks, compare your system's specifications against the requirements listed above.
+
+*   If your system meets or exceeds the requirements, you are ready to proceed with the installation.
+*   If your system does not meet certain requirements (e.g., insufficient RAM, older OS version, WSL2 not enabled), you will need to address these issues before attempting to install Podman Desktop. Consulting official documentation or upgrading hardware/software may be necessary.
+
+This pre-flight checklist helps prevent common installation issues and ensures a smoother experience with Red Hat Build of Podman Desktop.

@@ -1,0 +1,20 @@
+#  Troubleshooting Podman Desktop Issues
+
+* xref:troubleshooting-podman-desktop-issues.adoc[Troubleshooting Podman Desktop Issues] involves diagnosing and resolving common problems encountered during installation, startup, and operation.
+
+Key areas include:
+
+*  Identifying and fixing installation and startup issues.
+*  Diagnosing failures related to the Podman machine.
+*  Resolving errors during image pulls and container execution.
+*  Leveraging logs for effective problem identification.
+*  Implementing best practices to prevent future issues.#  Troubleshooting Podman Desktop Issues
+
+== Troubleshooting Podman Desktop Issues
+
+Learn to identify and resolve common problems encountered with Red Hat Build of Podman Desktop.
+
+*   Address installation, startup, image pull, and container run errors.
+*   Diagnose Podman machine failures.
+*   Utilize logs for effective problem identification.
+*   Implement best practices to prevent future issues.

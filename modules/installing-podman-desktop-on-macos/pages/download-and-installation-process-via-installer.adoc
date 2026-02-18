@@ -1,0 +1,164 @@
+#  Download and installation process via installer
+
+This content covers the download and installation process of Red Hat Build of Podman Desktop specifically for macOS and Windows operating systems, utilizing their respective installers. This section focuses on getting the application installed on your system; initial setup and Podman machine creation will be addressed in subsequent topics.
+
+[#installation-via-installer]
+= Installation via Installer
+
+This section guides you through downloading and installing Red Hat Build of Podman Desktop using dedicated installers for macOS and Windows. This process streamlines the setup, allowing you to quickly get the application running on your system.
+
+[#download-install-macos]
+== Installing Podman Desktop on macOS
+
+The installation of Podman Desktop on macOS is straightforward, involving downloading a `.dmg` file and dragging the application to your Applications folder.
+
+[#technical-explanation-macos]
+=== Technical Explanation: macOS Installation
+
+Podman Desktop for macOS is distributed as a Disk Image (`.dmg`) file. This package contains the application bundle, which can be easily installed by dragging it into the Applications directory. macOS's security features will prompt for verification upon the first launch of the application. The installer typically includes all necessary components to run the Podman Desktop application itself, but the underlying container engine (Podman machine) will be set up during the initial launch phase of the application.
+
+[#hands-on-macos]
+=== Hands-on Activity: Install Podman Desktop on macOS
+
+Follow these steps to download and install Podman Desktop on your macOS system:
+
+.  **Download the Installer**:
+    *   Open your web browser and navigate to the official Podman Desktop download page.
+        link:https://podman-desktop.io/downloads[Podman Desktop Downloads]
+    *   Locate the download link for "macOS" and click it to download the `.dmg` file (e.g., `podman-desktop-*-mac.dmg`).
+        Wait for the download to complete.
+
+.  **Mount the Disk Image**:
+    *   Once the download is complete, open the downloaded `.dmg` file. This will mount the disk image and open a Finder window displaying its contents, typically showing the Podman Desktop application icon and an alias to your Applications folder.
+
+.  **Install Podman Desktop**:
+    *   Drag the *Podman Desktop* application icon from the mounted disk image window directly into your *Applications* folder. This copies the application to your system.
+
+.  **Eject the Disk Image**:
+    *   After copying, you can eject the Podman Desktop disk image from your Finder sidebar or by dragging its icon to the Trash.
+
+.  **Launch Podman Desktop**:
+    *   Navigate to your *Applications* folder, locate *Podman Desktop*, and double-click its icon to launch the application.
+    *   The first time you launch it, macOS may ask you to confirm that you want to open an application downloaded from the internet. Click *Open* to proceed.
+
+[NOTE]
+Podman Desktop will perform an initial setup upon its first launch, which typically includes checking for and setting up the Podman machine. This initial setup is covered in detail in the <<initial-setup-macos,Initial Setup on macOS>> section.
+
+[#download-install-windows]
+== Installing Podman Desktop on Windows
+
+Installing Podman Desktop on Windows involves downloading an executable installer and following a standard wizard-driven installation process.
+
+[#technical-explanation-windows]
+=== Technical Explanation: Windows Installation
+
+For Windows, Podman Desktop is provided as an executable (`.exe`) installer. This installer handles placing all necessary application files, creating Start Menu shortcuts, and performing any required system registrations. The installer usually prompts for administrative privileges, which are essential for system-level changes. A key prerequisite for Podman Desktop on Windows is the Windows Subsystem for Linux (WSL 2), which provides the environment for the underlying Podman engine. While the Podman Desktop installer itself might assist in detecting or even suggesting WSL 2 installation, ensuring WSL 2 is configured correctly is vital for the Podman machine functionality.
+
+[#hands-on-windows]
+=== Hands-on Activity: Install Podman Desktop on Windows
+
+Follow these steps to download and install Podman Desktop on your Windows system:
+
+.  **Download the Installer**:
+    *   Open your web browser and navigate to the official Podman Desktop download page.
+        link:https://podman-desktop.io/downloads[Podman Desktop Downloads]
+    *   Locate the download link for "Windows" and click it to download the `.exe` installer (e.g., `podman-desktop-*-setup.exe`).
+        Wait for the download to complete.
+
+.  **Run the Installer**:
+    *   Once the download is complete, locate the `.exe` file in your `Downloads` folder or browser's download list and double-click it to run the installer.
+    *   Windows User Account Control (UAC) may prompt you to allow the app to make changes to your device. Click *Yes* to proceed.
+
+.  **Follow the Installation Wizard**:
+    *   The Podman Desktop Setup Wizard will appear.
+    *   *Welcome Screen*: Click *Next*.
+    *   *License Agreement*: Read the terms and conditions, then select "I accept the agreement" and click *Next*.
+    *   *Choose Components*: You can usually keep the default components selected. Click *Next*.
+    *   *Choose Install Location*: The default installation path is typically suitable. You can change it if necessary, then click *Next*.
+    *   *Ready to Install*: Review your settings and click *Install* to begin the installation process.
+
+.  **Complete Installation**:
+    *   The installer will copy files and configure Podman Desktop. This may take a few moments.
+    *   Once complete, an "Completing the Podman Desktop Setup Wizard" screen will appear. Ensure "Launch Podman Desktop" is checked (unless you prefer to launch it manually later), and then click *Finish*.
+
+[NOTE]
+Upon its first launch, Podman Desktop on Windows will guide you through the initial setup, including verifying or assisting with WSL 2 installation and creating the Podman machine. This process is crucial for enabling container capabilities and is detailed in the <<initial-setup-windows,Initial Setup on Windows>> section.#  Download and installation process via installer
+
+= Installing Podman Desktop on macOS
+
+This section guides you through the process of downloading and installing Red Hat Build of Podman Desktop on macOS, a seamless experience designed to get you up and running with container management quickly. We'll cover obtaining the installer, performing the installation, and verifying the initial setup.
+
+== Download and Installation Process via Installer
+
+Red Hat Build of Podman Desktop for macOS is distributed as a `.dmg` (Disk Image) file, a standard package format for macOS applications. This method simplifies the installation to a straightforward drag-and-drop operation, familiar to most macOS users. The `.dmg` file typically contains the application bundle (`.app` file) and often includes a shortcut to the Applications folder for convenience.
+
+When you install Podman Desktop using the installer, it sets up the necessary application files in your `Applications` directory. While the core application is installed this way, Podman Desktop itself relies on the Podman engine to manage containers. On macOS, this usually involves the creation and management of a Podman machine, which is a lightweight Linux virtual machine that hosts the Podman engine. This machine is typically managed by Podman Desktop automatically after the initial application installation, but understanding its role is crucial for advanced configurations and troubleshooting.
+
+=== Hands-on Activity: Installing Podman Desktop on macOS
+
+Follow these steps to download and install Red Hat Build of Podman Desktop on your macOS system.
+
+**Objective:** Successfully download the Podman Desktop installer and install the application on macOS.
+
+**Estimated Time:** 5-10 minutes
+
+**Procedure:**
+
+.  **Access the Official Download Page:**
+    Open your web browser and navigate to the official Podman Desktop download page. For Red Hat Build of Podman Desktop, this is typically found on the Red Hat Developers site or the main Podman Desktop website.
+    A common URL pattern might look like `https://podman-desktop.io/downloads` or a similar Red Hat-branded page.
+
+.  **Locate the macOS Installer:**
+    On the download page, identify the section for macOS. You will usually find a direct download link for the latest stable version, typically labeled "Download for macOS" or similar. The file will have a `.dmg` extension.
+
+    image::podman-desktop-mac-download-button.png[Podman Desktop macOS Download Button,width=600]
+    _Figure 1: Example of a macOS download button (actual appearance may vary)_
+
+.  **Download the Installer File:**
+    Click the download link. Your browser will start downloading the `.dmg` file to your default downloads folder (e.g., `~/Downloads`). The file size can vary, but typically it's a few hundred megabytes.
+
+    [source,bash]
+    ----
+    # Example command to check downloaded file (adjust filename as needed)
+    ls ~/Downloads/Podman*Desktop*.dmg
+    ----
+
+.  **Open the `.dmg` File:**
+    Once the download is complete, navigate to your downloads folder and double-click the `Podman Desktop-*-mac.dmg` file. This will mount the disk image, opening a new Finder window that usually displays the Podman Desktop application icon and an alias to your Applications folder.
+
+    image::podman-desktop-mac-dmg-window.png[Podman Desktop .dmg Window,width=600]
+    _Figure 2: Podman Desktop .dmg window showing application icon and Applications folder_
+
+.  **Install Podman Desktop:**
+    Drag the "Podman Desktop" application icon from the mounted `.dmg` window into the "Applications" folder shortcut also present in that window. This copies the application bundle to your system's `Applications` directory.
+
+    [source,bash]
+    ----
+    # Internally, this is similar to copying the application bundle
+    # to /Applications, but the drag-and-drop is the standard macOS method.
+    ----
+
+    If prompted, you may need to authenticate with your administrator password.
+
+.  **Eject the Disk Image:**
+    After the copy operation is complete, you can unmount the disk image. To do this, drag the "Podman Desktop" disk image icon from your desktop or Finder sidebar to the Trash, or right-click the icon and select "Eject 'Podman Desktop'".
+
+    [source,bash]
+    ----
+    # Command-line equivalent for ejecting a mounted volume (example)
+    diskutil unmount "/Volumes/Podman Desktop"
+    ----
+
+.  **Launch Podman Desktop for the First Time:**
+    Open your `Applications` folder (you can use Finder or press `Cmd+Shift+A` from a Finder window) and double-click the "Podman Desktop" application icon.
+
+    The first time you launch it, macOS might ask for confirmation that you want to open an application downloaded from the internet. Click "Open" to proceed.
+
+    image::mac-security-warning.png[macOS Security Warning,width=400]
+    _Figure 3: macOS security warning when opening a new application_
+
+    Podman Desktop will then start and guide you through the initial setup, which typically involves creating or connecting to a Podman machine. This crucial step is covered in the subsequent section "Initial Setup and Podman machine creation".
+
+**Troubleshooting Tip:** If you encounter issues during installation, ensure you have sufficient disk space and that your macOS version meets the minimum system requirements. A common issue is a security warning preventing the app from opening; you can often resolve this by going to `System Settings > Privacy & Security` and explicitly allowing the app.
+
+You have now successfully downloaded and installed Red Hat Build of Podman Desktop on your macOS system. The next step is to configure your Podman machine to enable container operations.

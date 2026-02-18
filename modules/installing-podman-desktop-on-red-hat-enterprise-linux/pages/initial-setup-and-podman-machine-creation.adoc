@@ -1,0 +1,239 @@
+#  Initial setup and Podman machine creation
+
+= Initial setup and Podman machine creation
+
+This section guides you through the crucial initial setup process of Red Hat Build of Podman Desktop, focusing on the creation and management of a Podman machine. Understanding the Podman machine is fundamental to leveraging Podman Desktop, especially on non-Linux operating systems.
+
+== Understanding the Podman Machine
+
+On Linux distributions, the Podman engine runs natively. However, on macOS and Windows, a full Linux environment is required to run Linux containers. This is where the *Podman machine* comes into play.
+
+=== What is a Podman Machine?
+
+A Podman machine is a lightweight Linux virtual machine (VM) that hosts the Podman engine and its associated services. Podman Desktop uses this VM to provide a consistent container management experience across different operating systems. When you install Podman Desktop on macOS or Windows, it automatically manages the lifecycle of this VM.
+
+The Podman machine essentially provides an isolated Linux environment where:
+
+*   The Podman daemon (or more accurately, the Podman socket for communication) runs.
+*   Container images are stored.
+*   Containers and pods are executed.
+
+=== Why is a Podman Machine Necessary?
+
+*   **OS Compatibility:** macOS and Windows do not natively support Linux container execution. The Podman machine bridges this gap by providing a Linux kernel and user space.
+*   **Isolation and Security:** Running the container engine within a dedicated VM provides an additional layer of isolation from the host operating system.
+*   **Simplified Management:** Podman Desktop abstracts away the complexities of managing a VM. It handles the creation, starting, stopping, and removal of the Podman machine, allowing users to focus on container development.
+*   **Consistency:** It ensures that the Podman environment behaves predictably, regardless of the underlying operating system.
+
+When you install Podman Desktop for the first time on macOS or Windows, it will automatically prompt you to create a new Podman machine. On Red Hat Enterprise Linux, a Podman machine is not strictly necessary for running containers locally, as Podman runs natively. However, Podman Desktop can still manage remote Podman machines or local ones if desired for specific isolation or testing scenarios.
+
+=== Technical Details of Podman Machine
+
+Under the hood, Podman Desktop leverages hypervisors available on your system:
+
+*   **Windows:** Utilizes Windows Subsystem for Linux 2 (WSL 2). WSL 2 provides a lightweight utility VM that runs a real Linux kernel. Podman Desktop integrates with WSL 2 to provision and manage the Podman machine.
+*   **macOS:** Leverages `hyperkit` (a lightweight macOS virtualization solution) or `Apple Virtualization framework` on newer macOS versions.
+*   **Linux:** Can use `QEMU` or run Podman natively.
+
+The default Podman machine typically comes configured with:
+
+*   A specific amount of CPU cores (e.g., 2-4 cores).
+*   A designated amount of RAM (e.g., 2-4 GB).
+*   A pre-allocated disk size (e.g., 10-20 GB) for images and container data.
+
+These settings are often configurable during the initial creation or can be adjusted later through Podman Desktop's settings or the `podman machine` CLI commands.
+
+== Hands-on Activity: Initial Setup and Podman Machine Creation
+
+This activity will guide you through the process of creating your first Podman machine after installing Podman Desktop. This process is largely automated by Podman Desktop itself.
+
+[.tabset]
+====
+.macOS and Windows
+--
+After successfully installing Podman Desktop on macOS or Windows, the application will perform an initial setup. Follow these steps to create your Podman machine:
+
+.Open Podman Desktop for the first time.
++
+If this is your first time opening Podman Desktop after installation, it will automatically detect that no Podman machine exists and will guide you to create one. You will typically see a prompt similar to "No Podman machine found. Create one now?".
+
+.Initiate machine creation.
++
+Click the *Create new machine* button or follow the prompts to start the machine creation process.
++
+image::podman-desktop-create-machine-prompt.png[alt="Podman Desktop prompt to create a new machine", width=600]
+
+.Review and customize machine settings (Optional).
++
+Podman Desktop will present you with default settings for the new Podman machine, including CPU, memory, and disk size.
++
+[cols="1a,2a", options="header"]
+|===
+| Setting | Default Value (Example)
+| CPUs | 2
+| Memory | 2 GB
+| Disk Size | 10 GB
+|===
++
+You can usually accept the default settings for your first machine, as they are sufficient for most common use cases. If you have specific requirements for resource-intensive workloads or limited system resources, you can adjust these values.
++
+image::podman-desktop-machine-settings.png[alt="Podman Desktop machine settings dialog", width=600]
+
+.Confirm and create the machine.
++
+Click the *Create* or *Start* button (the button name might vary slightly based on the version). Podman Desktop will now download necessary components (like the WSL 2 distro for Windows if not already present, or the boot image for macOS) and provision the VM.
++
+This process can take a few minutes depending on your internet connection and system performance. You will see progress indicators within Podman Desktop.
++
+image::podman-desktop-machine-creation-progress.png[alt="Podman Desktop showing machine creation in progress", width=600]
+
+.Verify successful machine creation.
++
+Once the process is complete, the Podman machine will start automatically. You will see its status updated in the "Containers" or "Podman Machines" section of Podman Desktop, typically showing "Running".
++
+image::podman-desktop-machine-running.png[alt="Podman Desktop showing a running Podman machine", width=600]
++
+You can also navigate to *Settings* -> *Resources* -> *Podman machines* to view the status and details of your machines.
+
+. (Optional) Connect to the Podman machine via CLI.
++
+While Podman Desktop abstracts away much of the CLI interaction, it's good practice to know how to verify the machine's status from your terminal. Open your terminal and run:
++
+[,bash]
+----
+podman machine ls
+----
++
+You should see output similar to this, indicating your `podman-machine-default` is running:
++
+[,bash]
+----
+NAME                    VM TYPE     CPUS        MEMORY      DISK SIZE   API SOCKET                    STATE           INITIALIZED     LAST UPGRADED
+podman-machine-default  WSL         2           2GB         10GB        /run/user/1000/podman/podman.sock Running         true            2 days ago
+----
+--
+.Red Hat Enterprise Linux
+--
+On Red Hat Enterprise Linux, Podman runs natively. Therefore, creating a separate Podman machine is not strictly necessary for local container operations. Podman Desktop will typically connect directly to the native Podman socket.
+
+.Open Podman Desktop for the first time.
++
+Podman Desktop will automatically detect the native Podman installation and attempt to connect to its socket.
+
+.Verify Podman engine connection.
++
+Navigate to the "Containers" section of Podman Desktop. You should see "Podman" listed as a running container engine, indicating a successful connection to your native Podman installation.
++
+image::podman-desktop-native-podman-linux.png[alt="Podman Desktop showing native Podman engine on Linux", width=600]
+
+. (Optional) Creating a Podman machine on Linux.
++
+While not strictly required for local use, you might want to create a Podman machine on Linux for testing specific environments or isolating workloads.
++
+*   Navigate to *Settings* -> *Resources* -> *Podman machines*.
+*   Click the *Create new machine* button.
+*   You will be prompted to select a virtual machine type, typically QEMU is the default.
+*   Configure the CPU, Memory, and Disk Size as desired.
+*   Click *Create*.
++
+This will provision a QEMU-based VM running a Podman engine, which Podman Desktop can then manage alongside your native Podman installation.
+--
+====
+
+You have now successfully completed the initial setup of Red Hat Build of Podman Desktop, including the creation and verification of your Podman machine (or connection to the native Podman engine on Linux). You are ready to start managing containers!#  Initial setup and Podman machine creation
+
+= Initial Setup and Podman Machine Creation
+
+This section details the critical initial steps after installing Red Hat Build of Podman Desktop, focusing on understanding and creating a Podman machine. A Podman machine is fundamental for running containers on non-Linux operating systems, serving as the lightweight Linux environment where the Podman engine operates.
+
+== Understanding the Podman Machine
+
+While Podman Desktop provides a graphical user interface (GUI) and a consistent experience across operating systems, the Podman engine itself is a Linux-native tool. This means that on macOS and Windows, containers cannot run directly on the host operating system. To bridge this gap, Red Hat Build of Podman Desktop utilizes a lightweight virtual machine, referred to as a "Podman machine."
+
+The Podman machine is essentially a minimal Linux virtual machine that hosts the Podman engine. When you interact with Podman Desktop on macOS or Windows, your commands and operations are proxied to this underlying Linux virtual machine, where the actual container management occurs.
+
+Key aspects of the Podman machine:
+
+*   **Linux Environment:** It provides a dedicated Linux kernel and runtime environment necessary for Podman and containers to function correctly.
+*   **Isolation:** It ensures that container operations are isolated from your host operating system, providing a secure and consistent environment.
+*   **Virtualization Technologies:**
+    *   On **macOS**, Podman machines typically leverage HyperKit (a lightweight virtualization solution built on top of Apple's Hypervisor.framework) to create and manage the virtual machine.
+    *   On **Windows**, Podman machines are deeply integrated with Windows Subsystem for Linux 2 (WSL 2). WSL 2 provides a full Linux kernel and file system within a lightweight utility virtual machine, which Podman Desktop utilizes.
+*   **Resource Allocation:** The Podman machine requires dedicated CPU, memory, and disk resources, which you can configure to suit your workload requirements.
+*   **Lifecycle Management:** Podman Desktop (or the `podman` CLI) handles the creation, starting, stopping, and removal of these machines, simplifying their management.
+
+In essence, the Podman machine is the silent workhorse that enables the power of Podman to be leveraged seamlessly on non-Linux desktops.
+
+== Initial Setup Workflow
+
+Upon the first launch of Red Hat Build of Podman Desktop after installation, the application will detect whether a Podman machine exists and is running. If no machine is found, or if the existing machine is not running, Podman Desktop will guide you through the initial setup process to create and start a new Podman machine. This is a crucial step as Podman Desktop cannot manage containers without a running Podman engine.
+
+The initial setup typically involves:
+
+1.  **Detection:** Podman Desktop checks for the presence and status of the default Podman machine.
+2.  **Prompt for Creation:** If no active machine is detected, Podman Desktop will present an interface to create a new one.
+3.  **Configuration (Optional but Recommended):** You will have the option to accept default resource allocations (CPU, memory, disk size) or customize them based on your system's capabilities and your expected container workloads. For basic use, defaults are often sufficient.
+4.  **Machine Creation and Initialization:** Podman Desktop will then provision the virtual machine, install the necessary Linux components, and set up the Podman engine within it.
+5.  **Machine Start:** Once created, the machine is automatically started, making the Podman engine available for use.
+6.  **Verification:** After the machine starts, Podman Desktop will connect to it and indicate that the Podman engine is ready.
+
+This automated process significantly simplifies getting started with container development, abstracting away the complexities of managing virtual machines.
+
+=== Hands-on Activity: Creating Your First Podman Machine
+
+This lab guides you through the process of creating your initial Podman machine using Podman Desktop. While the exact steps might vary slightly between macOS and Windows due to underlying virtualization differences, the user experience within Podman Desktop is largely consistent.
+
+[NOTE]
+Before proceeding, ensure you have successfully installed Red Hat Build of Podman Desktop on your chosen operating system (macOS, Windows, or Red Hat Enterprise Linux). For Windows users, WSL 2 must be installed and configured as per the installation prerequisites.
+
+==== Objective
+
+*   Create and start a new Podman machine.
+*   Verify the Podman machine's status.
+
+==== Steps
+
+.   **Launch Podman Desktop:**
+    *   Open the Red Hat Build of Podman Desktop application. On first launch, if no Podman machine exists, you will typically be greeted with a screen prompting you to create one.
+
+.   **Initiate Podman Machine Creation:**
+    *   Look for a prominent button or prompt, often labeled *Create new machine*, *Initialize Podman*, or similar.
+    *   Click this button to start the machine creation process.
+
+.   **Review and Configure Machine Settings (Optional):**
+    *   Podman Desktop might present a dialog allowing you to configure the Podman machine's resources:
+        *   *CPUs:* Number of virtual CPU cores allocated to the machine.
+        *   *Memory:* Amount of RAM allocated.
+        *   *Disk size:* Storage space for the virtual machine's file system.
+    *   For your first machine, accepting the default settings is usually sufficient. These can be adjusted later if needed.
+    *   If you need to customize, select the desired values.
+    *   Click *Create* or *Start* to proceed.
+
+.   **Wait for Machine Creation and Start:**
+    *   Podman Desktop will display progress indicators as it downloads necessary components, creates the virtual machine, and starts the Podman engine within it.
+    *   This process can take a few minutes, depending on your internet connection and system performance.
+    *   You might see messages indicating:
+        *   `Downloading Podman machine image...`
+        *   `Creating Podman machine...`
+        *   `Starting Podman machine...`
+        *   `Waiting for Podman engine...`
+
+.   **Verify Machine Status:**
+    *   Once the process is complete, Podman Desktop will transition to its main dashboard.
+    *   In the bottom-left corner or on a dedicated "Engines" or "Machines" tab, you should see the `podman-machine-default` (or a similar name) listed with a *Running* status.
+    *   The "Podman" engine status light should be green, indicating a successful connection.
+
+.   **(Optional) Verify via Terminal:**
+    *   Open your system's terminal or command prompt.
+    *   Run the command:
+        ```bash
+        podman machine list
+        ```
+    *   You should see output similar to this, confirming your `podman-machine-default` is running:
+        ```
+        NAME                    VM TYPE   CPUS        MEMORY      DISK SIZE   API SOCKET          CONNECTIONS     STATUS         LAST UP
+        podman-machine-default  qemu      2           2GiB        100GiB      /var/run/podman/podman.sock     1               Running        2 minutes ago
+        ```
+        (Output may vary slightly depending on OS and Podman version).
+
+Congratulations! You have successfully created and started your first Podman machine, making your Red Hat Build of Podman Desktop ready to manage containers. You can now proceed to explore other features or deploy your first container.

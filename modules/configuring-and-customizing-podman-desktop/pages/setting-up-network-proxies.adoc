@@ -1,0 +1,384 @@
+#  Setting up network proxies
+
+The following content details the process of configuring network proxies for Red Hat Build of Podman Desktop, including the necessary technical explanations and hands-on activities.
+
+```asciidoc
+= Setting up Network Proxies
+
+This section guides you through configuring network proxy settings for Red Hat Build of Podman Desktop. In many corporate or restricted network environments, direct internet access is limited, and all outbound traffic must pass through a proxy server. Properly configuring these settings ensures that Podman Desktop can download container images, extensions, and updates, and that your Podman engine can pull images from remote registries.
+
+== Understanding Network Proxies in Podman Desktop
+
+When dealing with network proxies and Podman Desktop, it's crucial to understand two distinct areas where proxy settings might be required:
+
+.  *Podman Desktop Application Proxy:* This refers to the proxy settings for the Podman Desktop graphical user interface (GUI) application itself. While Podman Desktop often inherits system-wide proxy settings, specific configurations might sometimes be necessary for the application to reach external services, such as downloading extensions.
+.  *Podman Engine (Podman Machine) Proxy:* This is often the more critical configuration. The Podman engine, especially when running inside a virtual machine (like a Podman Machine on Windows or macOS), requires its own proxy settings to pull container images from remote registries (e.g., Docker Hub, Quay.io, or private registries) and to perform other network-dependent operations. Without these settings, image pulls will fail in a proxied environment.
+
+You will typically configure proxy settings using environment variables such as `HTTP_PROXY`, `HTTPS_PROXY`, and `NO_PROXY`.
+
+*   `HTTP_PROXY` or `http_proxy`: Specifies the proxy server for HTTP requests.
+*   `HTTPS_PROXY` or `https_proxy`: Specifies the proxy server for HTTPS requests.
+*   `NO_PROXY` or `no_proxy`: Defines a comma-separated list of hostnames, IP addresses, or domain suffixes that should bypass the proxy. This is essential for accessing internal resources directly.
+
+== Configuring Podman Engine Proxy Settings
+
+The most common scenario for proxy configuration in Podman Desktop involves setting up the proxy for the Podman engine running within a Podman Machine. This ensures that when you run `podman pull` or other commands that interact with external networks, the requests are routed correctly.
+
+=== Prerequisites
+
+Before proceeding, ensure you have the following information:
+
+*   The HTTP proxy server address and port (e.g., `http://proxy.example.com:8080`).
+*   The HTTPS proxy server address and port (e.g., `https://proxy.example.com:8080`).
+*   Any hosts, IP addresses, or domain suffixes that should *bypass* the proxy (e.g., `localhost,127.0.0.1,.internal-domain.com`).
+
+=== Hands-on Lab: Configuring Podman Machine Proxy
+
+This lab demonstrates how to configure proxy settings for your Podman Machine.
+
+==== Step 1: Identify Your Proxy Information
+
+Before you begin, gather the necessary proxy details from your network administrator or IT department. For this lab, we will use hypothetical values.
+
+*   *HTTP Proxy:* `http://your-http-proxy.example.com:8080`
+*   *HTTPS Proxy:* `https://your-https-proxy.example.com:8080`
+*   *No Proxy:* `localhost,127.0.0.1,example.com,internal.network`
+
+==== Step 2: Stop the Podman Machine
+
+To apply new proxy settings to a Podman Machine, it must be stopped first. You can do this via the Podman Desktop GUI or the command line.
+
+.  Open Podman Desktop.
+.  Navigate to the *Settings* (gear icon) in the left sidebar.
+.  Go to the *Container Engine* section.
+.  Locate your active Podman machine (e.g., `podman-machine-default`).
+.  Click the *Stop* button next to the machine.
+
+Alternatively, from your terminal:
+
+[source,bash]
+----
+podman machine stop
+----
+Wait for the machine to fully shut down.
+
+==== Step 3: Configure Proxy Settings for the Podman Machine
+
+You can configure proxy settings using the `podman machine set` command. This command allows you to specify proxy environment variables that will be active when the machine starts.
+
+[source,bash]
+----
+podman machine set \
+  --http-proxy 'http://your-http-proxy.example.com:8080' \
+  --https-proxy 'https://your-https-proxy.example.com:8080' \
+  --no-proxy 'localhost,127.0.0.1,example.com,internal.network' podman-machine-default
+----
+
+.Replace the placeholder values (`your-http-proxy.example.com:8080`, etc.) with your actual proxy details.*
+
+This command sets the specified proxy variables for the `podman-machine-default` machine. If you have a different machine name, replace `podman-machine-default` accordingly.
+
+[NOTE]
+If you are using an older version of Podman that does not support the `--http-proxy`, `--https-proxy`, and `--no-proxy` flags directly, you might need to configure these manually by editing the Podman machine's systemd unit file or using other methods, which are beyond the scope of this particular lab but can be found in advanced Podman documentation. Always refer to the official Podman documentation for your specific version if issues arise.
+
+==== Step 4: Start the Podman Machine
+
+After setting the proxy configuration, start the Podman Machine to apply the new settings.
+
+.  In Podman Desktop, navigate back to the *Container Engine* settings.
+.  Click the *Start* button next to your Podman machine.
+
+Alternatively, from your terminal:
+
+[source,bash]
+----
+podman machine start
+----
+Allow the machine to fully boot up.
+
+==== Step 5: Verify Proxy Configuration
+
+To confirm that the proxy settings have been correctly applied within the Podman Machine, you can log into the machine and check the environment variables.
+
+[source,bash]
+----
+podman machine ssh podman-machine-default 'printenv | grep -iE "proxy|no_proxy"'
+----
+
+You should see output similar to this (with your specific proxy values):
+
+[source,text]
+----
+http_proxy=http://your-http-proxy.example.com:8080
+HTTP_PROXY=http://your-http-proxy.example.com:8080
+https_proxy=https://your-https-proxy.example.com:8080
+HTTPS_PROXY=https://your-https-proxy.example.com:8080
+no_proxy=localhost,127.0.0.1,example.com,internal.network
+NO_PROXY=localhost,127.0.0.1,example.com,internal.network
+----
+
+If you don't see these variables, double-check Step 3 and ensure the machine was restarted.
+
+==== Step 6: Test Proxy Functionality
+
+The ultimate test is to attempt to pull an image from a public registry that requires internet access, confirming that the proxy is working as expected.
+
+[source,bash]
+----
+podman pull docker.io/hello-world
+----
+
+If the pull is successful, your Podman Machine is correctly configured to use the proxy server. If it fails, review the troubleshooting section below.
+
+== Configuring Podman Desktop Application Proxy (Optional)
+
+In most cases, Podman Desktop leverages the system-wide proxy settings configured on your operating system. For example:
+
+*   *Windows:* System proxy settings configured in Internet Options.
+*   *macOS:* Network proxy settings configured in System Settings > Network > Proxies.
+*   *Red Hat Enterprise Linux:* Environment variables set in your shell profile (`.bashrc`, `.profile`) or system-wide (`/etc/environment`).
+
+If you encounter issues with Podman Desktop itself (e.g., extensions failing to load or update) and you are in a proxied environment, ensure your *system-wide* proxy settings are correctly configured.
+
+Podman Desktop typically does not have separate, explicit proxy settings within its own preferences for general network access beyond relying on the host system. For accessing registries that require authentication, you would configure xref:configuring-and-customizing-podman-desktop.adoc#_configuring_registries_and_image_pull_secrets[registries and image pull secrets] separately.
+
+== Troubleshooting Proxy Issues
+
+If you encounter problems after configuring your proxies, consider the following:
+
+*   *Incorrect Proxy Address/Port:* Double-check the proxy server address and port for any typos.
+*   *Authentication:* If your proxy requires authentication, Podman's proxy settings using environment variables do not directly support username/password. You might need a transparent proxy or a system-level configuration that handles authentication. Consult your IT department.
+*   *No-Proxy List:* Ensure your `NO_PROXY` list is accurate and complete, especially for internal network resources or the registry you are trying to pull from if it's internal.
+*   *Machine Restart:* Always ensure the Podman Machine is *stopped and then started* after making any changes to its proxy configuration. A simple restart might not be enough; a full stop and start cycle is required.
+*   *Firewall Rules:* Verify that your local firewall (if any) or corporate firewall is not blocking access to the proxy server or the target registries.
+*   *Network Connectivity:* Confirm that your host machine can reach the proxy server itself. You can often test this with `curl` or `wget` on your host machine configured to use the proxy.
+*   *Proxy Chaining:* If your environment uses multiple proxies (proxy chaining), Podman's simple proxy settings might not be sufficient. You may need advanced network configurations outside of Podman Desktop.
+
+By carefully following these steps and considering the troubleshooting tips, you can successfully configure network proxies for Red Hat Build of Podman Desktop, enabling seamless container management in restricted network environments.
+```#  Setting up network proxies
+
+As a Content Architect, I've developed the following detailed educational content on "Setting up network proxies" for Red Hat Build of Podman Desktop, adhering to the specified Antora AsciiDoc format and including both technical explanations and hands-on activities.
+
+[NOTE]
+.This content is part of a larger training module.
+====
+This document focuses specifically on "Setting up network proxies" within Red Hat Build of Podman Desktop. It assumes a basic understanding of Podman Desktop's installation and initial setup.
+====
+
+// Set a unique ID for this page for Antora
+:page-aliases: training:configuration:proxy-setup.adoc
+
+= Setting up Network Proxies in Podman Desktop
+
+This section will guide you through the process of configuring network proxies for Red Hat Build of Podman Desktop. This is a critical step for users operating in corporate or restricted network environments where direct internet access is not permitted without a proxy server.
+
+== Understanding Network Proxies and Podman Desktop
+
+A *network proxy* acts as an intermediary for requests from clients seeking resources from other servers. When you're in a corporate network, your computer often cannot directly access the internet; all outgoing requests must first go through a proxy server.
+
+Podman Desktop, along with its underlying Podman machine and the containers running within it, also needs to respect these proxy settings to perform various tasks, such as:
+
+*   Pulling container images from registries (e.g., `registry.access.redhat.com`, Docker Hub).
+*   Updating Podman Desktop extensions.
+*   Checking for Podman Desktop application updates.
+*   Accessing external resources from within containers (e.g., downloading packages, connecting to external APIs).
+
+It's crucial to understand that there are often multiple layers where proxy settings might need to be configured:
+
+1.  **Host Machine System-Wide Proxies:** These are the proxy settings configured at the operating system level (e.g., Windows system settings, macOS network settings, Linux environment variables). Podman Desktop often respects these for its own operations.
+2.  **Podman Desktop Application Proxies:** While Podman Desktop can often inherit system-wide settings, some configurations might allow for explicit proxy settings within the application itself for its specific needs (like extension management).
+3.  **Podman Machine Proxies:** This is arguably the most critical layer. The Podman machine (a virtual machine running a Linux distribution) needs its *own* proxy configuration so that the Podman engine running inside it can pull images and so that containers launched by that engine can access external networks. This often involves configuring environment variables or systemd services within the Podman machine itself.
+4.  **Container-Specific Proxies:** For fine-grained control, you can pass proxy environment variables directly to individual containers when you run them.
+
+For most scenarios, configuring the Podman machine's proxy settings is the primary focus to ensure containers can operate correctly.
+
+=== Technical Explanation: How Proxies Work with Podman Desktop
+
+When Podman Desktop needs to access an external network resource, it follows a hierarchy:
+
+*   **Podman Desktop Application:** For tasks like fetching extension updates or application updates, Podman Desktop will typically first check its internal proxy settings (if any), then fall back to the host operating system's environment variables (`HTTP_PROXY`, `HTTPS_PROXY`, `NO_PROXY`) or system-wide network configurations.
+*   **Podman Machine (for image pulls and container network access):** The Podman machine is a lightweight virtual machine. When the Podman engine *inside* this machine attempts to pull an image or a container tries to reach an external host, it needs its own proxy configuration. This is usually achieved by setting persistent environment variables within the Podman machine's operating system environment. These variables are then inherited by the Podman engine daemon and subsequently by containers it launches.
+
+    Common environment variables used for proxy configuration include:
+
+    *   `HTTP_PROXY`: Specifies the proxy server for HTTP requests (e.g., `http://proxy.example.com:8080`).
+    *   `HTTPS_PROXY`: Specifies the proxy server for HTTPS requests (e.g., `http://proxy.example.com:8080`). Note that this is `HTTP://` for the proxy *address*, not `HTTPS://` even for secure traffic. The proxy server itself often speaks HTTP to forward HTTPS requests.
+    *   `NO_PROXY`: A comma-separated list of hostnames, IP addresses, or CIDR blocks that should *not* use the proxy. This is crucial for accessing internal network resources directly (e.g., `localhost,127.0.0.1,example.com,.internal.network`).
+    *   `CURL_CA_BUNDLE`: While not a proxy setting, in environments with corporate proxies performing SSL inspection, you might also need to provide the path to your organization's CA certificate bundle for `curl` (and tools using `curl`) to trust the SSL certificates. This is often necessary within the Podman machine.
+
+*   **Container Runtime:** When you run a container, you can explicitly pass these proxy environment variables to the container using the `-e` or `--env` flag with `podman run`. This provides the most granular control and can override any settings inherited from the Podman machine.
+
+It's important to ensure that the proxy settings are correctly configured at the *right* layer to avoid connectivity issues. In most cases, configuring the Podman machine is the most effective approach for ensuring all container operations respect the network proxy.
+
+== Hands-on Activity: Configuring Network Proxies for Podman Desktop
+
+In this lab, you will configure network proxy settings for your Podman machine, allowing it to pull images and for containers to access external networks through a proxy.
+
+=== Prerequisites
+
+*   Red Hat Build of Podman Desktop installed and running.
+*   A Podman machine initialized and started (e.g., `podman machine init` and `podman machine start`).
+*   Access to your organization's HTTP/HTTPS proxy server address and port.
+*   (Optional but recommended for corporate environments) Your organization's root CA certificate bundle file, if SSL inspection is performed by the proxy.
+
+=== Lab: Configuring a Network Proxy for Podman Machine
+
+This activity focuses on configuring the proxy settings directly within the Podman machine, which is typically the most robust solution for container operations.
+
+. **Identify Your Proxy Details**
+    Before proceeding, you need your proxy server's address and port. For example:
+    *   `http://proxy.yourcompany.com:8080`
+    *   `https://proxy.yourcompany.com:8080` (often the same address/port as HTTP)
+    *   `NO_PROXY` list: `localhost,127.0.0.1,my-internal-app.example.com`
+
+. **Verify Current Connectivity (or lack thereof)**
+    First, let's confirm that you cannot pull an image without the proxy configured. This step helps you confirm the necessity of the proxy.
+
+    a.  Open a terminal or command prompt on your host machine.
+    b.  Try to pull a public image that you haven't pulled before.
+        ```bash
+        podman pull docker.io/library/hello-world
+        ```
+    c.  If you are in a restricted environment, this command should likely fail with a `Get "https://registry-1.docker.io/v2/": proxyconnect tcp: dial tcp <proxy-ip>:<proxy-port>: connect: connection refused` or similar error, indicating a proxy issue. If it succeeds, you might not be behind a proxy, or your system-wide proxy settings are already correctly configured and inherited.
+
+. **Access the Podman Machine via SSH**
+    You need to configure the proxy settings *inside* the Podman machine.
+
+    a.  Open your terminal or command prompt.
+    b.  Use the `podman machine ssh` command to connect to your running Podman machine:
+        ```bash
+        podman machine ssh
+        ```
+    c.  You should now be inside the Podman machine's command line environment.
+
+. **Configure Proxy Environment Variables Persistently**
+    We will create a shell script in `/etc/profile.d/` to ensure these environment variables are set every time the machine starts.
+
+    a.  Create a new file named `proxy.sh` (or any descriptive name) in `/etc/profile.d/` using `sudo` and a text editor like `vi` or `nano`.
+        ```bash
+        sudo vi /etc/profile.d/proxy.sh
+        ```
+
+    b.  Add the following lines to the `proxy.sh` file, replacing the placeholder values with your actual proxy details:
+        ```bash
+        # HTTP Proxy
+        export HTTP_PROXY="http://proxy.yourcompany.com:8080"
+        export http_proxy="http://proxy.yourcompany.com:8080"
+
+        # HTTPS Proxy (often the same address as HTTP proxy, but for HTTPS traffic)
+        export HTTPS_PROXY="http://proxy.yourcompany.com:8080"
+        export https_proxy="http://proxy.yourcompany.com:8080"
+
+        # No Proxy: List of hosts/domains that should bypass the proxy
+        # Separate entries with commas. Include localhost, 127.0.0.1, and any internal domains.
+        export NO_PROXY="localhost,127.0.0.1,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,.yourcompany.com"
+        export no_proxy="localhost,127.0.0.1,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,.yourcompany.com"
+        ```
+        [IMPORTANT]
+        .Case Sensitivity
+        ====
+        Both uppercase (`HTTP_PROXY`) and lowercase (`http_proxy`) versions are often used by different applications, so it's best practice to define both for maximum compatibility.
+        ====
+
+        [TIP]
+        .Adding Corporate CA Certificates
+        ====
+        If your organization's proxy performs SSL inspection, you might also need to add your corporate CA certificate bundle to the Podman machine. This typically involves:
+        1.  Copying your `.pem` certificate file to the Podman machine (e.g., using `scp` to `podman-machine-default:/home/core/ca-bundle.pem`).
+        2.  Inside the Podman machine, copy the certificate to `/etc/pki/ca-trust/source/anchors/`.
+        3.  Run `sudo update-ca-trust` to integrate it.
+        4.  You might also need to set `export CURL_CA_BUNDLE=/etc/ssl/certs/ca-bundle.crt` in your `proxy.sh` file or relevant systemd service override.
+        ====
+
+    c.  Save and exit the editor.
+
+    d.  Make the script executable:
+        ```bash
+        sudo chmod +x /etc/profile.d/proxy.sh
+        ```
+
+. **Restart the Podman Machine**
+    For the changes to take effect, you must restart the Podman machine.
+
+    a.  Exit the SSH session:
+        ```bash
+        exit
+        ```
+    b.  Stop the Podman machine:
+        ```bash
+        podman machine stop
+        ```
+    c.  Start the Podman machine again:
+        ```bash
+        podman machine start
+        ```
+
+. **Verify Proxy Configuration**
+    After restarting, log back into the Podman machine and verify that the environment variables are set.
+
+    a.  Connect via SSH again:
+        ```bash
+        podman machine ssh
+        ```
+    b.  Check the environment variables:
+        ```bash
+        env | grep -i proxy
+        ```
+        You should see your `HTTP_PROXY`, `HTTPS_PROXY`, and `NO_PROXY` variables listed.
+
+    c.  Try to pull an image *from within the Podman machine* to confirm connectivity:
+        ```bash
+        podman pull docker.io/library/alpine
+        ```
+        This command should now succeed, demonstrating that the Podman engine within the machine can use the configured proxy.
+
+. **Verify Host-side Podman CLI**
+    Return to your host machine's terminal and try pulling an image again using the `podman` CLI.
+
+    a.  Exit the Podman machine SSH session:
+        ```bash
+        exit
+        ```
+    b.  Pull an image from your host:
+        ```bash
+        podman pull docker.io/library/nginx:latest
+        ```
+        This command should also succeed because the `podman` CLI on your host communicates with the Podman engine running inside the now-proxied Podman machine.
+
+=== Lab: Configuring Proxy for a Specific Container
+
+While configuring the Podman machine handles most cases, you might occasionally need to override or specifically set proxy variables for a single container.
+
+. **Run a Container with Explicit Proxy Variables**
+    You can pass proxy environment variables directly to a container using the `-e` flag. This is useful if a container needs different proxy settings than the Podman machine, or if you prefer explicit control.
+
+    a.  From your host terminal, run a simple `curl` container, passing your proxy details:
+        ```bash
+        podman run -it --rm \
+            -e HTTP_PROXY="http://proxy.yourcompany.com:8080" \
+            -e HTTPS_PROXY="http://proxy.yourcompany.com:8080" \
+            -e NO_PROXY="localhost,127.0.0.1" \
+            alpine/git sh
+        ```
+    b.  Once inside the container's shell, try to access an external website (e.g., Google's public DNS server):
+        ```bash
+        curl https://www.google.com
+        ```
+        This command should return HTML content, indicating successful access through the explicitly provided proxy.
+
+    c.  Exit the container:
+        ```bash
+        exit
+        ```
+
+=== Troubleshooting Proxy Issues
+
+*   **Double-check variables:** Ensure there are no typos in `HTTP_PROXY`, `HTTPS_PROXY`, and `NO_PROXY`. Remember to include both uppercase and lowercase versions.
+*   **Verify `NO_PROXY`:** Make sure your `NO_PROXY` list correctly includes all internal domains, IP ranges, `localhost`, and `127.0.0.1` that should bypass the proxy.
+*   **Firewall rules:** Ensure that the host machine's firewall (and any network firewalls) allow outbound connections to your proxy server's IP address and port.
+*   **Proxy Authentication:** If your proxy requires authentication, you will need to embed the credentials in the proxy URL, e.g., `http://username:password@proxy.yourcompany.com:8080`. Be cautious with storing credentials in plain text. For more secure methods, consider using a credential helper or an authenticated proxy configured at a deeper OS level.
+*   **SSL/TLS Certificates:** If you encounter `x509: certificate signed by unknown authority` errors, it's highly likely your corporate proxy is performing SSL inspection. You'll need to install your organization's root CA certificates within the Podman machine, as mentioned in the tip above.
+*   **Restart everything:** After making changes to proxy settings, always stop and start the Podman machine (`podman machine stop`, `podman machine start`). Sometimes, restarting Podman Desktop itself can also help.
+*   **Podman Desktop Application Proxy (for updates/extensions):** While the above steps cover the Podman machine, if Podman Desktop itself (for updates, extensions) has issues, check your host OS's system-wide proxy settings. Some versions of Podman Desktop might offer GUI-based proxy configuration, usually found under *Settings* -> *Proxy*.
+
+By following these steps, you should be able to successfully configure network proxies for your Red Hat Build of Podman Desktop environment, enabling seamless access to external resources for both the application and your containers.

@@ -1,0 +1,8 @@
+* xref:preparing-for-installation.adoc[]
+** xref:system-requirements-for-various-operating-systems.adoc[]
+** xref:prerequisites-and-dependencies-eg-wsl-on-windows-podman-engine.adoc[]
+** xref:understanding-podman-machine-concept.adoc[]
+* xref:preparing-for-installation.adoc[]
+** xref:system-requirements-for-various-operating-systems.adoc[]
+** xref:prerequisites-and-dependencies-eg-wsl-on-windows-podman-engine.adoc[]
+** xref:understanding-podman-machine-concept.adoc[]

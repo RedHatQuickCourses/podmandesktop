@@ -1,0 +1,34 @@
+#  Introduction to Podman Desktop
+
+=== Introduction to Podman Desktop
+
+Podman Desktop is a graphical tool that simplifies managing containers, images, and Kubernetes environments. It provides an intuitive user interface for interacting with container engines like Podman, facilitating development and deployment workflows.
+
+Key features include:
+
+*   **Container Management:** Start, stop, inspect, and delete containers.
+*   **Image Management:** Pull, build, push, and remove container images.
+*   **Podman Machine:** Seamlessly create and manage Linux virtual machines to run Podman.
+*   **Kubernetes Integration:** Connect to local and remote Kubernetes/OpenShift clusters.
+*   **Extensions:** Expand functionality through a rich ecosystem of extensions.
+
+The Red Hat Build of Podman Desktop offers a supported and enterprise-ready solution for container development.#  Introduction to Podman Desktop
+
+=== Introduction to Podman Desktop
+
+Podman Desktop is a graphical user interface (GUI) application that simplifies working with containers locally. It provides a user-friendly experience for managing Podman, Docker, and other compatible container engines.
+
+Key features for container management include:
+
+*   **Centralized management:** View and manage containers, images, volumes, and networks across different container engines.
+*   **Engine configuration:** Easily configure container engine settings like memory, CPU, and disk.
+*   **Podman machine management:** Create, start, stop, and delete Podman machines.
+*   **Registry integration:** Connect to public and private container registries.
+*   **Kubernetes/OpenShift integration:** Seamlessly integrate with Kubernetes and OpenShift clusters for local development.
+
+Benefits of using Red Hat Build of Podman Desktop:
+
+*   **Simplified workflow:** Streamlines the development and management of containerized applications.
+*   **Multi-engine support:** Works with Podman, Docker, and other OCI-compatible engines.
+*   **Enhanced security:** Built on rootless container technology by default, improving security posture.
+*   **Open source and community-driven:** Benefits from active development and community support.

@@ -1,0 +1,311 @@
+#  Lab: Troubleshooting a simulated Podman Desktop issue
+
+```asciidoc
+= Lab: Troubleshooting a Simulated Podman Desktop Issue
+:navtitle: Lab: Troubleshooting Issues
+
+This lab guides you through diagnosing and resolving a common issue: an image pull failure related to registry configuration. By simulating a problem and systematically troubleshooting it, you'll gain practical experience in identifying root causes and applying solutions within Podman Desktop.
+
+== Scenario
+
+You are attempting to deploy an application using an image that you believe is stored in a private registry. However, Podman Desktop is unable to pull the image, returning an error message. Your task is to diagnose the underlying problem and get the image pulling successfully.
+
+This scenario directly addresses the "Resolving image pull and container run errors" and "Utilizing logs for problem identification" objectives mentioned in our training outline.
+
+== Objectives
+
+Upon completion of this lab, you will be able to:
+
+*   Recognize and interpret common error messages associated with image pull failures.
+*   Effectively utilize Podman Desktop's log viewer to pinpoint troubleshooting clues.
+*   Verify and, if necessary, correct registry configurations within Podman Desktop settings.
+*   Successfully pull an image after resolving a registry-related problem.
+
+== Prerequisites
+
+*   A functional installation of Red Hat Build of Podman Desktop on your preferred operating system.
+*   Access to the internet to simulate external registry issues and pull public images.
+*   Basic familiarity with Podman Desktop's user interface.
+
+== Estimated Time
+
+30-45 minutes
+
+== Lab Steps
+
+=== Step 1: Simulate an Image Pull Failure
+
+To begin, we'll intentionally create a scenario where an image pull fails due to an unconfigured or incorrectly referenced private registry.
+
+.  Open Podman Desktop.
+.  Navigate to the *Images* section from the left-hand navigation pane.
+.  Click the *Pull Image* button located in the top-right corner.
+.  In the "Pull an image" dialog, enter an image name that points to a non-existent or unconfigured private registry. For example, use:
+    `my.unconfigured-registry.example.com/my-app/web:latest`
++
+[NOTE]
+====
+Ensure that the domain `my.unconfigured-registry.example.com` is a fictional or unresolvable domain from your network, or one that you *know* is not configured in your Podman Desktop settings. This guarantees that the pull attempt will fail as expected, simulating a real-world misconfiguration.
+====
+.  Click *Pull*.
+
+Expected Outcome:: You will observe an error message in Podman Desktop, typically appearing as a notification in the bottom-right or within the "Images" view itself. The message will likely indicate a failure to pull the image, potentially referencing "manifest unknown," "connection refused," or an authentication error. The exact wording can vary based on your network environment and the specific "dummy" registry name used.
+
+image::troubleshooting-simulated-issue/pull-image-error.png[Podman Desktop: Image Pull Error, width=800, role="border"]
+_Figure 1: Example of an image pull error notification in Podman Desktop._
+
+**Technical Explanation:**
+
+When you attempt to pull an image, Podman Desktop (and the underlying Podman engine) first tries to resolve the registry's hostname and then establish a connection. If the registry hostname is unresolvable (like our `my.unconfigured-registry.example.com`), or if the connection is refused, the pull operation will immediately fail. If it can reach the registry but the image path or tag doesn't exist, you might get a "manifest unknown" error. If authentication is required but not provided or incorrect, an "unauthorized" error will occur. These initial errors are critical clues for troubleshooting.
+
+=== Step 2: Examine Podman Desktop Logs
+
+When encountering an issue, the logs are an invaluable resource for detailed diagnostic information. They often contain specific error messages that point directly to the root cause.
+
+.  In Podman Desktop, navigate to *Settings* (the gear icon) from the left-hand navigation pane.
+.  In the Settings menu, select *Troubleshooting*.
+.  Under the *Logs* section, observe the recent log entries. Look for messages related to the image pull attempt you just made. You might find entries indicating:
+    *   `Error pulling image`
+    *   `Get "https://my.unconfigured-registry.example.com/v2/": dial tcp: lookup my.unconfigured-registry.example.com on [::1]:53: no such host` (if the domain is unresolvable)
+    *   `connection refused` or `TLS Handshake failed` (if the domain exists but connection fails)
+    *   `manifest unknown` (if the registry was reachable but the image or tag didn't exist)
+    *   `unauthorized` (if authentication failed)
+
+[TIP]
+====
+The logs can be extensive. Use the search bar or filter options provided in Podman Desktop's log viewer to narrow down relevant entries. Keywords like `pull`, `image`, `registry`, or the specific (dummy) registry name you used can be very helpful.
+====
+
+image::troubleshooting-simulated-issue/podman-desktop-logs.png[Podman Desktop: Troubleshooting Logs, width=800, role="border"]
+_Figure 2: Viewing troubleshooting logs in Podman Desktop, highlighting an image pull failure._
+
+**Technical Explanation:**
+
+Podman Desktop meticulously logs events from its various internal components, including the UI, interactions with the Podman engine, and network operations. An `image pull` failure will generate one or more log entries detailing the specific HTTP requests made to the registry, the responses received (or the nature of the connection failure), and any authentication challenges encountered. Analyzing these entries allows you to differentiate between network connectivity issues, DNS resolution failures, authentication problems, or cases where the image simply does not exist at the specified location. This aligns with the "Utilizing logs for problem identification" objective.
+
+=== Step 3: Verify Registry Configuration
+
+Based on the clues gathered from the logs (e.g., connection issues, authentication failures, or "manifest unknown"), the next logical step is to verify how Podman Desktop is configured to interact with registries. This is particularly relevant when troubleshooting issues with private or custom registries, as covered in the "Configuring registries and image pull secrets" objective.
+
+.  In Podman Desktop, navigate back to *Settings* (the gear icon) from the left-hand navigation pane.
+.  Select *Registries* from the settings menu.
+.  Review the list of configured registries. Notice that your `my.unconfigured-registry.example.com` is highly unlikely to be listed. If it were, you would then scrutinize its configuration (e.g., incorrect address, missing or expired credentials, or an incorrect "Insecure Registries" setting).
+
+image::troubleshooting-simulated-issue/podman-desktop-registries.png[Podman Desktop: Registries Settings, width=800, role="border"]
+_Figure 3: Checking the list of configured registries in Podman Desktop._
+
+**Technical Explanation:**
+
+Podman Desktop, in conjunction with the Podman engine, relies on a configuration file (typically `~/.config/containers/auth.json` on Linux/macOS or similar locations on Windows) to store authentication credentials for various registries. If a registry is not explicitly added and configured with correct credentials, Podman will be unable to authenticate and pull private images from it. This is a very common source of "unauthorized" or "permission denied" errors during image pulls. Even for public images, if the registry address is misspelled, Podman won't know where to look.
+
+=== Step 4: Configure the Private Registry (Simulated)
+
+Now, let's correct the problem by adding a valid registry configuration. For the purpose of this lab, we will simulate adding a *public* registry that requires no special authentication for its public images, but it demonstrates the *process* of adding a registry. We'll use `quay.io` as a known public registry.
+
+.  In the *Registries* settings view, click *Add Registry*.
+.  In the "Add a registry" dialog that appears, fill in the following details:
+    *   **Registry Name:** `Quay.io (Public)` (You can name it anything descriptive).
+    *   **Registry Address:** `quay.io`
+    *   **Username:** (Leave empty for public Quay.io images. In a real private registry scenario, you would enter your username here).
+    *   **Password/Token:** (Leave empty for public Quay.io images. For a real private registry, you would enter your password or an access token).
+    *   Optionally, check *Insecure Registries* if your private registry uses HTTP instead of HTTPS (this is generally *not recommended* for production environments due to security risks).
+.  Click *Add*.
+
+image::troubleshooting-simulated-issue/add-registry-dialog.png[Podman Desktop: Add Registry Dialog, width=800, role="border"]
+_Figure 4: Adding a new registry configuration for Quay.io._
+
+**Technical Explanation:**
+
+By correctly adding a registry to Podman Desktop's configuration, you're providing the necessary information for the Podman engine to locate the registry and, if applicable, authenticate with it. This creates or updates the underlying `auth.json` file. When an image pull request specifies an image from this configured registry, Podman can now correctly resolve its address, establish a secure connection, and present the necessary credentials, leading to a successful image retrieval. This step directly addresses the "Configuring registries and image pull secrets" objective.
+
+=== Step 5: Verify the Image Pull
+
+With the registry now properly configured (or the simulated registry `quay.io` added), attempt to pull a public image from it.
+
+.  Navigate back to the *Images* section from the left-hand navigation pane.
+.  Click *Pull Image*.
+.  In the dialog, enter a public image from Quay.io, for example: `quay.io/libpod/busybox:latest`.
+.  Click *Pull*.
+
+Expected Outcome:: The image should now pull successfully, and you will see a progress indicator followed by the `libpod/busybox:latest` image appearing in your list of local images.
+
+image::troubleshooting-simulated-issue/successful-pull.png[Podman Desktop: Successful Image Pull, width=800, role="border"]
+_Figure 5: Successful image pull from a correctly configured registry._
+
+=== Step 6: Review Best Practices for Troubleshooting
+
+Effective troubleshooting often follows a systematic approach. Here are some best practices that apply broadly to Podman Desktop issues:
+
+*   **Start with Logs:** As demonstrated, Podman Desktop's troubleshooting logs are your primary source of detailed diagnostic information. Always check them first for specific error messages and clues.
+*   **Verify Network Connectivity:** Ensure your host machine has proper network access to the internet and, specifically, to the registry host if it's external. Tools like `ping`, `curl`, or `nslookup` from your host terminal can help confirm connectivity.
+*   **Check Podman Machine Health (Windows/macOS):** If you're on Windows or macOS, ensure your Podman Machine (the virtual machine running the Podman engine) is running and healthy. Issues with the VM can prevent network access or engine operations. You can check its status in Podman Desktop under *Settings* -> *Podman Machine*.
+*   **Verify Registry Configuration:** Double-check that all registry addresses, port numbers, and authentication credentials (username, password, token) are correctly entered in Podman Desktop's *Settings* -> *Registries*. Even a single typo can lead to failure.
+*   **Proxy Settings:** If you are operating behind a corporate proxy, confirm that Podman Desktop's proxy settings are correctly configured under *Settings* -> *Proxy*. Incorrect proxy settings are a common cause of connectivity issues.
+*   **Restart Podman Desktop/Podman Machine:** Sometimes, a simple restart of Podman Desktop or the Podman Machine (if applicable) can resolve transient issues, refresh configurations, or clear out stuck processes.
+*   **Consult Documentation:** Red Hat Build of Podman Desktop documentation is a valuable resource for common issues and best practices.
+
+== Summary
+
+In this lab, you've successfully navigated the process of troubleshooting a simulated image pull failure. You learned how to:
+*   Identify initial error symptoms.
+*   Leverage Podman Desktop's detailed logs for deeper insight.
+*   Diagnose the root cause (an unconfigured registry).
+*   Apply the solution by correctly configuring the registry.
+*   Verify the resolution by successfully pulling an image.
+
+This systematic approach is fundamental for efficiently resolving a wide range of container-related problems within Red Hat Build of Podman Desktop.
+```#  Lab: Troubleshooting a simulated Podman Desktop issue
+
+= Lab: Troubleshooting a Simulated Podman Desktop Issue
+
+== Objective
+Upon completion of this lab, you will be able to:
+
+*   Recognize common Podman Desktop issues, specifically related to Podman machine startup failures.
+*   Utilize Podman Desktop's built-in diagnostics and `podman machine` CLI commands to identify root causes.
+*   Apply various troubleshooting techniques, including restarting and recreating Podman machines, to resolve issues.
+
+== Scenario: Podman Machine Startup Failure
+
+In this lab, you will encounter a simulated issue where your Podman machine fails to start correctly within Podman Desktop. This is a common problem that can arise due to various factors, such as resource contention, corrupted machine state, or underlying virtualization issues. You will learn to diagnose and resolve this issue.
+
+NOTE: This lab assumes you have a working Podman Desktop installation with at least one Podman machine created. If not, please complete the "Lab: Installing Podman Desktop on your preferred OS" first.
+
+=== Prerequisites
+
+*   A functional installation of Red Hat Build of Podman Desktop.
+*   Access to a terminal or command prompt.
+*   An existing Podman machine (e.g., `podman-machine-default`).
+
+=== Step 1: Observe the Simulated Issue
+
+Imagine you've just opened Podman Desktop, and you see that your Podman machine is in a problematic state, indicated by a red error message or a persistent "Starting..." status that never resolves.
+
+. *Action:* Open Podman Desktop.
+. *Observation:* In the *Dashboard* view or the *Engine* settings, observe the status of your Podman machine.
+. *Expected Symptom:* The Podman machine displays an error, such as "Error starting machine," or it remains stuck in a "Starting..." state for an unusually long time, ultimately failing.
+
+image::podman-desktop-machine-error.png[Podman Desktop Machine Error, width=800, link="{imagesdir}/podman-desktop-machine-error.png"]
+_Example: A visual representation of a Podman machine in a problematic state._
+
+=== Step 2: Initial Diagnosis using Podman Desktop and CLI
+
+When a Podman machine fails to start, the first step is to gather more information. Podman Desktop provides some visual cues, but the command-line interface (CLI) often offers more detailed diagnostic output.
+
+. *Action:*
+    a. In Podman Desktop, navigate to *Settings* -> *Engine*. Observe any specific error messages displayed next to the machine.
+    b. Open your terminal or command prompt.
+    c. Execute the following command to list your Podman machines and their statuses:
+        [source,bash]
+        ----
+        podman machine list
+        ----
+    d. If the machine is showing an error or a stuck state, try to get more detailed logs from the machine:
+        [source,bash]
+        ----
+        podman machine logs <your-machine-name> # e.g., podman machine logs podman-machine-default
+        ----
+        Alternatively, within Podman Desktop, you can often find logs by clicking on the problematic engine and looking for a "Logs" or "Details" section.
+
+. *Observation:*
+    *   The output of `podman machine list` might show the machine in a `Stopped` or `Error` state, or it might indicate issues with its virtual machine (VM) status.
+    *   The `podman machine logs` command often provides crucial error messages from the VM startup process, such as "VM already exists," "Failed to allocate memory," or "Virtual machine failed to start."
+
+. *Technical Explanation:*
+    The `podman machine list` command queries the Podman engine on your host system to get a snapshot of all managed Podman machines, including their names, statuses, and configuration. The `podman machine logs` command retrieves the boot logs of the virtual machine running the Podman engine. These logs are vital for pinpointing issues related to resource allocation, networking, or internal VM component failures. Understanding these logs is key to effective troubleshooting.
+
+=== Step 3: Attempting a Soft Reset (Stop and Start)
+
+Often, a temporary glitch can prevent a Podman machine from starting. A simple stop and start sequence can sometimes resolve these transient issues.
+
+. *Action:*
+    a. In your terminal, attempt to stop the problematic Podman machine:
+        [source,bash]
+        ----
+        podman machine stop <your-machine-name>
+        ----
+    b. Once stopped (or if it was already stopped), attempt to start it again:
+        [source,bash]
+        ----
+        podman machine start <your-machine-name>
+        ----
+    c. Monitor the status in Podman Desktop and with `podman machine list`.
+
+. *Observation:* The machine might successfully start, or it might fail again with the same or a similar error.
+
+. *Technical Explanation:*
+    When you issue `podman machine stop`, Podman Desktop sends a signal to the underlying virtualization software (e.g., Apple Hypervisor, WSL 2, QEMU) to gracefully shut down the virtual machine. `podman machine start` then initiates the VM boot sequence. This process can clear temporary memory issues, reload configurations, or resolve minor conflicts that might have occurred during an improper shutdown or startup sequence.
+
+=== Step 4: Troubleshooting Resource-Related Issues (If Applicable)
+
+If the logs hinted at memory or CPU allocation failures (e.g., "Failed to allocate memory"), you might need to adjust the machine's resources.
+
+. *Action:*
+    a. In Podman Desktop, navigate to *Settings* -> *Engine*.
+    b. Select your problematic machine and click the "Edit" (pencil) icon or access its settings.
+    c. Adjust the allocated *Memory* or *CPUs* to a lower value if you suspect resource contention, or a higher value if the machine failed to start due to insufficient resources for its tasks.
+    d. Save the changes and attempt to start the machine again (refer to Step 3b).
+
+. *Observation:* If resource limits were the issue, the machine should now start successfully.
+
+. *Technical Explanation:*
+    Podman machines run as virtual machines, which require a certain amount of host system resources (CPU, RAM, disk space). If the host system is low on resources or if the Podman machine is configured to request more than the host can provide, the VM may fail to start. Adjusting these settings through Podman Desktop or via `podman machine set --cpus <count> --memory <size> <machine-name>` allows you to optimize resource allocation and prevent startup failures.
+
+=== Step 5: Performing a Hard Reset (Remove and Recreate)
+
+If the soft reset or resource adjustments did not resolve the issue, the Podman machine's underlying virtual disk image or configuration might be corrupted. In such cases, the most reliable solution is often to remove the existing machine and create a new one.
+
+WARNING: Removing a Podman machine will delete all containers, images, and volumes stored *within that machine*. Ensure you have backed up any critical data if necessary. For most development workflows, images can be re-pulled, and containers re-created from `Containerfile`s or `Dockerfile`s.
+
+. *Action:*
+    a. In your terminal, confirm the machine is stopped (you can try `podman machine stop <your-machine-name>` again if unsure).
+    b. Remove the problematic Podman machine:
+        [source,bash]
+        ----
+        podman machine rm <your-machine-name>
+        ----
+        Confirm the deletion if prompted.
+    c. Once successfully removed, initialize a new Podman machine (you can use the same name or a new one):
+        [source,bash]
+        ----
+        podman machine init --cpus 2 --memory 4096 <new-machine-name> # Example: podman machine init --cpus 2 --memory 4096 podman-machine-default
+        ----
+        Adjust `cpus` and `memory` as desired for your system.
+    d. Start the newly created machine:
+        [source,bash]
+        ----
+        podman machine start <new-machine-name>
+        ----
+    e. Monitor the status in Podman Desktop and with `podman machine list`.
+
+. *Observation:* The new Podman machine should start successfully and become active in Podman Desktop.
+
+. *Technical Explanation:*
+    The `podman machine rm` command completely tears down the virtual machine, deleting its virtual disk and associated configuration files. This effectively resolves any corruption in the VM's filesystem or configuration. `podman machine init` then creates a fresh VM from a clean base image, ensuring a pristine environment. This is often the nuclear option but is highly effective for persistent machine startup failures.
+
+=== Step 6: Verifying Resolution
+
+After successfully starting the Podman machine, it's good practice to perform a quick test to ensure it's fully functional.
+
+. *Action:*
+    a. In Podman Desktop, confirm the Podman machine is showing a "Running" or "Ready" status.
+    b. Navigate to the *Images* section and attempt to pull a small, common image:
+        [source,bash]
+        ----
+        podman pull hello-world
+        ----
+        (You can execute this from your terminal or use Podman Desktop's image pull functionality).
+    c. Then, attempt to run a container from that image:
+        [source,bash]
+        ----
+        podman run hello-world
+        ----
+
+. *Observation:* The `hello-world` image should pull successfully, and the container should run, printing its typical "Hello from Podman!" message. This confirms that your Podman machine is fully operational and ready for use.
+
+. *Technical Explanation:*
+    Pulling an image verifies that the machine has network connectivity and can access container registries. Running a container verifies that the Podman engine itself is functioning correctly within the VM, capable of creating and managing container processes. These two operations are fundamental to using Podman Desktop and serve as excellent validation steps.
+
+== Conclusion
+
+You have successfully diagnosed and resolved a simulated Podman machine startup issue. This lab covered essential troubleshooting techniques, from basic observation and log analysis to performing soft and hard resets of the Podman machine. These skills are crucial for maintaining a smooth development environment when working with Red Hat Build of Podman Desktop.

@@ -1,0 +1,20 @@
+#  Configuring and Customizing Podman Desktop
+
+[discrete]
+=== Configuring and Customizing Podman Desktop
+
+Podman Desktop allows for extensive configuration and customization to suit various development workflows. Key aspects include:
+
+*   **Managing Container Engine Settings:** Adjusting resources like memory, CPU, and disk for the underlying Podman machine.
+*   **Configuring Registries and Secrets:** Setting up connections to container image registries and managing image pull secrets.
+*   **Setting Up Network Proxies:** Configuring proxy settings for network connectivity in restricted environments.
+*   **Integrating with Kubernetes/OpenShift:** Connecting Podman Desktop to existing Kubernetes or OpenShift clusters for streamlined development.
+*   **Exploring and Managing Extensions:** Extending functionality through a variety of available extensions.#  Configuring and Customizing Podman Desktop
+
+Configuring and Customizing Podman Desktop involves:
+
+* xref:red-hat-build-of-podman-desktop-installation-configuration-and-troubleshooting.adoc#_managing_container_engine_settings[Managing container engine settings] (memory, CPU, disk).
+* xref:red-hat-build-of-podman-desktop-installation-configuration-and-troubleshooting.adoc#_configuring_registries_and_image_pull_secrets[Configuring registries and image pull secrets].
+* xref:red-hat-build-of-podman-desktop-installation-configuration-and-troubleshooting.adoc#_setting_up_network_proxies[Setting up network proxies].
+* xref:red-hat-build-of-podman-desktop-installation-configuration-and-troubleshooting.adoc#_integrating_with_kubernetes_and_openshift_clusters[Integrating with Kubernetes and OpenShift clusters].
+* xref:red-hat-build-of-podman-desktop-installation-configuration-and-troubleshooting.adoc#_exploring_and_managing_extensions[Exploring and managing extensions].

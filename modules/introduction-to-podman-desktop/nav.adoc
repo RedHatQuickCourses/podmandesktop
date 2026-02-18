@@ -1,0 +1,8 @@
+* xref:introduction-to-podman-desktop.adoc[]
+** xref:overview-of-podman-desktops-purpose-and-capabilities.adoc[]
+** xref:key-features-for-container-management.adoc[]
+** xref:benefits-of-using-red-hat-build-of-podman-desktop.adoc[]
+* xref:introduction-to-podman-desktop.adoc[]
+** xref:overview-of-podman-desktops-purpose-and-capabilities.adoc[]
+** xref:key-features-for-container-management.adoc[]
+** xref:benefits-of-using-red-hat-build-of-podman-desktop.adoc[]

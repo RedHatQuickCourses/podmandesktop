@@ -1,0 +1,19 @@
+#  Deploying Podman Desktop in Air-Gapped Environments
+
+Air-gapped deployment of Podman Desktop involves installing and configuring the application in environments without direct internet access.
+
+Key considerations include:
+
+*   **Challenges**: Overcoming connectivity restrictions for downloads and updates.
+*   **Artifacts**: Pre-downloading all required installers, dependencies, and images.
+*   **Offline Procedure**: Executing a step-by-step installation without online repositories.
+*   **Post-installation**: Configuring registries, proxy settings, and updates for restricted network access.#  Deploying Podman Desktop in Air-Gapped Environments
+
+=== Deploying Podman Desktop in Air-Gapped Environments
+
+This section covers installing Podman Desktop in environments without direct internet access. It addresses:
+
+* Challenges and special considerations for air-gapped deployments.
+* Gathering all required installation artifacts beforehand.
+* A step-by-step procedure for offline installation.
+* Post-installation configuration specific to restricted environments.

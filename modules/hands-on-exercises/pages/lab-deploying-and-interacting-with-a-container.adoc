@@ -1,0 +1,287 @@
+#  Lab: Deploying and interacting with a container
+
+= Lab: Deploying and Interacting with a Container
+
+In this lab, you will gain practical experience in the fundamental aspects of container management: deploying a new container from an image and interacting with it using Red Hat Build of Podman Desktop. This exercise will solidify your understanding of how containers encapsulate applications and how Podman Desktop simplifies their lifecycle management.
+
+=== Understanding Container Deployment
+
+Before we dive into the hands-on activity, let's briefly review the core concepts involved in deploying and interacting with containers.
+
+A *container* is a lightweight, standalone, executable package that includes everything needed to run a piece of software, including the code, a runtime, system tools, system libraries, and settings. Containers are built from *container images*, which are immutable templates containing the application and its dependencies.
+
+When you "deploy" or "run" a container, you are essentially creating a running instance of a container image. Podman Desktop acts as a graphical interface that abstracts away the complexities of command-line operations, allowing you to easily pull images, configure container settings (like port mappings, environment variables, and resource limits), and manage the container's lifecycle.
+
+Key concepts for this lab:
+
+*   **Container Image:** A read-only template used to create containers. Think of it as a blueprint. Examples include `nginx`, `httpd`, `ubuntu`.
+*   **Container Instance:** A running (or stopped) instance of an image. You can have multiple containers running from the same image.
+*   **Port Mapping (Port Forwarding):** Containers run in an isolated network namespace. To make a service inside a container accessible from your host machine, you need to map a port from the container to a port on your host. For example, mapping container port `80` (where a web server typically listens) to host port `8080`.
+*   **Container Lifecycle:** The stages a container goes through:
+    *   **Created:** The container is defined but not yet running.
+    *   **Running:** The application inside the container is active.
+    *   **Paused:** The container's processes are suspended.
+    *   **Stopped:** The container's processes are terminated, but the container still exists and can be restarted.
+    *   **Removed:** The container instance is deleted from your system.
+
+Podman Desktop provides a user-friendly interface to manage these aspects, allowing you to visualize and control your containerized applications without needing to remember complex `podman` CLI commands.
+
+=== Lab: Deploying and Interacting with a Web Server Container
+
+In this lab, you will deploy an Nginx web server container, make it accessible from your browser, and practice basic interaction methods.
+
+==== Objectives
+
+*   Pull a container image using Podman Desktop.
+*   Create and run a new container from the pulled image.
+*   Configure port mapping to access the containerized application.
+*   Verify the container's functionality via a web browser.
+*   View container logs.
+*   Execute commands inside a running container.
+*   Stop and remove the container.
+
+==== Prerequisites
+
+*   Red Hat Build of Podman Desktop installed and running.
+*   A Podman machine configured and started (refer to previous labs if needed).
+
+==== Activity Steps
+
+Follow these steps to deploy and interact with your first container.
+
+.Open Podman Desktop
+Launch Red Hat Build of Podman Desktop. Ensure your Podman machine is running and connected. You should see "Podman machine" listed under *Engine* in the dashboard, with a green indicator.
+
+.Pull the Nginx Image
+The first step is to get the Nginx container image.
+
+.. In the Podman Desktop sidebar, navigate to *Images*.
+.. Click the *Pull image* button.
+.. In the *Image Name* field, type `nginx:latest`.
+.. Ensure the correct registry is selected (e.g., `registry.access.redhat.com` or `docker.io`). For `nginx:latest`, `docker.io` is typically the source.
+.. Click *Pull*.
++
+Podman Desktop will download the `nginx:latest` image. You will see its progress, and once complete, it will appear in your list of local images.
+
+.Run a New Container
+Now, let's create a new container instance from the `nginx:latest` image.
+
+.. In the *Images* view, locate the `nginx:latest` image you just pulled.
+.. Hover over the image entry and click the *Play* icon (Run image) that appears.
+.. The *Run a new container* dialog will open.
+.. In the *Container Name* field, enter `my-nginx-webserver`.
+.. Under *Port Mappings*, click *Add generated port*. Podman Desktop will suggest an available host port (e.g., `49153`) mapped to the container's internal port `80`. *Note down the Host Port assigned to `80/tcp`*.
++
+image::run_container_port_mapping.png[Run a new container with port mapping, width=800]
++
+[NOTE]
+====
+Nginx, by default, listens on port `80` inside the container for HTTP traffic. By mapping it to a host port (e.g., `8080` or an ephemeral port like `49153`), you can access the web server from your host machine's browser.
+====
+.. Click *Run*.
++
+Podman Desktop will create and start the container. You will be redirected to the *Containers* view, where `my-nginx-webserver` should appear with a green *Running* status.
+
+.Verify Container Functionality
+Let's confirm that the Nginx web server is accessible.
+
+.. In the *Containers* view, click on `my-nginx-webserver` to open its details panel.
+.. Scroll down to the *Ports* section. You will see the mapped port, for example, `0.0.0.0:49153 -> 80/tcp`.
+.. Open your web browser and navigate to `http://localhost:<<HOST_PORT>>` (replace `<<HOST_PORT>>` with the host port you noted earlier, e.g., `http://localhost:49153`).
++
+You should see the "Welcome to nginx!" default page. This confirms that your container is running and correctly exposed.
++
+image::nginx_welcome_page.png[Nginx welcome page in browser, width=800]
+
+.View Container Logs
+Logs are essential for monitoring and troubleshooting containers.
+
+.. In the Podman Desktop *Containers* view, select `my-nginx-webserver`.
+.. In the container's details panel, navigate to the *Logs* tab.
++
+You will see output from the Nginx server, including access logs from your browser request and startup messages. This tab is invaluable for diagnosing issues.
+
+.Execute Commands Inside the Container
+You can interact with a running container's shell environment.
+
+.. In the Podman Desktop *Containers* view, select `my-nginx-webserver`.
+.. In the container's details panel, navigate to the *Terminal* tab.
+.. You should see a command prompt for the container's shell (e.g., `root@<container-id>:/#`).
+.. Try some basic Linux commands:
+    *   `ls -l /usr/share/nginx/html`: List the files in the Nginx web root.
+    *   `hostname`: See the container's hostname.
+    *   `ip a`: View the container's network configuration.
+.. Type `exit` to close the terminal session.
++
+[TIP]
+====
+Executing commands inside a container is useful for debugging, inspecting files, or making temporary changes for testing purposes. For persistent changes, you should always rebuild the image or use volumes.
+====
+
+.Stop and Remove the Container
+To clean up resources, you'll stop and then remove the container.
+
+.. In the Podman Desktop *Containers* view, locate `my-nginx-webserver`.
+.. Hover over the container entry and click the *Stop* icon (square button).
++
+The container's status will change from *Running* to *Stopped*. The web server will no longer be accessible in your browser.
+.. Once stopped, hover over the container entry again and click the *Delete* icon (trash can).
+.. Confirm the removal when prompted.
++
+The `my-nginx-webserver` container will be removed from your list of containers. The `nginx:latest` image, however, remains downloaded and can be used to create new containers later.
+
+[NOTE]
+====
+**Troubleshooting Tip:**
+*   If your container fails to start, check the *Logs* tab immediately for error messages.
+*   If you can't access the web server in your browser, double-check the host port mapping (`http://localhost:<<HOST_PORT>>`) and ensure no other application on your host is already using that port.
+*   If you see "Error pulling image," verify the image name and registry, and check your internet connection.
+====
+
+This lab has guided you through the essential steps of deploying a container, exposing its services, and interacting with it using Red Hat Build of Podman Desktop. You now have a foundational understanding of how to manage containerized applications within this powerful tool.#  Lab: Deploying and interacting with a container
+
+```asciidoc
+= Lab: Deploying and Interacting with a Container
+:navtitle: Lab: Deploying and Interacting with a Container
+:page-aliases: training:hands-on-exercises:lab-deploy-interact-container.adoc
+
+Welcome to this hands-on lab, where you will gain practical experience in deploying and interacting with containers using Red Hat Build of Podman Desktop. This lab builds upon your initial setup of Podman Desktop and its underlying container engine, allowing you to bring your first application to life within a containerized environment.
+
+[[introduction]]
+== Introduction
+
+Containers have revolutionized application deployment by providing a lightweight, portable, and consistent environment for applications to run. Podman Desktop acts as your graphical command center, simplifying the complex world of container management. In this lab, you will learn the fundamental steps of:
+
+*   **Pulling a container image**: Retrieving an application's blueprint from a registry.
+*   **Running a container**: Instantiating an image into a live, isolated process.
+*   **Interacting with a running container**: Monitoring its status, accessing its shell, and managing its lifecycle.
+
+This practical experience is crucial for understanding how to leverage containers for development, testing, and even production workloads.
+
+[[prerequisites]]
+== Prerequisites
+
+Before you begin this lab, ensure you have:
+
+*   Red Hat Build of Podman Desktop successfully installed and running on your system.
+*   A Podman machine created and started (if applicable for your operating system, e.g., Windows or macOS). You can verify its status in the "Dashboard" section of Podman Desktop.
+*   An active internet connection to pull container images from public registries.
+
+[[technical-explanation]]
+== Technical Explanation: From Image to Running Container
+
+At the heart of containerization are *images* and *containers*. Understanding the distinction between these two concepts is fundamental to working with any container platform.
+
+*   **Container Image**: An image is a lightweight, standalone, executable package that includes everything needed to run a piece of software, including the code, a runtime, system tools, system libraries, and settings. Think of it as a read-only template or a blueprint for creating containers. Images are typically stored in *registries* like Quay.io (Red Hat's enterprise-grade registry) or Docker Hub. They are built up in layers, making them efficient to store and share, as common layers can be reused across multiple images.
+*   **Container**: A container is a runnable instance of an image. When you execute an image, it becomes a container. Each container is an isolated environment, meaning it has its own filesystem, network stack, and process space, separate from the host system and other containers. This isolation ensures consistency and prevents conflicts between applications. Multiple containers can run simultaneously from the same image, each operating independently.
+
+Podman Desktop streamlines the entire process, providing a user-friendly interface over the powerful Podman engine:
+
+.   **Image Management**: Podman Desktop allows you to browse, pull, and manage container images from various registries directly from its user interface. You can search for images, inspect their details, and keep track of local image versions.
+.   **Container Creation**: With a few clicks, you can select an image and create a new container. Podman Desktop simplifies the configuration of critical parameters like port mappings, environment variables, and volume mounts, which define how the container interacts with the host and other containers.
+.   **Lifecycle Management**: Once a container is running, Podman Desktop provides intuitive tools to start, stop, restart, delete, inspect, and even open a shell into the container. This complete lifecycle management is crucial for daily development and operational tasks.
+.   **Port Mapping**: For applications running inside a container to be accessible from outside (e.g., a web server, an API), you need to establish a connection between a port on the container and a port on your host machine. This is called *port mapping* or *port forwarding*. For example, mapping container port `80` to host port `8080` allows you to access the web server by navigating to `http://localhost:8080` in your browser. Without port mapping, the application running inside the container would not be reachable from your host system.
+
+In this lab, we will use the `nginx` web server image. NGINX is a popular, open-source web server often used for reverse proxying, load balancing, and HTTP caching. Its simplicity and immediate visual feedback (a "Welcome to nginx!" page) make it an excellent choice for demonstrating basic container deployments.
+
+[[hands-on-activity]]
+== Hands-On Activity: Deploying and Interacting with NGINX
+
+In this activity, you will deploy an NGINX web server in a container and then explore various ways to interact with it using Podman Desktop.
+
+=== Objective
+
+*   Pull the `nginx` container image from a public registry.
+*   Run an `nginx` container, configuring a port mapping to expose the web server.
+*   Verify the web server is accessible from your host machine.
+*   Inspect container details, view real-time logs, and open a terminal within the running container.
+*   Manage the container's lifecycle by stopping and removing the instance.
+
+=== Steps
+
+.   **Open Podman Desktop and Verify Engine Status**
+    .   Launch Red Hat Build of Podman Desktop.
+    .   On the Dashboard, ensure that your Podman machine (if applicable for your OS like Windows/macOS) is *Running* and that the "Container Engine" status is displayed as green, indicating it's active and ready.
++
+image::podman-desktop-dashboard-running.png[Podman Desktop Dashboard with Running Engine, 600]
++
+*Troubleshooting Tip*: If your Podman machine is not running, click the "Start" button next to it. If you encounter persistent issues, refer to the "Troubleshooting Podman Desktop Issues" section of this training for guidance on common startup problems.
+
+.   **Navigate to the Images Section**
+    .   In the left-hand navigation pane of Podman Desktop, click on *Images*. This section provides an overview of all container images currently stored on your local machine, allowing you to manage them.
++
+image::podman-desktop-navigate-images.png[Navigate to Images Section]
+
+.   **Search and Pull the NGINX Image**
+    .   In the "Images" view, use the search bar at the top to search for `nginx`.
+    .   You will see various NGINX images from different registries. For this lab, we will use the official `nginx` image from Docker Hub. Locate the `docker.io/library/nginx` entry.
+    .   Click the *Pull* button next to `docker.io/library/nginx`. This action will download the latest version of the NGINX image to your local machine.
+    .   A notification will appear, indicating the image is being pulled. Once the pull is complete, `docker.io/library/nginx:latest` should appear in your list of local images.
++
+image::podman-desktop-pull-nginx.png[Pull NGINX Image from Registry]
+
+.   **Run a Container from the NGINX Image**
+    .   Once the `nginx` image is successfully pulled, locate it in your *Images* list.
+    .   Click the "play" icon (Run Image) next to `docker.io/library/nginx:latest`. This will open the "Run a new container" dialog.
+    .   **Container Name**: Enter a descriptive name for your container, such as `my-nginx-webserver`.
+    .   **Port Mappings**: This is a critical step for making the web server accessible.
+        *   Click *Add Port Mapping*.
+        *   In the *Host Port* field, enter `8080`.
+        *   In the *Container Port* field, enter `80`.
+        *   Ensure the *Protocol* is set to `TCP`.
+        +
+        This mapping configures your container so that any network traffic directed to port `8080` on your host machine will be forwarded to port `80` inside the `my-nginx-webserver` container, where the NGINX web server is listening.
+    .   Review other settings (like environment variables, volumes, and advanced options), but leave them at their defaults for this basic deployment.
+    .   Click the *Run* button at the bottom of the dialog.
+    +
+    image::podman-desktop-run-nginx-container.png[Run NGINX Container with Host Port 8080 mapped to Container Port 80]
+
+.   **Verify the Running Container and Access the Web Server**
+    .   After clicking *Run*, Podman Desktop will redirect you to the *Containers* section.
+    .   You should see your `my-nginx-webserver` container listed with a green *Running* status.
+    .   Click on the container name `my-nginx-webserver` to view its detailed information.
+    .   In the *Summary* tab, under the "Ports" section, you should see `8080:80/tcp`. Click the *Open in Browser* icon (a small globe) next to `localhost:8080`.
+    .   Your default web browser should open to `http://localhost:8080` and display the "Welcome to nginx!" default page. This confirms that your container is running successfully and the NGINX web server is accessible from your host machine through the configured port mapping!
+    +
+    image::podman-desktop-nginx-running-browser.png[Nginx Welcome Page in Browser after Successful Deployment]
+
+.   **Interact with the Container: Logs, Inspect, and Terminal Access**
+    .   While still viewing the `my-nginx-webserver` container details in Podman Desktop:
+        *   **Logs**: Click the *Logs* tab. Here, you will see the real-time standard output and standard error streams from the NGINX process inside the container. If you refresh `http://localhost:8080` in your browser a few times, you should observe new access entries appearing in the logs, demonstrating active interaction. This tab is invaluable for monitoring container health and debugging application issues.
+        +
+        image::podman-desktop-nginx-logs.png[Nginx Container Logs Showing Access Entries]
+        *   **Inspect**: Click the *Inspect* tab. This tab provides a wealth of low-level JSON-formatted information about the container, including its configuration, network settings, mounted volumes, IP addresses, and other runtime details. This information is invaluable for advanced debugging, understanding container runtime specifics, and verifying configuration.
+        *   **Terminal**: Click the *Terminal* tab. This feature opens a command-line interface (shell) directly inside your running NGINX container. You can now execute commands as if you were logged into the container itself. For example, type `ls /etc/nginx` and press Enter to list the NGINX configuration files within the container. You can also try `ping localhost` or `cat /var/log/nginx/access.log`. Type `exit` and press Enter to close the terminal session and return to Podman Desktop.
+        +
+        image::podman-desktop-nginx-terminal.png[Nginx Container Terminal for Executing Commands]
+
+.   **Stop and Remove the Container**
+    .   From the *Containers* list, or from the detailed view of `my-nginx-webserver`, locate the action buttons at the top right of the container entry (or at the top of the details view).
+    .   **Stop**: Click the *Stop* button (square icon). The container's status will change from *Running* to *Exited*. If you try to access `http://localhost:8080` in your browser now, it will fail because the NGINX web server process inside the container has been gracefully shut down.
+    .   **Remove**: With the container in an *Exited* state, click the *Delete* button (trash can icon). Confirm the deletion when prompted.
+    .   The `my-nginx-webserver` container will now be removed from your list of containers. The `nginx` image, however, remains locally stored on your machine for future use, so you don't need to pull it again if you wish to run another NGINX container.
+
+[[troubleshooting-tips]]
+== Troubleshooting Tips
+
+*   **Port Conflict Error**: If you encounter an error message like "Port 8080 already in use" when attempting to run the container, it indicates that another application or process on your host machine is already utilizing port `8080`. To resolve this, simply try using a different *Host Port* for your NGINX container (e.g., `8081`, `8000`, or any other unused port).
+*   **"Welcome to NGINX" Page Not Showing**:
+    *   **Container Status**: First, ensure the container status in Podman Desktop is *Running*.
+    *   **Port Mapping**: Double-check that your port mapping is correctly configured (Host Port `8080` to Container Port `80`/TCP).
+    *   **Firewall**: If you are still unable to access `http://localhost:8080`, your operating system's firewall might be blocking the connection. Ensure that traffic on the selected host port (`8080`) is allowed.
+    *   **Logs**: Check the container's *Logs* tab immediately after starting it. Any errors during the NGINX server's startup will be reported here.
+*   **Image Pull Issues**: If an image fails to pull, check your internet connection. If you are behind a corporate proxy, ensure you have configured network proxies within Podman Desktop (refer to the "Configuring Network Proxies" section of this training).
+*   **Container Fails to Start or Exits Immediately**: The most common reason for this is a misconfiguration or an issue with the application inside the container. Always review the *Logs* tab of the container immediately after attempting to start it. Error messages in the logs are usually very helpful in diagnosing startup failures.
+
+[[summary]]
+== Summary
+
+Congratulations! You have successfully deployed your first containerized application using Red Hat Build of Podman Desktop. You now possess foundational practical skills in container management, including how to:
+
+*   Pull container images from remote registries to your local machine.
+*   Run a container, including configuring essential parameters like port mappings to make the application accessible.
+*   Verify and interact with running containers by viewing real-time logs, inspecting detailed configuration, and accessing a terminal within the container for debugging or administrative tasks.
+*   Manage the container lifecycle by gracefully stopping and cleanly removing container instances.
+
+This foundational knowledge is critical for anyone working with containerized applications and serves as a springboard for more advanced topics like persistent storage (volume mounts), environment variables for dynamic configuration, and orchestrating multi-container applications.
+```

@@ -1,0 +1,185 @@
+#  Installation steps using package managers (e.g., `dnf`)
+
+= Installing Podman Desktop on Red Hat Enterprise Linux
+
+This section provides a detailed guide on installing Red Hat Build of Podman Desktop on Red Hat Enterprise Linux (RHEL) distributions using package managers like `dnf`. Utilizing `dnf` ensures a streamlined installation process, leveraging RHEL's robust package management system for dependency resolution and easy updates.
+
+== Installation Steps using Package Managers (e.g., `dnf`)
+
+The Red Hat Build of Podman Desktop integrates seamlessly with Red Hat Enterprise Linux, offering a native installation experience through the `dnf` package manager. This method is recommended for RHEL users as it simplifies installation, dependency management, and future updates.
+
+Podman Desktop requires an underlying container engine, and on RHEL, the Podman engine is typically already available or easily installable. Podman Desktop acts as a graphical user interface (GUI) and management tool *on top* of your existing Podman engine installation.
+
+=== Technical Explanation
+
+Red Hat Enterprise Linux (RHEL) uses `dnf` (Dandified YUM) as its default package manager. `dnf` is the next-generation version of `yum` and is designed to manage RPM packages, handling dependencies, updates, and removals efficiently. When you install `podman-desktop` using `dnf`, the package manager will:
+
+1.  **Resolve Dependencies:** Automatically identify and install any other packages required by Podman Desktop (e.g., specific libraries, GTK components for the GUI).
+2.  **Download Packages:** Fetch the `podman-desktop` RPM package and its dependencies from configured repositories.
+3.  **Install Files:** Place the application binaries, configuration files, desktop entries, and other assets in their appropriate system locations.
+4.  **Integrate:** Ensure Podman Desktop is properly integrated with the desktop environment, allowing it to be launched from application menus.
+
+For RHEL, the `podman-desktop` package is typically available in the standard RHEL repositories, usually the AppStream repository, provided your system is properly subscribed and enabled.
+
+Once installed, Podman Desktop will detect your local Podman engine. If a Podman machine (a virtual machine running the Podman engine, common on Windows/macOS) is needed for certain configurations or to run on an older RHEL system, Podman Desktop can facilitate its creation and management. However, on modern RHEL systems, the native Podman engine is usually sufficient and directly utilized.
+
+=== Hands-On Activity: Installing Podman Desktop on RHEL with `dnf`
+
+This lab guides you through the process of installing Red Hat Build of Podman Desktop on a Red Hat Enterprise Linux system using the `dnf` package manager.
+
+==== Prerequisites
+
+*   A running Red Hat Enterprise Linux 8 or 9 system.
+*   `sudo` privileges on the RHEL system.
+*   Your RHEL system should be registered and subscribed to access official Red Hat repositories.
+*   Ensure that the `AppStream` repository is enabled. It's usually enabled by default on modern RHEL installations.
+
+==== Steps
+
+.Verify Podman Engine Installation
+Before installing Podman Desktop, ensure you have the Podman engine installed. Podman Desktop leverages this engine to manage containers.
+
+TIP: If Podman is not installed, Podman Desktop may prompt you to install it or facilitate its installation during initial setup. However, it's good practice to ensure it's present beforehand.
+
+On your RHEL terminal, run the following command to check if Podman is installed:
+
+```bash
+podman --version
+```
+
+If Podman is not installed or the version is old, install or update it using `dnf`:
+
+```bash
+sudo dnf install podman -y
+```
+
+.Update Your System
+It's always a good practice to update your system's package list and installed packages to ensure you have the latest security patches and dependency versions.
+
+```bash
+sudo dnf update -y
+```
+
+.Install Podman Desktop
+Now, install the `podman-desktop` package using `dnf`.
+
+```bash
+sudo dnf install podman-desktop -y
+```
+
+`dnf` will display the packages to be installed along with their dependencies. Review the list and confirm the installation when prompted.
+
+.Launch Podman Desktop
+Once the installation is complete, you can launch Podman Desktop from your desktop environment's application menu (search for "Podman Desktop") or directly from the terminal.
+
+```bash
+podman-desktop
+```
+
+.Initial Setup and Verification
+Upon its first launch, Podman Desktop will perform an initial setup. It will detect your local Podman engine, and if necessary, guide you through setting up a Podman machine (though this is less common on native RHEL installations compared to Windows/macOS).
+
+Observe the Podman Desktop interface. You should see:
+*   A welcome screen or dashboard.
+*   Your local Podman engine listed and connected.
+*   Options to pull images, create containers, and manage volumes.
+
+Congratulations! You have successfully installed Red Hat Build of Podman Desktop on your RHEL system. You are now ready to begin managing containers graphically.#  Installation steps using package managers (e.g., `dnf`)
+
+= Installing Podman Desktop on Red Hat Enterprise Linux
+
+This section guides you through the process of installing Red Hat Build of Podman Desktop on Red Hat Enterprise Linux (RHEL) and compatible distributions like Fedora or CentOS Stream using their respective package managers. Unlike macOS and Windows, where a virtual machine (Podman machine) is often created to host the Podman engine, on Linux, Podman Desktop typically connects directly to the local Podman engine already running on your system.
+
+== Installation Steps using Package Managers (`dnf`)
+
+On Red Hat Enterprise Linux and its derivatives, the most straightforward and recommended method for installing software is through the `dnf` package manager (or `yum` on older RHEL versions, though `dnf` is the modern standard). `dnf` simplifies the installation process by automatically resolving dependencies and ensuring you have the correct versions of required packages.
+
+=== Prerequisites and System Requirements
+
+Before you begin, ensure your RHEL system meets the following basic requirements:
+
+*   **Operating System:** Red Hat Enterprise Linux 8 or 9, Fedora (latest versions), or CentOS Stream 8 or 9.
+*   **User Permissions:** A user account with `sudo` privileges to install system-wide packages.
+*   **Podman Engine:** While Podman Desktop can prompt you to install Podman if it's missing, it's generally good practice to have the Podman engine installed beforehand.
+
+[source,bash]
+----
+sudo dnf install podman -y
+----
+
+This command ensures the core Podman engine is present on your system.
+
+=== Detailed Technical Explanation
+
+Podman Desktop is distributed as an RPM package, which can be easily managed by `dnf`. The `dnf` utility queries configured software repositories, downloads the necessary package files, verifies their integrity, and then installs them along with any required dependencies.
+
+The installation process typically involves adding the correct repository (if not already enabled) and then using the `dnf install` command. For most modern RHEL/Fedora systems, Podman Desktop is available in the standard repositories or via specific Red Hat repositories that are usually enabled by default if you have an active RHEL subscription.
+
+The `dnf` command will perform the following actions:
+.  **Repository Search:** `dnf` will search its configured repositories for the `podman-desktop` package.
+.  **Dependency Resolution:** It will identify all necessary dependencies (other packages that `podman-desktop` relies on) and add them to the installation list if they are not already installed.
+.  **Download:** It will download the `podman-desktop` RPM package and its dependencies from the repository servers.
+.  **Verification:** `dnf` verifies the integrity and authenticity of the downloaded packages using GPG keys.
+.  **Installation:** Finally, it installs all packages to their respective locations on your system.
+
+Once installed, Podman Desktop integrates with your existing Podman engine. On Linux, Podman Desktop does not typically create a separate "Podman Machine" virtual machine as it does on macOS or Windows. Instead, it directly interacts with the Podman daemon/service running on your host system. This offers native performance and direct access to your system's resources.
+
+=== Hands-on Activity: Installing Podman Desktop on RHEL
+
+Follow these steps to install Red Hat Build of Podman Desktop on your RHEL, Fedora, or CentOS Stream system.
+
+.  **Open a Terminal:**
+    *   Access your RHEL desktop environment.
+    *   Open a terminal application (e.g., GNOME Terminal, Konsole).
+
+.  **Ensure Podman Engine is Installed (Optional but Recommended):**
+    *   If you haven't already, install the Podman engine. Podman Desktop will rely on this.
+    +
+    [source,bash]
+    ----
+    sudo dnf install podman -y
+    ----
+
+.  **Install Podman Desktop:**
+    *   Use the `dnf install` command to install the `podman-desktop` package.
+    +
+    [source,bash]
+    ----
+    sudo dnf install podman-desktop -y
+    ----
+    +
+    NOTE: The `-y` flag automatically answers 'yes' to any prompts during the installation process. If you prefer to review the packages before installation, omit the `-y` flag.
+
+.  **Verify Installation:**
+    *   After the installation completes, you can verify that the package has been installed.
+    +
+    [source,bash]
+    ----
+    dnf list --installed podman-desktop
+    ----
+    +
+    You should see output similar to this, indicating the installed package and its version:
+    +
+    [source,console]
+    ----
+    Installed Packages
+    podman-desktop.x86_64                                1.x.x-xxx.el9                               @rhel-9-for-x86_64-appstream-rpms
+    ----
+
+.  **Launch Podman Desktop:**
+    *   You can launch Podman Desktop from your applications menu or by running the command directly in the terminal:
+    +
+    [source,bash]
+    ----
+    podman-desktop &
+    ----
+    +
+    The `&` symbol runs the application in the background, allowing you to continue using your terminal.
+
+.  **Initial Setup and Podman Engine Connection:**
+    *   Upon first launch, Podman Desktop will detect your local Podman engine.
+    *   You should see a message indicating that Podman Desktop is connected to the local Podman socket.
+    *   Explore the interface to confirm that the "Containers," "Images," and "Volumes" sections are active and displaying any existing local Podman resources.
+    *   Unlike macOS or Windows, you won't be prompted to create a "Podman machine" in the same way, as Podman Desktop directly leverages your system's Podman installation.
+
+Congratulations! You have successfully installed Red Hat Build of Podman Desktop on your Red Hat Enterprise Linux system. You are now ready to manage your containers, images, and other Podman resources through a user-friendly graphical interface.

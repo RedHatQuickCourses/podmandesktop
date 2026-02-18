@@ -1,0 +1,377 @@
+#  Lab: Configuring a private registry connection
+
+= Lab: Configuring a Private Registry Connection
+
+[abstract]
+This lab guides you through the process of configuring Podman Desktop to connect to a private container image registry. You will learn how to add a registry, provide authentication credentials, and verify the connection by pulling and optionally pushing images.
+
+== Introduction to Private Registries
+
+In enterprise environments and secure development workflows, container images are often stored in *private registries* rather than public ones like Docker Hub. Private registries offer several benefits:
+
+*   **Security**: They provide a controlled environment for storing proprietary or sensitive images, often behind corporate firewalls or with strict access controls.
+*   **Compliance**: Many organizations have regulatory requirements to store images in specific locations or with specific security scanning policies.
+*   **Performance**: Storing images closer to your development or deployment environments can reduce pull times.
+*   **Version Control**: They facilitate managing specific versions of internal applications and their dependencies.
+
+Podman Desktop provides a user-friendly interface to manage connections to these private registries, making it seamless to pull and push images just as you would with public registries, but with the added layer of authentication and access control.
+
+=== Learning Objectives
+
+By the end of this lab, you will be able to:
+
+*   Understand the purpose and benefits of private container registries.
+*   Navigate Podman Desktop's registry management settings.
+*   Add a new private registry connection to Podman Desktop.
+*   Configure authentication for a private registry.
+*   Verify a private registry connection by pulling an image.
+*   (Optional) Push an image to a private registry using Podman Desktop.
+
+== Prerequisites
+
+Before starting this lab, ensure you have:
+
+*   A running instance of Red Hat Build of Podman Desktop.
+*   Access to a private container registry (e.g., a self-hosted registry, Quay.io private repository, Docker Hub private repository, or similar).
+*   Valid credentials (username and password or token) for accessing your chosen private registry.
+*   The full URL of your private registry (e.g., `registry.example.com`, `quay.io`, `docker.io`).
+*   (Optional but Recommended) A test image within your private registry that you can attempt to pull, or a simple `Dockerfile` to build and push.
+
+== Lab Activity: Configuring a Private Registry Connection
+
+This lab will walk you through the process of adding, authenticating, and verifying a private registry connection within Podman Desktop.
+
+=== Step 1: Open Podman Desktop and Navigate to Registry Settings
+
+1.  Launch Red Hat Build of Podman Desktop.
+2.  In the left-hand navigation pane, click on the **Settings** (gear) icon.
+3.  From the Settings menu, select **Registries**.
+
+    You should now see a list of configured registries, which might include default public registries like `docker.io` and `quay.io`.
+
+=== Step 2: Add a New Private Registry
+
+1.  On the Registries page, click the **+ Add Registry** button.
+2.  A new form will appear to configure your registry.
+3.  In the **Name** field, provide a descriptive name for your registry (e.g., `My Private Registry`, `Quay Enterprise`). This is for your reference within Podman Desktop.
+4.  In the **Registry URL** field, enter the full URL of your private registry.
+
+    For example:
+    *   If using a self-hosted registry: `registry.example.com`
+    *   If using Quay.io: `quay.io`
+    *   If using Docker Hub (for private repos): `docker.io`
+
+    NOTE: Do not include `http://` or `https://` in the URL. Podman Desktop handles the protocol.
+
+5.  Leave the **Insecure Registry** checkbox unchecked unless your registry is specifically configured for insecure HTTP access (which is not recommended for production environments).
+
+6.  Click the **Add registry** button.
+
+    The new registry will now appear in your list of registries, but it likely won't be authenticated yet.
+
+=== Step 3: Configure Authentication for the Private Registry
+
+Even if a registry appears in the list, Podman Desktop needs credentials to interact with private repositories within it.
+
+1.  In the list of registries, locate the private registry you just added.
+2.  Click the **Authenticate** button next to its entry.
+3.  A dialog will prompt you for authentication details:
+    *   **Username**: Enter your username for the private registry.
+    *   **Password/Token**: Enter your password or an access token for the private registry.
+
+    NOTE: For some registries (like Docker Hub or Quay.io), you might need to generate an access token or application password instead of using your primary account password for security best practices. Consult your registry's documentation for details.
+
+4.  Click the **Log in** button.
+
+    Podman Desktop will attempt to log in to the registry using the provided credentials. If successful, the "Authenticate" button will disappear, and you might see a "Logged in as <username>" status next to the registry entry.
+
+    If authentication fails, double-check your username, password/token, and the registry URL.
+
+=== Step 4: Verify Registry Connection by Pulling an Image
+
+Now that Podman Desktop is authenticated, let's verify the connection by attempting to pull an image that resides only in your private registry.
+
+1.  Navigate back to the main Podman Desktop dashboard by clicking the **Containers** icon in the left-hand navigation pane.
+2.  Click on the **Images** tab.
+3.  In the search bar, type the full path to an image in your private registry.
+
+    For example, if your registry is `registry.example.com` and you have an image named `my-app` with tag `latest` in a namespace `myproject`, you would search for: `registry.example.com/myproject/my-app:latest`
+
+4.  Press `Enter` or click the search icon.
+5.  If the image is found, Podman Desktop will display it. Click the **Pull** button next to the image.
+
+    Podman Desktop will attempt to pull the image. Monitor the activity log or the image status. If the pull is successful, the image will appear in your local image list. This confirms that Podman Desktop can successfully communicate and authenticate with your private registry to pull images.
+
+    If the pull fails, review the error message. Common issues include:
+    *   Incorrect image path or tag.
+    *   Authentication issues (credentials might be expired or incorrect).
+    *   Network connectivity problems to the registry.
+
+=== Step 5: (Optional) Push an Image to the Private Registry
+
+To fully test write access to your private registry, you can build a simple image and push it.
+
+1.  **Create a Simple Dockerfile:**
+    Open a text editor and save the following content as `Dockerfile` in an empty directory:
+
+    ```dockerfile
+    # Dockerfile
+    FROM alpine:latest
+    CMD ["echo", "Hello from my private registry!"]
+    ```
+
+2.  **Build the Image:**
+    Open your terminal or command prompt. Navigate to the directory where you saved your `Dockerfile`. Use the `podman build` command to build your image, tagging it with your private registry's path.
+
+    Replace `registry.example.com/myproject/my-test-app:latest` with your actual private registry URL, namespace, and desired image name/tag.
+
+    ```bash
+    podman build -t registry.example.com/myproject/my-test-app:latest .
+    ```
+
+    You should see output indicating a successful build.
+
+3.  **Verify Image in Podman Desktop:**
+    Go back to Podman Desktop, navigate to the **Images** tab. You should see your newly built image listed locally.
+
+4.  **Push the Image:**
+    In Podman Desktop, locate your `registry.example.com/myproject/my-test-app:latest` image in the list.
+    Click the **Push** icon (upward arrow) next to the image.
+
+    Podman Desktop will attempt to push the image to your private registry. Monitor the activity log. If successful, the image will be available in your private registry, confirming full read/write access from Podman Desktop.
+
+    You can often verify this by logging into your private registry's web interface (if available) or by attempting to pull the image from another system.
+
+== Summary
+
+In this lab, you successfully configured Podman Desktop to connect to a private container image registry. You learned how to add the registry URL, provide necessary authentication credentials, and verify the connection by pulling an image. Optionally, you also practiced building and pushing an image, demonstrating full interaction capabilities with your secure image repository. This capability is crucial for working with proprietary applications and maintaining a secure supply chain for your containerized workloads.#  Lab: Configuring a private registry connection
+
+```adoc
+= Lab: Configuring a Private Registry Connection
+
+[.lead]
+This lab guides you through the essential process of configuring Red Hat Build of Podman Desktop to connect securely to a private container image registry. Mastering this skill is crucial for organizations to manage proprietary applications, ensure supply chain security, and comply with various regulatory standards.
+
+== Introduction to Private Registries
+
+image::private-registry-concept.png[Private Registry Concept, 600, 400]
+_Figure: Conceptual overview of private container registries_
+
+Container images, the building blocks of modern applications, are stored and distributed through registries. While public registries such as Docker Hub and Quay.io host a vast array of open-source images, enterprises and development teams frequently rely on **private registries** for internal development, proprietary applications, and enhanced security controls.
+
+The primary motivations for utilizing private registries include:
+
+*   **Enhanced Security:** Private registries allow organizations to control access to their images, ensuring that only authorized users or systems can pull or push specific versions.
+*   **Compliance and Governance:** Many industries have stringent compliance requirements that necessitate keeping application artifacts, including container images, within a controlled private network or environment.
+*   **Performance Optimization:** Hosting a registry within a local network reduces latency for image pulls, significantly speeding up development and deployment cycles, especially in air-gapped or high-throughput environments.
+*   **Software Supply Chain Control:** Private registries provide a centralized location to vet, scan, and approve all images used within an organization, strengthening the software supply chain against vulnerabilities and unauthorized components.
+
+Red Hat Build of Podman Desktop is designed to seamlessly integrate with various container registries, offering a user-friendly interface to manage connections to public, private, and cloud-hosted registry services.
+
+== Lab Scenario
+
+In this hands-on lab, we will simulate a real-world scenario by:
+
+.  Setting up a temporary, local private registry using a Podman container. This allows us to practice without needing access to a pre-existing enterprise registry.
+.  Exploring the fundamental principles of authentication with container registries.
+.  Configuring Red Hat Build of Podman Desktop to authenticate with and pull a custom image from this newly created local private registry.
+
+== Prerequisites
+
+Before you begin this lab, please ensure you have the following:
+
+*   Red Hat Build of Podman Desktop installed, running, and connected to a functional Podman engine.
+*   A working `podman` CLI installation on your host machine.
+*   Basic command-line familiarity.
+*   Administrative or root privileges on your system, as port binding for the local registry might require it.
+
+== Step 1: Set Up a Temporary Local Private Registry
+
+To simulate a private registry environment, we will deploy a `registry:2` container image on your local machine. This container will serve as our secure, private image repository for the duration of this lab.
+
+.  Open your terminal or command prompt and execute the following command to start the registry container:
++
+[source,bash]
+----
+podman run -d -p 5000:5000 --name local-registry registry:2
+----
++
+Let's break down this command:
+*   `podman run -d`: Executes the `registry:2` image as a container in detached mode, meaning it runs in the background.
+*   `-p 5000:5000`: This crucial flag maps port 5000 on your *host machine* to port 5000 inside the *container*. Port 5000 is the standard default port for container registries.
+*   `--name local-registry`: Assigns a descriptive name (`local-registry`) to the container for easy identification and management.
+*   `registry:2`: Specifies the official Docker Registry image, version 2, which is widely used for hosting container images.
+
+.  Verify that your local registry container is running successfully by listing all active containers:
++
+[source,bash]
+----
+podman ps
+----
++
+You should observe an output similar to this, confirming your `local-registry` container is active:
++
+```text
+CONTAINER ID  IMAGE         COMMAND    CREATED        STATUS        PORTS                   NAMES
+[...]         registry:2               X seconds ago  Up X seconds  0.0.0.0:5000->5000/tcp  local-registry
+```
+
+[CAUTION]
+[[troubleshooting-local-registry]]
+If the `local-registry` container fails to start or shows an `Exited` status, troubleshoot by checking the container logs:
+[source,bash]
+----
+podman logs local-registry
+----
+A common issue is port 5000 already being in use. Ensure no other application on your system is occupying this port.
+
+== Step 2: Authenticate with the Local Private Registry via CLI
+
+Understanding the underlying CLI authentication mechanism is beneficial, even though Podman Desktop simplifies credential management. When you authenticate to a registry using the `podman login` command, your credentials (username and an encoded password/token) are securely stored in a configuration file, typically `~/.config/containers/auth.json` on Linux/macOS or a similar location on Windows. Podman Desktop can then leverage these stored credentials.
+
+For our local registry, we'll use a dummy set of credentials.
+
+.  In your terminal, execute the login command:
++
+[source,bash]
+----
+podman login localhost:5000
+----
++
+.  When prompted for `Username`, type `podmanuser` and press `Enter`.
+.  When prompted for `Password`, type `password123` and press `Enter`.
+.  A `Login Succeeded!` message will confirm that your credentials have been accepted and stored.
+
+[NOTE]
+In a production environment, `localhost:5000` would be replaced with the actual registry URL (e.g., `my-private-registry.example.com`), and you would use a strong, securely generated password or an access token.
+
+== Step 3: Configure Podman Desktop to Use the Private Registry
+
+Now that our local registry is running and we've authenticated via the CLI, let's configure Podman Desktop to recognize and utilize these credentials.
+
+.  Open **Red Hat Build of Podman Desktop**.
+.  Locate and click the **Settings** (gear icon) in the left-hand navigation sidebar.
+.  Within the Settings menu, select **Registries**.
+
+image::podman-desktop-settings-registries.png[Podman Desktop Settings - Registries, 600, 400]
+_Figure: Accessing the Registries settings in Podman Desktop_
+
+Podman Desktop often automatically detects and displays registry configurations from your `auth.json` file. You should see `localhost:5000` listed, possibly under "Insecure registries" or "Registries," indicating it's using the CLI configuration.
+
+If the registry does not appear automatically, or if you prefer to manage it directly through the UI:
+
+.  Click the **Add registry** button.
+.  In the "Add Registry" dialog:
+    *   Enter `localhost:5000` as the **Registry URL**.
+    *   (Optional) Provide a **Display name** such as `My Local Podman Registry`.
+    *   For **Authentication**, select `Authentication required`.
+    *   Enter `podmanuser` for the **Username**.
+    *   Enter `password123` for the **Password**.
+    *   Crucially, check the `Insecure registry` checkbox. Since our local registry is running over HTTP without TLS/SSL, Podman Desktop needs to be explicitly told to trust this insecure connection.
+    *   Click **Add registry**.
+
+image::podman-desktop-add-registry.png[Add Registry in Podman Desktop, 600, 400]
+_Figure: Manually adding a new registry in Podman Desktop_
+
+You should now see `localhost:5000` clearly configured within Podman Desktop's Registries list.
+
+== Step 4: Verify Image Pull from the Private Registry
+
+To confirm that Podman Desktop can successfully interact with our private registry, we will:
+1.  Push a simple custom image to the local registry.
+2.  Attempt to pull that image from the registry using Podman Desktop.
+
+.  **Create a simple Dockerfile:**
++
+In an empty directory, create a file named `Dockerfile` with the following content:
++
+[source,dockerfile]
+----
+FROM alpine/git
+CMD ["echo", "Hello from local private registry!"]
+----
++
+This `Dockerfile` creates a minimal image based on `alpine/git` that simply prints a message when run.
+
+.  **Build and Tag the Image:**
++
+Use Podman to build this image and tag it specifically for your local registry:
++
+[source,bash]
+----
+podman build -t localhost:5000/my-app:latest .
+----
++
+The tag `localhost:5000/my-app:latest` specifies that this image belongs to the registry running on `localhost:5000`.
+
+.  **Push the Image to Your Local Private Registry:**
++
+Now, push the newly built image to your private registry:
++
+[source,bash]
+----
+podman push localhost:5000/my-app:latest
+----
++
+You will see output indicating the image layers are being pushed to `localhost:5000`. This confirms your CLI can push to the configured registry.
+
+.  **Pull the Image Using Podman Desktop:**
++
+Switch back to **Podman Desktop**.
++
+.  Navigate to the **Images** section in the left-hand navigation pane.
+.  Click the **Pull Image** button, typically found at the top right of the Images view.
+.  In the "Pull an image" dialog box, enter the full image name: `localhost:5000/my-app:latest`.
+.  Click **Pull image**.
+
+image::podman-desktop-pull-image-from-private.png[Pull Image from Private Registry, 600, 400]
+_Figure: Initiating an image pull from the local private registry in Podman Desktop_
+
+Upon successful completion, the `localhost:5000/my-app:latest` image will appear in your list of local images within Podman Desktop. This verifies that Podman Desktop successfully authenticated with your private registry and pulled the image.
+
+[TIP]
+If you encounter issues, double-check that your `podman login` was successful and that all registry configuration details (URL, username, password, insecure flag) in Podman Desktop precisely match. For detailed diagnostics, access Podman Desktop logs via `Help` -> `Show Logs`.
+
+== Step 5: Clean Up
+
+After completing the lab, it's good practice to remove the temporary resources you created.
+
+.  **Stop and Remove the Local Registry Container:**
++
+[source,bash]
+----
+podman stop local-registry
+podman rm local-registry
+----
+
+.  **Remove the Images from Your Local Podman Storage:**
++
+[source,bash]
+----
+podman rmi localhost:5000/my-app:latest
+podman rmi registry:2
+----
++
+[NOTE]
+If you receive an error about an image being in use, you might need to force removal using `podman rmi -f <image_id_or_name>`.
+
+.  **Optional: Remove Registry Credentials:**
++
+You can remove the authentication credentials for `localhost:5000` from your `auth.json` file, though for a transient local registry, this is often unnecessary. A clean way to do this via CLI is:
++
+[source,bash]
+----
+podman logout localhost:5000
+----
+
+== Summary
+
+Congratulations! In this lab, you have successfully:
+
+*   Deployed and managed a temporary local private container image registry.
+*   Gained an understanding of CLI-based authentication for private registries.
+*   Configured Red Hat Build of Podman Desktop to recognize and securely use credentials for a private registry.
+*   Verified the end-to-end connection by pushing and pulling a custom image to and from your private registry.
+
+This hands-on experience equips you with a fundamental skill for managing container images in secure, enterprise-grade environments using Red Hat Build of Podman Desktop.
+```

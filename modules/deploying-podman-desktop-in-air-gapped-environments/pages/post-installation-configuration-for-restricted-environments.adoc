@@ -1,0 +1,311 @@
+#  Post-installation configuration for restricted environments
+
+== Post-installation Configuration for Restricted Environments
+
+After successfully deploying Red Hat Build of Podman Desktop in an air-gapped or restricted environment, the default configurations often need adjustments to align with the stringent security and network policies of such setups. This section focuses on the essential post-installation steps required to ensure Podman Desktop can effectively manage containers, interact with internal resources, and remain operational without direct internet access.
+
+=== Understanding Configuration Challenges in Restricted Environments
+
+In an air-gapped or highly restricted network, several factors necessitate specialized configuration:
+
+*   **No Direct Internet Access:** Podman Desktop, by default, expects to pull images from public registries like Docker Hub or Quay.io. In a restricted environment, this is not possible, requiring redirection to internal or mirrored registries.
+*   **Internal Registries:** Organizations often operate private container image registries to host approved images and maintain control over software supply chains. Podman Desktop must be configured to recognize and utilize these registries.
+*   **Proxy Requirements (Conditional):** While air-gapped environments typically lack external connectivity, some *restricted* environments might allow limited external communication through a carefully controlled proxy server. Podman Desktop needs to be configured to use this proxy for any allowed external communication.
+*   **Certificate Management:** Internal registries or services often use custom Certificate Authorities (CAs). Podman Desktop, or rather the underlying Podman engine, needs to trust these certificates to establish secure connections.
+*   **Software Updates and Extensions:** Automatic updates and fetching extensions from public sources are generally not possible. A strategy for manual or internal distribution of updates and extensions must be in place.
+
+=== Key Configuration Areas
+
+==== 1. Configuring Container Registries
+
+The most critical post-installation step in a restricted environment is configuring Podman Desktop to use internal container image registries instead of public ones. This involves two main aspects: adding the registry and, if necessary, configuring it as "insecure."
+
+===== Detailed Technical Explanation
+
+Podman Desktop leverages the underlying Podman engine for all container operations, including image pulls. The `registries.conf` file (typically located at `/etc/containers/registries.conf` on Linux, or within the Podman machine's filesystem for Windows/macOS) dictates which registries Podman can access and in what order. Podman Desktop provides a user-friendly interface to manage these configurations, simplifying the direct manipulation of configuration files.
+
+When Podman tries to pull an image, it searches the configured registries. If the image name doesn't specify a full registry path (e.g., `nginx` instead of `quay.io/nginx`), Podman will prepend the configured search registries in order until it finds the image. For air-gapped environments, you typically want to remove or de-prioritize public registries and add your internal registry.
+
+*   **Private Registries:** These are internal servers hosting container images. They can be secure (using HTTPS with trusted certificates) or insecure (using HTTP or untrusted HTTPS certificates).
+*   **Insecure Registries:** A registry is considered "insecure" if it communicates over HTTP (port 80) or uses HTTPS (port 443) with an SSL/TLS certificate that is not trusted by the system's root CAs. While using insecure registries is generally discouraged in production for security reasons, it is sometimes a necessity in tightly controlled internal environments where certificate management is complex, or for development purposes. Podman needs to be explicitly told to trust an insecure registry.
+
+===== Hands-on Activity: Configuring and Testing a Private Registry
+
+This lab simulates adding an internal registry and, optionally, configuring it as insecure, then pulling an image.
+
+NOTE: For this lab, you might not have a live internal registry. You can either use a publicly accessible insecure registry for demonstration purposes (e.g., `http://registry.example.com` if one is available for testing), or simply follow the steps to understand the configuration process. If using a real internal registry, ensure you have its address and any necessary credentials.
+
+IMPORTANT: If your internal registry uses HTTPS with a custom CA, you'll need to ensure the CA certificate is trusted by your Podman machine. This typically involves placing the `.crt` file in `/etc/pki/ca-trust/source/anchors/` on Linux-based Podman machines and running `update-ca-certificates`. For Windows/macOS, this usually means adding it to the host OS trust store. This lab focuses on the Podman Desktop UI steps.
+
+.Open Podman Desktop:
+    *   Launch Red Hat Build of Podman Desktop.
+
+.Access Settings:
+    *   In the Podman Desktop interface, navigate to the *Settings* icon (gear icon) in the bottom-left corner.
+
+.Go to `Registries` settings:
+    *   From the Settings menu, select *Registries*.
+
+.Add a new Registry:
+    *   Click the btn:[Add Registry] button.
+    *   In the `Registry address` field, enter the full address of your internal registry.
+        *   Example (secure): `registry.mycorp.internal:5000`
+        *   Example (insecure): `http://insecure-registry.mycorp.internal:5000`
+    *   If your registry requires authentication, enable the `Requires authentication` checkbox and provide the `Username` and `Password`.
+    *   Click btn:[Add Registry].
+
+.Configure as Insecure (if applicable):
+    *   If your registry is HTTP-only or uses an untrusted HTTPS certificate, you need to mark it as insecure.
+    *   In the *Registries* list, locate the registry you just added.
+    *   Toggle the `Insecure` switch to `On` for that specific registry.
+    *   Podman Desktop will prompt you to restart the Podman engine for changes to take effect. Click btn:[Restart Engine].
+
+.Verify Registry Configuration:
+    *   Open a terminal in Podman Desktop (or your system's terminal after `podman-remote login` if using `podman-remote`).
+    *   Run the command to list configured registries:
+        [source,bash]
+        ----
+        podman info --format "{{.Store.Registries}}"
+        ----
+        You should see your newly added registry in the output.
+    *   Alternatively, inspect the `registries.conf` inside your Podman machine. For a Linux Podman machine, you can usually `ssh` into it or use `podman machine ssh` and check `/etc/containers/registries.conf`.
+
+.Pull an Image from the Internal Registry:
+    *   To test, try to pull a simple image that you know exists on your internal registry.
+    *   Go to the *Images* section in Podman Desktop.
+    *   Click btn:[Pull an image].
+    *   Enter the full path to an image on your internal registry.
+        *   Example: `registry.mycorp.internal:5000/my-app/nginx:latest`
+    *   Click btn:[Pull].
+    *   Observe the output in the console. If successful, the image will appear in your *Images* list.
+
+TIP: If you encounter `x509: certificate signed by unknown authority` errors for an HTTPS registry, it indicates a certificate trust issue. You'll need to add your organization's CA certificate to the Podman machine's trust store. Refer to your organization's documentation for details on obtaining and deploying these certificates.
+
+==== 2. Setting Up Network Proxies (Conditional)
+
+If your restricted environment allows outbound network traffic only through a proxy server, Podman Desktop and the underlying Podman engine must be configured to use it. This is typically done if you need to pull images from a *third-party mirrored registry* that still requires reaching out to a public endpoint via proxy, or for updates if a limited proxy path exists.
+
+===== Detailed Technical Explanation
+
+Podman Desktop and the Podman engine can honor proxy settings. These settings typically include `HTTP_PROXY`, `HTTPS_PROXY`, and `NO_PROXY` environment variables.
+
+*   `HTTP_PROXY`: For HTTP connections.
+*   `HTTPS_PROXY`: For HTTPS connections.
+*   `NO_PROXY`: A comma-separated list of hostnames, IP addresses, or CIDR blocks that should bypass the proxy. This is crucial for internal network access where you don't want traffic routed through the proxy (e.g., your internal registries).
+
+When you configure proxy settings in Podman Desktop, these settings are propagated to the Podman machine and container engine, ensuring that any external network requests made by Podman or containers use the specified proxy.
+
+===== Hands-on Activity: Configuring Proxy Settings
+
+.Open Podman Desktop:
+    *   Launch Red Hat Build of Podman Desktop.
+
+.Access Settings:
+    *   Navigate to the *Settings* icon (gear icon) in the bottom-left corner.
+
+.Go to `Proxy` settings:
+    *   From the Settings menu, select *Proxy*.
+
+.Configure Proxy Details:
+    *   Enable the `Use proxy` checkbox.
+    *   In the `HTTP proxy` field, enter the address of your HTTP proxy server (e.g., `http://proxy.mycorp.internal:8080`).
+    *   In the `HTTPS proxy` field, enter the address of your HTTPS proxy server (e.g., `http://proxy.mycorp.internal:8080`).
+    *   In the `No proxy` field, enter a comma-separated list of hosts or domains that should bypass the proxy. This *must* include your internal registry addresses and any other internal network ranges.
+        *   Example: `localhost,127.0.0.1,registry.mycorp.internal,*.mycorp.internal,10.0.0.0/8`
+    *   If your proxy requires authentication, enable `Requires authentication` and provide the `Username` and `Password`.
+    *   Click btn:[Apply] or btn:[Save].
+
+.Restart Podman Engine:
+    *   Podman Desktop will likely prompt you to restart the Podman engine for the proxy changes to take effect. Click btn:[Restart Engine].
+
+.Verify Proxy Configuration (Optional):
+    *   This step is harder to do interactively without a live proxy and external connection. However, you can verify if the environment variables are set within the Podman machine.
+    *   Open a terminal in Podman Desktop or use `podman machine ssh` to access your Podman machine.
+    *   Run `env | grep -i proxy` to check if the `HTTP_PROXY`, `HTTPS_PROXY`, and `NO_PROXY` environment variables are correctly set within the machine's environment.
+
+==== 3. Managing Updates and Extensions in Restricted Environments
+
+In air-gapped environments, automatic updates for Podman Desktop itself and its extensions are not possible.
+
+===== Detailed Technical Explanation
+
+*   **Podman Desktop Updates:** New versions of Podman Desktop (or Red Hat Build of Podman Desktop) must be manually downloaded from a trusted internal source (e.g., an internal software repository mirroring Red Hat downloads) and then installed following the offline installation procedures.
+*   **Extensions:** Podman Desktop extensions (e.g., for Kubernetes, OpenShift, Pods, or specific development tools) are typically downloaded from online marketplaces. In a restricted environment, these extensions need to be acquired externally, scanned for security, and then distributed internally as `.tar.gz` files. Podman Desktop allows installing extensions from a local file.
+
+===== Expert Insights & Troubleshooting
+
+*   **Offline Extension Installation:** To install an extension offline, obtain the `.tar.gz` extension file. In Podman Desktop, go to *Extensions* in Settings, then click btn:[Install an extension from a file] and select the downloaded `.tar.gz`.
+*   **Version Compatibility:** Always ensure that downloaded updates and extensions are compatible with your existing Podman Desktop and Podman engine versions to avoid conflicts.
+*   **Consistency:** Maintain a consistent approach for distributing updates and extensions across all installations in your restricted environment.
+*   **Security Scans:** Before deploying any downloaded software or extensions, ensure they undergo thorough security scanning according to your organization's policies.
+
+By diligently configuring registries, proxies (if applicable), and managing updates and extensions through controlled internal channels, Red Hat Build of Podman Desktop can be fully operational and secure within even the most stringent restricted environments.#  Post-installation configuration for restricted environments
+
+= Post-installation Configuration for Restricted Environments
+
+While Red Hat Build of Podman Desktop simplifies container management, deploying and configuring it in restricted, air-gapped environments presents unique challenges. After the initial offline installation procedure, specific post-installation configurations are crucial to ensure Podman Desktop and its underlying Podman engine can function correctly within your isolated network. These configurations primarily revolve around enabling access to internal resources, such as private container registries, and managing network communication.
+
+== Understanding the Challenges in Restricted Environments
+
+In an air-gapped or highly restricted network, Podman Desktop lacks direct access to public resources like `registry.access.redhat.com`, `docker.io`, or `quay.io`. This impacts several key areas of operation:
+
+*   **Image Pulls:** Containers cannot pull images directly from public registries. All necessary images must be sourced from an internal, private registry.
+*   **Extension Updates/Downloads:** Podman Desktop extensions typically require internet access to install or update. Offline management of extensions requires a different approach, often involving manual transfers and installation if supported by the extension's design.
+*   **Software Updates:** Keeping Podman Desktop and the Podman engine up-to-date becomes a manual process, requiring offline transfer of update packages.
+*   **Certificate Trust:** Internal services (like private registries, internal API endpoints, or authentication systems) often use TLS/SSL certificates issued by internal Certificate Authorities (CAs). These certificates are not inherently trusted by the system or the Podman machine, leading to connection errors unless explicitly configured.
+
+The following sections detail how to configure Podman Desktop to operate effectively under these constraints, focusing on the most critical post-installation adjustments.
+
+== 1. Configuring Private Container Registries
+
+For an air-gapped environment, using a local or internal private container registry is mandatory. This registry will host all container images required by your applications. Podman Desktop needs to be configured to trust and communicate with this internal registry.
+
+=== Technical Explanation
+
+Podman Desktop, through its underlying Podman engine, uses a configuration file (`/etc/containers/registries.conf` or `~/.config/containers/registries.conf` on the Podman machine) to manage registry access. This file specifies:
+
+*   `unqualified-search-registries`: A list of registries to search when an image name is not fully qualified (e.g., `nginx` instead of `myregistry.local/nginx`). In a restricted environment, this should point to your internal registry.
+*   `[[registry]]` blocks: Define specific registry properties, including `location` (the registry hostname), `insecure` (if HTTP is used or if self-signed certificates are not trusted without proper CA configuration), and `blocked` (to prevent access to public registries, which is often a security best practice in air-gapped setups).
+
+When adding an insecure registry (e.g., for development or testing within a trusted air-gapped network), you're instructing Podman to bypass TLS/SSL certificate verification for that specific endpoint. While this can simplify initial setup in controlled environments, it's generally recommended to configure proper TLS/SSL with trusted certificates where possible, even for internal registries.
+
+=== Hands-On Activity: Adding a Private Registry
+
+This lab demonstrates how to add a private registry to Podman Desktop. For simplicity in a lab setting, we will configure an insecure registry, though a secure registry with custom CA certificates is preferred for production air-gapped environments.
+
+.Prerequisites:
+*   A running Podman Desktop instance installed in your restricted environment.
+*   Access to an internal, private container registry (e.g., `myregistry.local:5000`).
+*   (Optional, for testing) If you don't have an internal registry available, you can simulate an insecure one *on your host machine* by running:
+    ```bash
+    podman run -d -p 5000:5000 --name registry registry:2
+    ```
+    This allows you to use `localhost:5000` as your "internal" registry location for the Podman machine to access.
+
+.Steps to Add the Registry:
+.  Open Red Hat Build of Podman Desktop.
+.  Navigate to the `Settings` icon (gear icon) in the bottom-left corner of the Podman Desktop window.
+.  In the Settings sidebar, select `Registries`.
+.  Click the `Add registry` button.
+.  In the `Add Registry` dialog:
+    *   For `Registry hostname`, enter the address of your internal registry (e.g., `myregistry.local:5000` or `localhost:5000` if you simulated one).
+    *   If your registry requires authentication, enter the `Username` and `Password`. For the simulated insecure lab registry, these might not be necessary.
+    *   Check the `Insecure registry` checkbox *only if your registry is using HTTP or a self-signed certificate not yet trusted by the Podman machine*. In production, prefer to configure custom CAs instead of marking as insecure.
+    *   Click `Add Registry`.
+.  Verify that your private registry is now listed under `Configured Registries`.
+
+.Test the Registry Configuration:
+.  Open the `Terminal` within Podman Desktop (or connect to your Podman machine via `podman machine ssh`).
+.  Attempt to pull an image from your newly configured private registry. For example, if you pushed an `hello-world` image to your registry or want to test with the simulated local registry:
+    ```bash
+    podman pull myregistry.local:5000/hello-world
+    ```
+    or for the simulated local registry:
+    ```bash
+    podman pull localhost:5000/hello-world
+    ```
+.  If the image pull is successful, Podman Desktop is now configured to access your private registry.
+
+[[expert-tip-insecure-registries]]
+.Expert Tip: Insecure Registries
+In production environments, avoid using insecure registries (`--insecure-registry`) unless absolutely necessary and within a highly controlled, trusted network segment. Always strive to use TLS/SSL with certificates signed by a trusted Certificate Authority, even if it's an internal corporate CA. Proper certificate management enhances security and prevents man-in-the-middle attacks.
+
+== 2. Configuring Proxy Settings
+
+If your restricted environment allows outbound network traffic only through a proxy server (e.g., to access certain internal services or a highly controlled internet gateway), Podman Desktop and its underlying Podman machine must be configured to use this proxy for any relevant network communication.
+
+=== Technical Explanation
+
+Proxy settings are typically configured via standard environment variables: `HTTP_PROXY`, `HTTPS_PROXY`, and `NO_PROXY`.
+
+*   `HTTP_PROXY`: Specifies the proxy server for HTTP connections (e.g., `http://proxy.example.com:8080`).
+*   `HTTPS_PROXY`: Specifies the proxy server for HTTPS connections (e.g., `https://proxy.example.com:8080`). This is often the same address as `HTTP_PROXY`.
+*   `NO_PROXY`: A comma-separated list of hostnames, IP addresses, or CIDR ranges that should *not* go through the proxy. This is critically important for internal resources (like your private registry) that should be accessed directly without proxying.
+
+For Podman Desktop, these environment variables need to be set specifically for the Podman machine, as it is a separate virtualized environment. Setting them on your host machine will not automatically apply them to the Podman machine. Podman Desktop provides a dedicated interface to configure these settings for the Podman machine.
+
+=== Hands-On Activity: Setting Proxy for the Podman Machine
+
+This lab shows how to configure proxy settings for your Podman machine via Podman Desktop.
+
+.Prerequisites:
+*   A running Podman Desktop instance.
+*   Details of your corporate HTTP/HTTPS proxy server (e.g., `http://proxy.example.com:8080`).
+*   A comprehensive list of internal domains/IPs that should bypass the proxy (e.g., `localhost,127.0.0.1,.mycompany.local,10.0.0.0/8,myregistry.local`).
+
+.Steps:
+.  Open Red Hat Build of Podman Desktop.
+.  Navigate to the `Settings` icon (gear icon) in the bottom-left corner.
+.  In the Settings sidebar, select `Proxy`.
+.  In the `HTTP Proxy` field, enter your HTTP proxy address. If your proxy requires authentication, include the username and password (e.g., `http://username:password@proxy.example.com:8080`).
+.  In the `HTTPS Proxy` field, enter your HTTPS proxy address. This might be the same as your HTTP proxy, but ensure to use `https://` if it's an HTTPS proxy.
+.  In the `No Proxy` field, enter a comma-separated list of hosts, IP addresses, or CIDR ranges that should be excluded from proxying. This is vital for direct access to your internal registry and other local services (e.g., `localhost,127.0.0.1,.mycompany.local,10.0.0.0/8,myregistry.local`).
+.  Click `Apply`.
+.  **Restart the Podman machine**: For proxy settings to take full effect, you *must* restart the Podman machine. You can do this from the Podman Desktop `Dashboard` by stopping and then starting your default Podman machine, or by navigating to `Settings` -> `Resources` and restarting the machine there.
+
+.Test the Proxy Configuration:
+.  After the Podman machine restarts, try to perform an operation that would typically require proxy access (e.g., attempt to pull an image from a public registry if your air-gapped setup has *some* restricted outbound internet access through the proxy, or access an internal web service that is *only* reachable via the corporate proxy).
+.  Verify that internal services listed in `No Proxy` are still accessible directly without issues.
+
+[[expert-tip-wsl-proxy]]
+.Expert Tip: Proxy Settings for WSL2 on Windows
+When running Podman Desktop with WSL2 on Windows, it's important to understand that proxy settings configured within Podman Desktop apply directly to the *Podman machine* (which runs as a WSL2 distribution). Your Windows host's proxy settings are separate. Ensure consistency or configure specifically for the WSL2 environment as needed. For the `no_proxy` list, make sure to include the IP ranges or hostnames of any services running on your Windows host that the Podman machine might need to communicate with directly.
+
+== 3. Managing Custom Certificate Authorities (CAs)
+
+In restricted environments, internal services like private registries, enterprise authentication systems, or internal APIs often use TLS/SSL certificates issued by a private or corporate Certificate Authority (CA). For Podman Desktop and the Podman engine to trust these services, the custom CA certificates must be installed on the Podman machine.
+
+=== Technical Explanation
+
+Linux systems manage trusted CA certificates in specific directories (e.g., `/etc/pki/ca-trust/source/anchors/` on Red Hat-based systems like the Podman machine, or `/usr/local/share/ca-certificates/` on Debian-based systems). When a custom CA certificate (in PEM format) is placed in one of these locations and the system's CA trust store is updated, applications (like Podman) will automatically trust certificates signed by that CA. This eliminates TLS handshake errors when communicating with internal services.
+
+For Podman Desktop's Podman machine, this involves:
+
+1.  Obtaining the PEM-encoded public key certificate file for your internal CA (e.g., `my-internal-ca.pem`).
+2.  Copying this certificate file from your host system to a specific, trusted directory within the Podman machine.
+3.  Updating the CA trust store on the Podman machine to incorporate the new certificate.
+
+=== Hands-On Activity: Adding a Custom CA Certificate
+
+This lab demonstrates how to add a custom CA certificate to your Podman machine, enabling trust for your internal services.
+
+.Prerequisites:
+*   A running Podman Desktop instance.
+*   The PEM-encoded public certificate of your internal CA (e.g., `my-internal-ca.pem`). This file should be readily accessible on your host machine.
+*   An internal service (e.g., a private registry, an internal API) that uses a certificate signed by this CA, for testing purposes.
+
+.Steps:
+.  **Copy the CA certificate to the Podman machine:**
+    .  Ensure your Podman machine is running.
+    .  Use the `podman cp` command to copy the certificate file from your host to the Podman machine. Replace `/path/to/my-internal-ca.pem` with the actual path to your certificate file on your host.
+        ```bash
+        podman cp /path/to/my-internal-ca.pem podman-machine-default:/etc/pki/ca-trust/source/anchors/
+        ```
+        (Note: `podman-machine-default` is the default name for your Podman machine. Adjust this if you have given your machine a different name.)
+.  **Connect to the Podman machine:**
+    .  Open the `Terminal` within Podman Desktop, or connect to your Podman machine using `podman machine ssh`.
+.  **Update the CA trust store:**
+    .  Once you are inside the Podman machine's terminal, execute the following command to update the system's CA trust store:
+        ```bash
+        sudo update-ca-trust extract
+        ```
+        This command processes the certificates in `/etc/pki/ca-trust/source/anchors/` and rebuilds the system-wide trust store, making your custom CA trusted.
+.  **Verify the certificate is trusted:**
+    .  Attempt to access an internal service that uses this CA-signed certificate. For example, if your internal registry is configured with HTTPS and uses this CA:
+        ```bash
+        curl --verbose https://myregistry.local:5000/v2/
+        ```
+        You should observe a successful TLS handshake without certificate errors.
+    .  Attempt to pull an image from your internal registry that is configured with HTTPS and requires this CA:
+        ```bash
+        podman pull myregistry.local:5000/my-secure-image:latest
+        ```
+        This command should now succeed, indicating that the custom CA certificate is properly trusted by the Podman machine.
+
+[[expert-tip-wsl-ca]]
+.Expert Tip: Custom CAs with WSL2
+When using Podman Desktop with WSL2 on Windows, the `podman cp` command (or `wsl cp`) is essential for transferring certificates into the WSL2-based Podman machine. Remember that Windows' own CA trust store is separate from the Linux environment within WSL2. Therefore, simply installing the CA on your Windows host is not sufficient for the Podman machine.
+
+== Summary of Post-installation Configuration
+
+Successfully operating Red Hat Build of Podman Desktop in a restricted environment requires careful attention to how it interacts with your internal network and services. By meticulously configuring private registries, setting appropriate proxy rules, and managing custom CA certificates, you can ensure your container workflows remain secure and functional, even without direct internet access. These foundational steps are crucial for deploying and managing applications effectively within highly controlled, air-gapped infrastructures.

@@ -1,0 +1,414 @@
+#  Lab: Managing Podman machines and container engines
+
+= Lab: Managing Podman Machines and Container Engines
+
+This lab provides hands-on experience in managing Podman machines and configuring the underlying container engine settings within Red Hat Build of Podman Desktop. Understanding these concepts is crucial for optimizing your container development environment.
+
+== Introduction to Podman Machines and Container Engines
+
+On macOS and Windows operating systems, Red Hat Build of Podman Desktop utilizes a lightweight virtual machine, known as a *Podman machine*, to host the Linux-based Podman engine. This virtual machine provides the necessary Linux kernel environment where your containers will actually run, as containerization relies heavily on Linux kernel features not natively available on macOS or Windows.
+
+Red Hat Build of Podman Desktop simplifies the lifecycle management of these Podman machines, allowing you to:
+
+*   **Create and Delete Machines:** Provision new machines with specific resource configurations or remove old ones to reclaim system resources. This is particularly useful for creating isolated development environments.
+*   **Start and Stop Machines:** Control the operational state of your container environment. Stopping a machine frees up system resources (CPU, memory), while starting it makes your container environment available.
+*   **Configure Resources:** Adjust the allocated CPU, memory, and disk space for the Podman machine. These settings directly impact the performance and capacity of the Podman engine and, consequently, your containers. Optimizing these resources is key to preventing performance bottlenecks or unnecessary resource consumption.
+
+Efficient management of Podman machines and their engine settings is fundamental for a smooth and performant container development workflow, especially when dealing with resource-intensive applications or managing multiple distinct development environments.
+
+== Hands-On Activity: Managing Podman Machines and Container Engine Settings
+
+In this activity, you will perform common operations related to Podman machines and configure container engine settings using Red Hat Build of Podman Desktop.
+
+=== Prerequisites
+
+*   Red Hat Build of Podman Desktop is installed on your system (macOS, Windows, or Linux).
+*   A default Podman machine should already be running if you are on macOS or Windows, established during the initial setup. On Linux, the Podman engine is natively available.
+
+=== 1. Inspecting the Current Podman Machine (macOS/Windows)
+
+If you are on macOS or Windows, Podman Desktop typically creates and starts a default Podman machine during its initial setup. Let's inspect its current status and configuration.
+
+.  Open Red Hat Build of Podman Desktop.
+.  In the left-hand navigation pane, click on the * xref:ROOT:pages/configuring-podman-desktop.adoc[Settings]* icon (gear icon).
+.  Navigate to the * xref:ROOT:pages/configuring-podman-desktop.adoc#container-engine-settings[Container Engine]* section.
+.  Observe the *Podman machine* status and details. You should see information such as its name, current status (e.g., "Running"), allocated CPU cores, and memory.
+
+image::podman-desktop-container-engine-settings.png[Container Engine Settings in Podman Desktop,width=800]
+_Figure: Podman Desktop showing Container Engine settings and Podman machine details._
+
+You can also use the `podman machine` command-line interface (CLI) to view similar information.
+
+[.console-input]
+----
+podman machine ls
+----
+
+[.console-output]
+```text
+NAME      VM            CPUS        MEMORY      DISK        CLUSTER     ULA           ROOTFS                 TYPE
+podman    podman-vm     2           2.1GB       10GB        podman      fd00:0:0:0::1  /Users/<user>/.local/share/containers/podman/machine/podman/podman.qcow2  podman
+```
+_Example output of `podman machine ls` confirming the machine._
+
+=== 2. Stopping and Starting a Podman Machine (macOS/Windows)
+
+Stopping a Podman machine frees up system resources (CPU and RAM) when you're not actively using containers. Starting it brings your container environment back online.
+
+.  In the *Container Engine* section of Podman Desktop settings:
+    a. Locate the "Stop" button next to your running Podman machine.
+    b. Click "Stop". Observe the status changing to "Stopped".
+    +
+    image::podman-desktop-stop-machine.png[Stop Podman Machine,width=800]
+    _Figure: Stopping a Podman machine._
+
+.  To restart the machine:
+    a. Locate the "Start" button (it replaces "Stop" when the machine is stopped).
+    b. Click "Start". The machine will initialize, and its status will return to "Running". This process might take a few moments.
+    +
+    image::podman-desktop-start-machine.png[Start Podman Machine,width=800]
+    _Figure: Starting a Podman machine._
+
+You can achieve the same results using the Podman CLI:
+
+[.console-input]
+----
+podman machine stop podman
+podman machine start podman
+----
+
+[.console-output]
+```text
+Stopping machine "podman"
+Machine "podman" stopped successfully.
+
+Starting machine "podman"
+Waiting for VM ...
+Podman machine "podman" started successfully
+```
+_Example output of `podman machine stop` and `podman machine start`._
+
+=== 3. Configuring Container Engine Settings (Memory, CPU, Disk)
+
+You can adjust the resources allocated to your Podman machine (and thus, your container engine) to suit your specific needs. For example, if you plan to run many memory-intensive containers, you might need to increase the allocated RAM.
+
+.  In the *Container Engine* section of Podman Desktop settings:
+    a. Ensure your Podman machine is *running*.
+    b. Locate the *Memory*, *CPU*, and *Disk size* settings.
+    c. Adjust the *Memory* slider or input box to a different value (e.g., increase it from 2GB to 4GB, depending on your system's available resources).
+    d. Adjust the *CPU* slider or input box (e.g., increase from 2 to 4 cores).
+    e. Adjust the *Disk size* if you anticipate needing more storage for container images and volumes.
+    f. Click the "Apply" button at the bottom of the section.
+    +
+    *Note:* Changing these critical settings often requires the Podman machine to restart to apply the changes effectively. Podman Desktop will prompt you if a restart is needed and handle it automatically.
+    +
+    image::podman-desktop-configure-engine.png[Configure Container Engine Resources,width=800]
+    _Figure: Adjusting Podman machine resources._
+
+.  Confirm the changes:
+    a. After the machine restarts (if necessary), verify that the new settings are reflected in the *Container Engine* section.
+    b. You can also use the `podman machine inspect` command in your terminal to view the updated configuration details.
+
+[.console-input]
+----
+# The Podman Desktop UI handles restarts for you when configuring resources.
+# If using the CLI directly for resource changes, you typically need to stop the machine first.
+podman machine inspect podman | grep -E "Memory|CPUs"
+----
+
+[.console-output]
+```json
+...
+    "Memory": "4GB",
+    "CPUs": 4,
+...
+```
+_Example `podman machine inspect` output snippet showing updated resources._
+
+=== 4. Creating a New Podman Machine (Optional, macOS/Windows)
+
+You might want to create additional Podman machines for different development environments, specific projects, or testing scenarios without affecting your primary setup.
+
+.  In the *Container Engine* section of Podman Desktop settings, look for the "Create new Podman machine" link or button (often found below the current machine details).
+.  Click it to open the "Create a new Podman machine" wizard.
+.  Provide a unique *name* for your new machine (e.g., `dev-machine`).
+.  Configure its *CPUs*, *Memory*, and *Disk size* as desired for this specific environment.
+.  Click "Create".
+.  Podman Desktop will provision and start your new machine.
+.  Once created, you can select which Podman machine is the "active" one for Podman Desktop to interact with by clicking its name in the *Container Engine* list.
+
+You can also create a new machine using the Podman CLI:
+
+[.console-input]
+----
+podman machine init --cpus 4 --memory 4096 --disk-size 50 --name dev-machine
+podman machine start dev-machine
+podman machine ls
+----
+
+[.console-output]
+```text
+Extracting compressed file
+Image resized.
+Machine "dev-machine" created successfully.
+To start your machine, run: podman machine start dev-machine
+
+Starting machine "dev-machine"
+Waiting for VM ...
+Podman machine "dev-machine" started successfully
+NAME             VM              CPUS        MEMORY      DISK        CLUSTER     ULA            ROOTFS                 TYPE
+dev-machine      dev-machine-vm  4           4.1GB       50GB        podman      fd00:0:0:0::1  /Users/<user>/.local/share/containers/podman/machine/dev-machine/dev-machine.qcow2  podman
+podman           podman-vm       2           2.1GB       10GB        podman      fd00:0:0:0::1  /Users/<user>/.local/share/containers/podman/machine/podman/podman.qcow2  podman
+```
+_Example CLI output for creating and listing a new machine._
+
+=== 5. Deleting a Podman Machine (Optional, macOS/Windows)
+
+If you no longer need a specific Podman machine, you can delete it to reclaim disk space and free up system resources.
+
+.  In the *Container Engine* section of Podman Desktop settings:
+    a. Select the machine you wish to delete (e.g., `dev-machine` if you created one in the previous step).
+    b. Ensure the machine is *stopped* before attempting deletion. If it's running, click the "Stop" button first.
+    c. Locate the "Delete" button or trash icon next to the machine name.
+    d. Click "Delete" and confirm the action when prompted.
+    +
+    *Warning:* Deleting a Podman machine is an irreversible action. It will permanently remove the virtual machine, along with all containers, images, and associated data stored within that specific machine. Always ensure you have backed up any critical data before deleting a machine.
+
+You can delete a machine using the Podman CLI:
+
+[.console-input]
+----
+podman machine stop dev-machine
+podman machine rm dev-machine
+podman machine ls
+----
+
+[.console-output]
+```text
+Stopping machine "dev-machine"
+Machine "dev-machine" stopped successfully.
+Are you sure you want to delete the VM "dev-machine"? [y/N]: y
+Machine "dev-machine" deleted successfully.
+```
+_Example CLI output for deleting a machine._
+
+This lab has provided a comprehensive overview and hands-on experience with managing Podman machines and configuring container engine settings in Red Hat Build of Podman Desktop. You are now equipped to optimize your container environment for various development scenarios.#  Lab: Managing Podman machines and container engines
+
+= Lab: Managing Podman Machines and Container Engines
+
+<<<
+This lab guides you through the process of listing, inspecting, and managing your Podman machines and their associated container engine settings using both the command line and the Podman Desktop graphical interface.
+>>>
+
+== Introduction to Podman Machines and Container Engines
+
+For users on macOS and Windows, Podman Desktop leverages a lightweight virtual machine, known as a *Podman machine*, to host the Linux environment where the Podman container engine runs. This machine provides a consistent Linux environment for building, running, and managing containers, abstracting away the differences of the underlying host operating system.
+
+The *container engine settings* refer to the resources (CPU, memory, disk space) allocated to this Podman machine. Properly managing these settings is crucial for optimizing performance and ensuring your containers have sufficient resources without over-provisioning and impacting your host system.
+
+=== Learning Objectives
+
+Upon completing this lab, you will be able to:
+
+*   List and inspect Podman machines using both CLI and Podman Desktop.
+*   Start and stop Podman machines.
+*   Modify the resource allocation (CPU, memory, disk) for your Podman machine's container engine.
+*   Understand the impact of these changes on container performance.
+
+=== Prerequisites
+
+*   Red Hat Build of Podman Desktop installed on your macOS, Windows, or Linux system.
+*   A Podman machine already created and running (typically happens during initial setup).
+*   Basic familiarity with using a terminal or command prompt.
+
+== Activity 1: Listing and Inspecting Podman Machines
+
+Understanding which Podman machines are available and their current state is the first step in managing them.
+
+=== Step 1: List Podman Machines using the CLI
+
+Open your terminal or command prompt and execute the following command:
+
+[source,bash]
+----
+podman machine list
+----
+
+.Expected Output
+You will see a table listing your Podman machines. If you followed the installation guide, you should at least have one machine, often named `podman-machine-default` or `podman-machine-default-root`.
+
+[literal,console]
+----
+NAME                    VM TYPE   CPUS        MEMORY      DISK        STATE      URI                                         LAST UP
+podman-machine-default  qemu      2           2.147GB     107.4GB     Running    qemu:///var/run/user/1000/podman/podman.sock 2 minutes ago
+----
+
+*   `NAME`: The name of the Podman machine.
+*   `VM TYPE`: The virtualization technology used (e.g., `qemu` for macOS/Linux, `wsl` for Windows).
+*   `CPUS`, `MEMORY`, `DISK`: The resources allocated to the machine.
+*   `STATE`: The current operational status (e.g., `Running`, `Stopped`).
+*   `URI`: The socket path for communicating with the Podman daemon inside the machine.
+
+=== Step 2: Inspect a Podman Machine for Detailed Information
+
+To get more detailed technical information about a specific Podman machine, use the `inspect` command. Replace `podman-machine-default` with the name of your machine if it's different.
+
+[source,bash]
+----
+podman machine inspect podman-machine-default
+----
+
+.Expected Output
+This command will output a large JSON object containing comprehensive details about the machine, including its configuration, network settings, image path, and more. Scroll through it to see the depth of information available.
+
+[literal,json]
+----
+[
+  {
+    "Name": "podman-machine-default",
+    "VMType": "qemu",
+    "State": "Running",
+    "CreatedAt": "2023-10-26T10:00:00Z",
+    "LastUpAt": "2023-11-01T14:30:00Z",
+    "Resources": {
+      "CPUs": 2,
+      "Memory": "2147483648",
+      "DiskSize": "107374182400"
+    },
+    // ... more details
+  }
+]
+----
+
+=== Step 3: View Podman Machines in Podman Desktop
+
+1.  Open Red Hat Build of Podman Desktop.
+2.  In the left-hand navigation, click on the *Engine* icon (often looks like a gear or cylinder).
+3.  You will see a list of your container engines. Each entry represents a Podman machine (or a connection to a local Podman engine on Linux).
+4.  Observe the status, CPU, memory, and disk usage displayed for your default Podman machine.
+
+[TIP]
+Podman Desktop provides a user-friendly graphical representation of the same information you get from the CLI, often with real-time status updates.
+
+== Activity 2: Starting and Stopping Podman Machines
+
+Managing the state of your Podman machine is essential for controlling resource consumption and troubleshooting.
+
+=== Step 1: Stop the Podman Machine via CLI
+
+If your Podman machine is currently running, you can stop it using the CLI. This will free up the resources (CPU, memory) it was consuming.
+
+[source,bash]
+----
+podman machine stop podman-machine-default
+----
+
+.Expected Output
+[literal,console]
+----
+Stopping machine "podman-machine-default"
+----
+
+You can verify its state by running `podman machine list` again. It should now show `Stopped`.
+
+=== Step 2: Stop the Podman Machine via Podman Desktop
+
+1.  In Podman Desktop, navigate to the *Engine* section.
+2.  Locate your `podman-machine-default` engine.
+3.  Click the *Stop* button (often a square icon) next to the machine name.
+4.  Confirm that its status changes to `Stopped`.
+
+=== Step 3: Start the Podman Machine via CLI
+
+Now, start the machine again.
+
+[source,bash]
+----
+podman machine start podman-machine-default
+----
+
+.Expected Output
+[literal,console]
+----
+Starting machine "podman-machine-default"
+Waiting for VM to come online...
+Machine "podman-machine-default" started successfully
+----
+
+Verify with `podman machine list` that its state is `Running`.
+
+=== Step 4: Start the Podman Machine via Podman Desktop
+
+1.  In Podman Desktop, navigate to the *Engine* section.
+2.  Locate your `podman-machine-default` engine.
+3.  Click the *Start* button (often a triangle/play icon) next to the machine name.
+4.  Confirm that its status changes to `Running`.
+
+[NOTE]
+Stopping the Podman machine will also stop any running containers within that machine. When you start the machine again, containers configured with a restart policy (e.g., `always`) will automatically restart.
+
+== Activity 3: Adjusting Container Engine Resources via Podman Desktop
+
+One of the most common management tasks is adjusting the resources allocated to your Podman machine. This is typically done through the Podman Desktop settings.
+
+=== Step 1: Access Engine Settings
+
+1.  In Podman Desktop, navigate to the *Engine* section on the left-hand side.
+2.  Locate your `podman-machine-default` entry.
+3.  Click the *Settings* icon (often a gear icon) associated with that engine. This will open the engine-specific settings panel.
+
+=== Step 2: Modify CPU, Memory, and Disk Allocation
+
+In the settings panel, you will find options to adjust:
+
+*   *CPUs:* The number of virtual CPU cores allocated to the Podman machine. More CPUs can improve performance for CPU-intensive container workloads.
+*   *Memory:* The amount of RAM allocated to the Podman machine. Increased memory is crucial for applications that consume a lot of RAM.
+*   *Disk Image Size:* The total disk space available inside the Podman machine. This is where your container images and container data are stored.
+
+.Practical Exercise
+Change the following settings for your `podman-machine-default`:
+
+1.  **CPUs:** Change to `4` (if your host system has at least 4 cores available).
+2.  **Memory:** Change to `4GB` (if your host system has at least 8GB of RAM, otherwise pick a value that leaves enough for your host OS).
+3.  **Disk Image Size:** Change to `150GB` (if you have sufficient free disk space on your host).
+
+[NOTE]
+Ensure that the values you choose do not exceed your host system's available resources, as this can lead to system instability or poor performance. Always leave some resources for your host operating system.
+
+=== Step 3: Apply Changes and Restart
+
+1.  After making your desired changes, click the *Apply* or *Save* button at the bottom of the settings panel.
+2.  Podman Desktop will prompt you that the machine needs to be *restarted* for the changes to take effect. Confirm the restart.
+
+[TIP]
+If Podman Desktop doesn't automatically prompt for a restart, manually stop and then start the Podman machine from the *Engine* view or via the CLI (`podman machine stop` then `podman machine start`).
+
+=== Step 4: Verify Resource Changes
+
+Once the Podman machine has restarted:
+
+1.  Go back to the *Engine* section in Podman Desktop and observe the updated CPU, Memory, and Disk values displayed for your `podman-machine-default`.
+2.  Alternatively, use the CLI to verify:
+    [source,bash]
+    ----
+    podman machine inspect podman-machine-default | grep -E "CPUs|Memory|DiskSize"
+    ----
+    .Expected Output (example)
+    [literal,console]
+    ----
+    "CPUs": 4,
+    "Memory": "4294967296", # ~4GB in bytes
+    "DiskSize": "161061273600" # ~150GB in bytes
+    ----
+
+This confirms that the resources allocated to your Podman machine and its container engine have been successfully updated.
+
+== Troubleshooting Tips
+
+*   **Machine fails to start after changing resources:** If your machine fails to start after adjusting resources, it might be due to over-allocation. Try reducing the CPU or Memory values and restarting again. Check your host's resource monitor.
+*   **"Error: podman-machine-default is not running"**: If you try to run `podman` commands and get this error, ensure the machine is started using `podman machine start podman-machine-default` or through Podman Desktop.
+*   **Disk space warnings:** If you frequently see warnings about low disk space inside your Podman machine, consider increasing the "Disk Image Size" as demonstrated in Activity 3.
+
+== Conclusion
+
+You have successfully navigated the process of managing Podman machines and their container engine settings. By understanding how to list, inspect, start, stop, and configure resource allocations, you can ensure your Podman Desktop environment is optimized for your container workloads and tailored to your host system's capabilities. This fundamental skill is vital for efficient and stable container development.

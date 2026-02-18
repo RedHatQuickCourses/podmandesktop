@@ -1,0 +1,19 @@
+#  Installing Podman Desktop on Windows
+
+=== Installing Podman Desktop on Windows
+
+This section covers the process of installing Podman Desktop on Windows, including:
+
+*   Downloading and running the installer.
+*   Integrating and configuring Windows Subsystem for Linux (WSL) 2.
+*   Performing the initial setup and creating a Podman machine.
+*   Verifying the installation and testing basic functionality.#  Installing Podman Desktop on Windows
+
+=== Installing Podman Desktop on Windows
+
+This section covers the process of installing Red Hat Build of Podman Desktop on Windows.
+
+* Download and run the installer.
+* Configure Windows Subsystem for Linux (WSL 2) integration.
+* Perform initial setup, including Podman machine creation.
+* Verify the installation and basic functionality.
