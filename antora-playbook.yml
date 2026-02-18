@@ -1,5 +1,5 @@
 site:
-  title:  Red Hat Build of Podman Desktop: Installation, Configuration, and Troubleshooting
+  title:  "Red Hat Build of Podman Desktop: Installation, Configuration, and Troubleshooting"
   start_page: podmandesktop::index.adoc
 
 content:

@@ -1,5 +1,5 @@
 name: podmandesktop
-title:  Red Hat Build of Podman Desktop: Installation, Configuration, and Troubleshooting
+title:  "Red Hat Build of Podman Desktop: Installation, Configuration, and Troubleshooting"
 version: 1.0.0
 nav:
 - modules/ROOT/nav.adoc
